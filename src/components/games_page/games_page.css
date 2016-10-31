@@ -1,0 +1,16 @@
+.game {
+	position: relative;
+	height: 100%;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-attachment: fixed;
+}
+
+.tnl {
+	background-image: url('./img/tnl.jpg');
+}
+
+.coup {
+	background-image: url('./img/coup.jpg');
+}
