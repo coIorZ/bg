@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { Motion, spring } from 'react-motion';
-import { debounce } from 'lodash';
-
 
 import styles from './games_page.css';
 
@@ -43,7 +41,6 @@ class GamesPage extends Component {
 	}
 
 	handleWheel(e) {
-		if(e.deltaY == 0) return;
 		const h = this.props.clientHeight;
 		let y = this.state.y;
 		y += e.deltaY * -1.5;
