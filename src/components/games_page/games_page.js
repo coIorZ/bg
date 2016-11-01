@@ -43,7 +43,7 @@ class GamesPage extends Component {
 	handleWheel(e) {
 		const h = this.props.clientHeight;
 		let y = this.state.y;
-		y += e.deltaY * -1.5;
+		y += e.deltaY * -1.3;
 		if(y >= 0) y = 0;
 		if(y <= -1 * h * 3) y = -1 * h * 3;
 		this.setState({ y });
@@ -52,7 +52,7 @@ class GamesPage extends Component {
 			const n = y / h | 0;
 			y = h * (Math.abs(y % h) >= h / 2 ? n - 1 : n);
 			this.setState({ y });
-		},120);
+		}, 100);
 	}
 };
 
