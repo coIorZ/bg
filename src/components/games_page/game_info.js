@@ -10,6 +10,7 @@ class GameInfo extends Component {
 		this.state = {
 			folded: 1  // 1-half  2-full  0-folded
 		};
+		this.unfold = this.unfold.bind(this);
 	}
 
 	componentWillReceiveProps({ folded }) {
@@ -31,11 +32,15 @@ class GameInfo extends Component {
 						height,
 						transform: `translateX(${x}px)`
 					}}>
-
+					<div className={styles.btn} onClick={this.unfold}>Play</div>
 				</div>
 			}
 			</Motion>
 		);
+	}
+
+	unfold() {
+		this.setState({folded: 2});
 	}
 }
 
