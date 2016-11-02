@@ -1,13 +1,18 @@
-import { CLIENTHEIGHT_APP } from '../actions';
+import { SET_CLIENTHEIGHT, SET_CLIENTWIDTH } from '../actions';
 
 const initialState = {
-	clientHeight: document.documentElement.clientHeight
+	clientHeight: document.documentElement.clientHeight,
+	clientWidth: document.documentElement.clientWidth
 };
 
 export default function(state = initialState, action) {
 	switch(action.type) {
-	case CLIENTHEIGHT_APP:
+	case SET_CLIENTHEIGHT:
 		return {...state, clientHeight: action.payload};
+
+	case SET_CLIENTWIDTH:
+		return {...state, clientWidth: action.payload};
+
 	default:
 		return state;
 	}
