@@ -1,7 +1,7 @@
 import { SET_GAMEINFO_FOLDED } from '../actions';
 
 const initialState = {
-	folded: 1
+	folded: 1  // 0-folded  1-half  2-full
 };
 
 export default function(state = initialState, action) {

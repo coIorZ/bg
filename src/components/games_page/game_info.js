@@ -18,7 +18,10 @@ class GameInfo extends Component {
 		return (
 			<Motion style={{x: spring(x)}}>
 			{({ x }) => 
-				<div className={styles.container}
+				<div className={cx({
+						[styles.container]: true,
+						[styles.full]: folded === 2
+					})}
 					style={{
 						height: clientHeight,
 						transform: `translateX(${x}px)`
@@ -29,9 +32,17 @@ class GameInfo extends Component {
 						<h2 className={styles.section}>{length} Minutes</h2>
 						<h2 className={styles.section}>{weight} / 5 Weight</h2>
 						<div className={styles.section}>
-							<span className={styles.btn}
+							<span className={styles['btn-long']}
 								onClick={() => this.props.setGameInfoFolded(2)}>Play</span>
 						</div>
+					</div>
+					<div className={styles.entrance}>
+						<div className={styles.left}>
+							<div>
+								<span className={styles.btn}>New Game</span>
+							</div>
+						</div>
+						<div className={styles.right}></div>
 					</div>
 				</div>
 			}

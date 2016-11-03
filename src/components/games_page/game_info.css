@@ -2,6 +2,8 @@
 	position: absolute;
 	top: 0;
 	width: 720px;
+	color: white;
+	overflow: hidden;
 	background-color: rgba(92, 89, 86, .5);
 }
 
@@ -10,25 +12,57 @@
 	transition: background-color .3s;
 }
 
+.full .intro {
+	left: -360px;
+}
+
+.entrance {
+	position: absolute;
+	left: 360px;
+	width: 720px;
+	height: 100%;
+	padding: 20px;
+	transition: left .5s
+}
+
+.entrance .left {
+	float: left;
+	width: 50%;
+	height: 100%;
+	border-right: 1px solid white;
+}
+
+.entrance .right {
+	float: left;
+	width: 50%;
+	height: 100%;
+}
+
+.full .entrance {
+	left: 0;
+}
+
 .intro {
+	position: absolute;
+	left: 0;
 	width: 360px;
 	height: 100%;
 	padding: 20px;
-	color: white;
 	text-align: center;
+	transition: left .5s;
 }
 
-.section {
+.intro .section {
 	margin: 80px 0;
 }
 
-.section.name {
+.intro .section.name {
 	margin: 30px 0;
 }
 
 .btn {
 	display: inline-block;
-	padding: 10px 50px;
+	padding: 10px 30px;
 	background-color: transparent;
 	border: 2px solid white;
 	border-radius: 10px;
@@ -38,4 +72,9 @@
 
 .btn:hover {
 	background-color: rgba(255, 255, 255, .5);
+}
+
+.btn-long {
+	composes: btn;
+	padding: 10px 60px;
 }
