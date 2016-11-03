@@ -32,7 +32,9 @@ class GameInfo extends Component {
 						height,
 						transform: `translateX(${x}px)`
 					}}>
-					<div className={styles.btn} onClick={this.unfold}>Play</div>
+					<div style={{width: width / 4}}>
+						<div className={styles.btn} onClick={this.unfold}>Play</div>
+					</div>
 				</div>
 			}
 			</Motion>

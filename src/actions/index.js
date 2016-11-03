@@ -18,7 +18,7 @@ export function setClientWidth(width) {
 
 export const FETCH_GAMES = 'FETCH_GAMES';
 export function fetchGames() {
-	const request = axios.get('api/games');
+	const request = axios.get('api/game');
 	return (dispatch) => {
 		request.then((data) => {
 			dispatch({
