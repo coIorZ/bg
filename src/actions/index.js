@@ -1,26 +1,26 @@
 import axios from 'axios';
 
 export const SET_CLIENTHEIGHT = 'SET_CLIENTHEIGHT';
-export function setClientHeight(height) {
+export function setClientHeight(payload) {
 	return {
 		type: SET_CLIENTHEIGHT,
-		payload: height
+		payload
 	};
 };
 
 export const SET_CLIENTWIDTH = 'SET_CLIENTWIDTH';
-export function setClientWidth(width) {
+export function setClientWidth(payload) {
 	return {
 		type: SET_CLIENTWIDTH,
-		payload: width
+		payload
 	};
 };
 
 export const SET_GAMEINFO_FOLDED = 'SET_GAMEINFO_FOLDED';
-export function setGameInfoFolded(num) {
+export function setGameInfoFolded(payload) {
 	return {
 		type: SET_GAMEINFO_FOLDED,
-		payload: num
+		payload
 	};
 };
 

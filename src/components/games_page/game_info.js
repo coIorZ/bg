@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Motion, spring } from 'react-motion';
 import { connect } from 'react-redux';
+import cx from 'classnames';
 
 import styles from './game_info.css';
 
@@ -23,11 +24,14 @@ class GameInfo extends Component {
 						transform: `translateX(${x}px)`
 					}}>
 					<div className={styles.intro}>
-						<p className={styles.name}>{name}</p>
-						<p>
+						<h1 className={cx(styles.section, styles.name)}>{name}</h1>
+						<h2 className={styles.section}>{players} Players</h2>
+						<h2 className={styles.section}>{length} Minutes</h2>
+						<h2 className={styles.section}>{weight} / 5 Weight</h2>
+						<div className={styles.section}>
 							<span className={styles.btn}
 								onClick={() => this.props.setGameInfoFolded(2)}>Play</span>
-						</p>
+						</div>
 					</div>
 				</div>
 			}
