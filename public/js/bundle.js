@@ -48806,7 +48806,7 @@
 	
 	
 	// module
-	exports.push([module.id, "._3-nh6eRQcQtkAPremFQQ8B {\n\tposition: absolute;\n\ttop: 0;\n\twidth: 50%;\n\tmin-width: 500px;\n\tbackground-color: rgba(92, 89, 86, .5);\n}\n\n._7-ghT0wbO9YUFKxzj5eQg {\n\tdisplay: inline-block;\n\tpadding: 10px 30px;\n\tbackground-color: transparent;\n\tcolor: white;\n\tborder: 2px solid white;\n\tborder-radius: 10px;\n\tcursor: pointer;\n}", ""]);
+	exports.push([module.id, "._3-nh6eRQcQtkAPremFQQ8B {\n\tposition: absolute;\n\ttop: 0;\n\twidth: 50%;\n\tmin-width: 500px;\n\tbackground-color: rgba(92, 89, 86, .5);\n}\n\n._3-nh6eRQcQtkAPremFQQ8B:hover {\n\tbackground-color: rgba(92, 89, 86, .8);\n\ttransition: background-color .3s;\n}\n\n._7-ghT0wbO9YUFKxzj5eQg {\n\tdisplay: inline-block;\n\tpadding: 10px 30px;\n\tbackground-color: transparent;\n\tcolor: white;\n\tborder: 2px solid white;\n\tborder-radius: 10px;\n\tcursor: pointer;\n}", ""]);
 	
 	// exports
 	exports.locals = {

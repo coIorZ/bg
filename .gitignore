@@ -1,5 +1,5 @@
 .DS_Store
 npm-debug.log
 node_modules/
-dist/public/bundle.js
-dist/public/bundle.js.map
+public/bundle.js
+public/bundle.js.map
