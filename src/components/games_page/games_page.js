@@ -4,15 +4,16 @@ import { Motion, spring } from 'react-motion';
 
 import Game from './game';
 import GameInfo from './game_info';
-import { fetchGames } from '../../actions';
+import styles from './games_page.css';
+
+import { fetchGames, setGameInfoFolded } from '../../actions';
 
 class GamesPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			y: 0,
-			folded: 1,
-			game: null
+			game: {}
 		};
 		this.handleWheel = this.handleWheel.bind(this);
 	}
@@ -21,51 +22,62 @@ class GamesPage extends Component {
 		this.props.fetchGames();
 	}
 
+	componentWillReceiveProps({ games }) {
+		if(games !== this.props.games) this.setState({game: games[0]});
+	}
+
 	render() {
-		const { height, games } = this.props;
-		const { y, folded } = this.state;
+		const { clientHeight, games, folded } = this.props;
+		const { y, game } = this.state;
 		return (
-			<div>
+			<div className={styles.container}>
 				<Motion style={{y: spring(y)}}>
 					{({ y }) => 
 						<div style={{
-								height,
+								height: clientHeight,
 								transform: `translate3d(0, ${y}px, 0)`
 							}}
-							onWheel={this.handleWheel}>
+							onWheel={this.handleWheel}
+							onMouseDown={() => this.props.setGameInfoFolded(1)}>
 							{games.map((game) => 
 								<Game key={game._id} game={game} />
 							)}
 						</div>
 					}
 				</Motion>
-				<GameInfo folded={folded} />
+				<GameInfo game={game} />
 			</div>
 		);
 	}
 
 	handleWheel(e) {
-		const h = this.props.height;
-		const limit = this.props.games.length - 1;
+		const { clientHeight, games } = this.props;
+		const limit = games.length - 1;
 		let y = this.state.y;
 		y += e.deltaY * -1.5;
 		if(y >= 0) y = 0;
-		if(y <= -1 * h * limit) y = -1 * h * limit;
-		this.setState({ y, folded: 0 });
+		if(y <= -1 * clientHeight * limit) y = -1 * clientHeight * limit;
+		this.setState({ y });
+		this.props.setGameInfoFolded(0);
 		window.clearTimeout(this._timer);
 		this._timer = window.setTimeout(() => {
-			const n = y / h | 0;
-			y = h * (Math.abs(y % h) >= h / 2 ? n - 1 : n);
-			this.setState({ y, folded: 1 });
+			let n = y / clientHeight | 0;
+			n = Math.abs(y % clientHeight) >= clientHeight / 2 ? n - 1 : n;
+			y = clientHeight * n;
+			this.setState({
+				y,
+				game: games[-1 * n]
+			});
+			this.props.setGameInfoFolded(1);
 		}, 100);
 	}
 };
 
 function mapStateToProps({ appearance, games}) {
 	return {
-		height: appearance.clientHeight,
+		clientHeight: appearance.clientHeight,
 		games
 	};
 }
 
-export default connect(mapStateToProps, { fetchGames })(GamesPage);
+export default connect(mapStateToProps, { fetchGames, setGameInfoFolded })(GamesPage);

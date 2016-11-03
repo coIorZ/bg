@@ -4,53 +4,44 @@ import { connect } from 'react-redux';
 
 import styles from './game_info.css';
 
+import { setGameInfoFolded } from '../../actions';
+
 class GameInfo extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			folded: 1  // 1-half  2-full  0-folded
-		};
-		this.unfold = this.unfold.bind(this);
-	}
-
-	componentWillReceiveProps({ folded }) {
-		if(folded !== this.state.folded) this.setState({ folded });
-	}
-
 	render() {
-		const folded = this.state.folded;
-		const { width, height } = this.props;
+		const { clientWidth, clientHeight, game, folded } = this.props;
+		const { name, players, length, weight } = game;
 		const x = folded === 0 ?
-					width : folded === 1 ?
-						 0.75 * width : width / 2;
+					clientWidth : folded === 1 ?
+						 clientWidth - 360 : clientWidth - 720;
 
 		return (
 			<Motion style={{x: spring(x)}}>
 			{({ x }) => 
 				<div className={styles.container}
 					style={{
-						height,
+						height: clientHeight,
 						transform: `translateX(${x}px)`
 					}}>
-					<div style={{width: width / 4}}>
-						<div className={styles.btn} onClick={this.unfold}>Play</div>
+					<div className={styles.intro}>
+						<p className={styles.name}>{name}</p>
+						<p>
+							<span className={styles.btn}
+								onClick={() => this.props.setGameInfoFolded(2)}>Play</span>
+						</p>
 					</div>
 				</div>
 			}
 			</Motion>
 		);
 	}
-
-	unfold() {
-		this.setState({folded: 2});
-	}
 }
 
-function mapStateToProps({ appearance }) {
+function mapStateToProps({ appearance, gamesPage }) {
 	return {
-		width: appearance.clientWidth,
-		height: appearance.clientHeight
+		clientWidth: appearance.clientWidth,
+		clientHeight: appearance.clientHeight,
+		folded: gamesPage.folded
 	};
 }
 
-export default connect(mapStateToProps, null)(GameInfo);
+export default connect(mapStateToProps, { setGameInfoFolded })(GameInfo);

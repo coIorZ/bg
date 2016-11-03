@@ -26,8 +26,9 @@ class App extends Component {
 	}
 
 	resize() {
-		this.props.setClientHeight(document.documentElement.clientHeight);
-		this.props.setClientWidth(document.documentElement.clientWidth);
+		let { clientHeight, clientWidth } = document.documentElement;
+		this.props.setClientHeight(clientHeight);
+		this.props.setClientWidth(clientWidth);
 	}
 }
 

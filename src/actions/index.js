@@ -16,6 +16,14 @@ export function setClientWidth(width) {
 	};
 };
 
+export const SET_GAMEINFO_FOLDED = 'SET_GAMEINFO_FOLDED';
+export function setGameInfoFolded(num) {
+	return {
+		type: SET_GAMEINFO_FOLDED,
+		payload: num
+	};
+};
+
 export const FETCH_GAMES = 'FETCH_GAMES';
 export function fetchGames() {
 	const request = axios.get('api/game');
