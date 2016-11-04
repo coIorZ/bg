@@ -28,18 +28,18 @@ class GameInfo extends Component {
 					}}>
 					<div className={styles.intro}>
 						<h1 className={cx(styles.section, styles.name)}>{name}</h1>
-						<h2 className={styles.section}>{players} Players</h2>
-						<h2 className={styles.section}>{length} Minutes</h2>
-						<h2 className={styles.section}>{weight} / 5 Weight</h2>
+						<h3 className={styles.section}><span className={styles.value}>{players}</span> PLAYERS</h3>
+						<h3 className={styles.section}><span className={styles.value}>{length}</span> MINUTES</h3>
+						<h3 className={styles.section}><span className={styles.value}>{weight}</span> / 5 WEIGHT</h3>
 						<div className={styles.section}>
 							<span className={styles['btn-long']}
-								onClick={() => this.props.setGameInfoFolded(2)}>Play</span>
+								onClick={() => this.props.setGameInfoFolded(2)}>PLAY</span>
 						</div>
 					</div>
 					<div className={styles.entrance}>
 						<div className={styles.left}>
 							<div>
-								<span className={styles.btn}>New Game</span>
+								<span className={styles.btn}>NEW GAME</span>
 							</div>
 						</div>
 						<div className={styles.right}></div>
