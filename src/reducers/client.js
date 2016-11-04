@@ -2,7 +2,8 @@ import { SET_CLIENTHEIGHT, SET_CLIENTWIDTH } from '../actions';
 
 const initialState = {
 	clientHeight: document.documentElement.clientHeight,
-	clientWidth: document.documentElement.clientWidth
+	clientWidth: document.documentElement.clientWidth,
+	user: `guest${Date.now()}`
 };
 
 export default function(state = initialState, action) {

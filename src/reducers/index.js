@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 
-import appearance from './appearance';
+import client from './client';
 import games from './games';
 import gamesPage from './games_page';
 
 export default combineReducers({
-	appearance,
+	client,
 	games,
 	gamesPage
 });

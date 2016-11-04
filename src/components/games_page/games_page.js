@@ -73,9 +73,9 @@ class GamesPage extends Component {
 	}
 };
 
-function mapStateToProps({ appearance, games}) {
+function mapStateToProps({ client, games}) {
 	return {
-		clientHeight: appearance.clientHeight,
+		clientHeight: client.clientHeight,
 		games
 	};
 }

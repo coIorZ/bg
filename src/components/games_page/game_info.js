@@ -33,13 +33,14 @@ class GameInfo extends Component {
 						<h3 className={styles.section}><span className={styles.value}>{weight}</span> / 5 WEIGHT</h3>
 						<div className={styles.section}>
 							<span className={styles['btn-long']}
-								onClick={() => this.props.setGameInfoFolded(2)}>PLAY</span>
+								onClick={() => this.props.setGameInfoFolded(2)}><strong>PLAY</strong></span>
 						</div>
 					</div>
 					<div className={styles.entrance}>
 						<div className={styles.left}>
 							<div>
-								<span className={styles.btn}>NEW GAME</span>
+								<span className={styles.btn}
+									onClick={() => console.log(`${this.props.user} has created a Coup game`)}>NEW GAME</span>
 							</div>
 						</div>
 						<div className={styles.right}></div>
@@ -51,11 +52,12 @@ class GameInfo extends Component {
 	}
 }
 
-function mapStateToProps({ appearance, gamesPage }) {
+function mapStateToProps({ client, gamesPage }) {
 	return {
-		clientWidth: appearance.clientWidth,
-		clientHeight: appearance.clientHeight,
-		folded: gamesPage.folded
+		clientWidth: client.clientWidth,
+		clientHeight: client.clientHeight,
+		folded: gamesPage.folded,
+		user: client.user
 	};
 }
 
