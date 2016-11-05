@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { throttle } from 'lodash';
 
 import Header from './header/header';
+import Login from './login/login';
 import styles from './app.css';
 
 import { setClientHeight, setClientWidth } from '../actions';
@@ -21,6 +22,7 @@ class App extends Component {
 		return (
 			<div className={styles.container}>
 				{this.props.children}
+				<Login visible={this.props.showLogin}/>
 			</div>
 		);
 	}
@@ -32,4 +34,10 @@ class App extends Component {
 	}
 }
 
-export default connect(null, { setClientHeight, setClientWidth })(App);
+function mapStateToProps({ client }) {
+	return {
+		showLogin: client.showLogin
+	};
+}
+
+export default connect(mapStateToProps, { setClientHeight, setClientWidth })(App);

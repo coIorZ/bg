@@ -1,5 +1,3 @@
-import express from 'express';
-
 import { fetchGames } from '../models/games';
 
 export default function(router) {

@@ -24,6 +24,6 @@ const Game = mongoose.model('Game', gameSchema);
 
 export default Game;
 
-export function fetchGames(callback, limit) {
-	Game.find(callback).limit(limit);
+export function fetchGames(callback) {
+	Game.find(callback);
 };

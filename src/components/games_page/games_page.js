@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Motion, spring } from 'react-motion';
 
-import Game from './game';
-import GameInfo from './game_info';
+import GameInfo from '../game_info/game_info';
 import styles from './games_page.css';
 
 import { fetchGames, setGameInfoFolded } from '../../actions';
@@ -23,24 +22,29 @@ class GamesPage extends Component {
 	}
 
 	componentWillReceiveProps({ games }) {
-		if(games !== this.props.games) this.setState({game: games[0]});
+		if(games !== this.props.games) this.setState({game: games[0] || {}});
 	}
 
 	render() {
-		const { clientHeight, games, folded } = this.props;
+		const { clientHeight, clientWidth, games, folded } = this.props;
 		const { y, game } = this.state;
 		return (
-			<div className={styles.container}>
+			<div className={styles.container}
+				style={{width: clientWidth}}>
 				<Motion style={{y: spring(y)}}>
 					{({ y }) => 
 						<div style={{
 								height: clientHeight,
-								transform: `translate3d(0, ${y}px, 0)`
+								transform: `translate3d(0, ${y}px, 0)`,
+								WebkitTransform: `translate3d(0, ${y}px, 0)`
 							}}
 							onWheel={this.handleWheel}
 							onMouseDown={() => this.props.setGameInfoFolded(1)}>
 							{games.map((game) => 
-								<Game key={game._id} game={game} />
+								<div className={styles.game}
+									key={game._id}
+									style={{backgroundImage: `url(${game.img_url})`}}>
+								</div>
 							)}
 						</div>
 					}
@@ -76,6 +80,7 @@ class GamesPage extends Component {
 function mapStateToProps({ client, games}) {
 	return {
 		clientHeight: client.clientHeight,
+		clientWidth: client.clientWidth,
 		games
 	};
 }

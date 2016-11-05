@@ -1,0 +1,9 @@
+.container {
+	display: none;
+	position: absolute;
+	top: 0;
+}
+
+.container.visible {
+	display: block;
+}

@@ -5,9 +5,14 @@ import cx from 'classnames';
 
 import styles from './game_info.css';
 
-import { setGameInfoFolded } from '../../actions';
+import { setGameInfoFolded, showLogin } from '../../actions';
 
 class GameInfo extends Component {
+	constructor(props) {
+		super(props);
+		this.handlePlay = this.handlePlay.bind(this);
+	}
+
 	render() {
 		const { clientWidth, clientHeight, game, folded } = this.props;
 		const { name, players, length, weight } = game;
@@ -24,7 +29,8 @@ class GameInfo extends Component {
 					})}
 					style={{
 						height: clientHeight,
-						transform: `translateX(${x}px)`
+						transform: `translateX(${x}px)`,
+						WebkitTransform: `translateX(${x}px)`
 					}}>
 					<div className={styles.intro}>
 						<h1 className={cx(styles.section, styles.name)}>{name}</h1>
@@ -33,14 +39,14 @@ class GameInfo extends Component {
 						<h3 className={styles.section}><span className={styles.value}>{weight}</span> / 5 WEIGHT</h3>
 						<div className={styles.section}>
 							<span className={styles['btn-long']}
-								onClick={() => this.props.setGameInfoFolded(2)}><strong>PLAY</strong></span>
+								onMouseDown={this.handlePlay}><strong>PLAY</strong></span>
 						</div>
 					</div>
 					<div className={styles.entrance}>
 						<div className={styles.left}>
 							<div>
 								<span className={styles.btn}
-									onClick={() => console.log(`${this.props.user} has created a Coup game`)}>NEW GAME</span>
+									onMouseDown={() => console.log(`${this.props.user} has created a Coup game`)}>NEW GAME</span>
 							</div>
 						</div>
 						<div className={styles.right}></div>
@@ -50,15 +56,24 @@ class GameInfo extends Component {
 			</Motion>
 		);
 	}
+
+	handlePlay() {
+		const { me, setGameInfoFolded, showLogin } = this.props;
+		if(!me) {
+			showLogin(true);
+		} else {
+			setGameInfoFolded(2);
+		}
+	}
 }
 
-function mapStateToProps({ client, gamesPage }) {
+function mapStateToProps({ client, users }) {
 	return {
 		clientWidth: client.clientWidth,
 		clientHeight: client.clientHeight,
-		folded: gamesPage.folded,
-		user: client.user
+		folded: client.gameInfo.folded,
+		me: users.me
 	};
 }
 
-export default connect(mapStateToProps, { setGameInfoFolded })(GameInfo);
+export default connect(mapStateToProps, { setGameInfoFolded, showLogin })(GameInfo);
