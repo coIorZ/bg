@@ -2,10 +2,10 @@ import { FETCH_GAMES } from '../actions';
 
 const initialState = [];
 
-export default function(state = initialState, action) {
-	switch(action.type) {
+export default function(state = initialState, { type, payload }) {
+	switch(type) {
 	case FETCH_GAMES:
-		return [...state, ...action.payload];
+		return [...state, ...payload];
 		
 	default:
 		return state;

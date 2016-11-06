@@ -9,22 +9,22 @@ const initialState = {
 	showLogin: false
 };
 
-export default function(state = initialState, action) {
-	switch(action.type) {
+export default function(state = initialState, { type, payload }) {
+	switch(type) {
 	case SET_CLIENTHEIGHT:
-		return {...state, clientHeight: action.payload};
+		return {...state, clientHeight: payload};
 
 	case SET_CLIENTWIDTH:
-		return {...state, clientWidth: action.payload};
+		return {...state, clientWidth: payload};
 
 	case SET_GAMEINFO_FOLDED:
 		return {
 			...state,
-			gameInfo: {folded: action.payload}
+			gameInfo: {folded: payload}
 		};
 
 	case SHOW_LOGIN:
-		return {...state, showLogin: action.payload};
+		return {...state, showLogin: payload};
 
 	default:
 		return state;

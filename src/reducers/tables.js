@@ -1,17 +1,43 @@
-import { NEW_TABLE, JOIN_TABLE } from '../../server/sockets/table';
+import _ from 'lodash';
 
-const initialState = [];
+import { NEW_TABLE, JOIN_TABLE, SERVER_ALL_TABLES, LEAVE_TABLE, REMOVE_TABLE } from '../sockets/type';
 
-export default function(state = initialState, action) {
-	switch(action.type) {
+const initialState = {};
+
+export default function(state = initialState, { type, payload }) {
+	switch(type) {
+	case SERVER_ALL_TABLES:
+		return payload;
+
 	case NEW_TABLE:
-		const table = {
-			_id: Date.now(),
-			host: action.payload.user,
-			players: [action.payload.user],
-			gameId: action.payload.gameId
+		return {...state, [payload._id]: payload};
+
+	case JOIN_TABLE:
+		return {
+			...state,
+			[payload.tableId]: {
+				...state[payload.tableId],
+				players: {
+					...state[payload.tableId].players,
+					[payload.user._id]: payload.user
+				}
+			}
 		};
-		return [table, ...state];
+
+	case LEAVE_TABLE:
+		const id = payload.tableId;
+		return {
+			...state,
+			[id]: {
+				...state[id],
+				host: state[id].host._id === payload.userId ? 
+						{...state[id].players[Object.keys(state[id].players)[1]]} : state[id].host,
+				players: {..._.omit(state[id].players, payload.userId)}
+			}
+		};
+
+	case REMOVE_TABLE:
+		return {..._.omit(state, payload)};
 
 	default:
 		return state;

@@ -28,7 +28,7 @@ class GameInfo extends Component {
 		if(me) {
 			_.each(tables, table => {
 				if(table.gameId === game._id) {
-					if(_.some(table.players, player => player._id === me._id))
+					if(table.players.hasOwnProperty(me._id))
 						rightTables.push(table);
 					else leftTables.push(table);	
 				}

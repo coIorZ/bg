@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import cx from 'classnames';
+import _ from 'lodash';
 
 import styles from './table.css';
 
@@ -18,7 +19,7 @@ class Table extends Component {
 		const { host, game, players } = table;
 
 		let btns = [];
-		if(!_.some(players, player => player._id === user._id)) {
+		if(!players.hasOwnProperty(user._id)) {
 			btns.push(<span className={cx(styles.btn, styles.green)}
 							key={0}
 							onMouseDown={this.joinTable}>JOIN</span>);
@@ -36,7 +37,7 @@ class Table extends Component {
 			<div className={styles.container}>
 				<div className={styles.header}>{`${host.name}'s game`}</div>
 				<div className={styles.body}>
-					{players.map(player => <div key={player._id}>{player.name}</div>)}
+					{_.map(players, player => <div key={player._id}>{player.name}</div>)}
 					<div className={styles['btn-group']}>
 						{btns}
 					</div>
@@ -48,13 +49,22 @@ class Table extends Component {
 	joinTable() {
 		const { table, user } = this.props;
 		socket.emit('client.table.join', {
-			id: table._id,
+			tableId: table._id,
 			user
 		});
 	}
 
 	leaveTable() {
-
+		const { table, user } = this.props;
+		const { _id, players, host } = table;
+		if(_.size(players) === 1) {
+			socket.emit('client.table.remove', _id);
+		} else {
+			socket.emit('client.table.leave', {
+				tableId: _id,
+				userId: user._id
+			});
+		}
 	}
 
 	startTable() {

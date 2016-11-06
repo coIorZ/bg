@@ -4,10 +4,10 @@ const initialState = {
 	me: null
 };
 
-export default function(state = initialState, action) {
-	switch(action.type) {
+export default function(state = initialState, { type, payload }) {
+	switch(type) {
 	case LOGIN:
-		return {...state, me: action.payload};
+		return {...state, me: payload};
 
 	default:
 		return state;

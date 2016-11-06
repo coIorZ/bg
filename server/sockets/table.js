@@ -1,11 +1,21 @@
-export const NEW_TABLE = 'NEW_TABLE';
-export const JOIN_TABLE = 'JOIN_TABLE';
+import mongoose from 'mongoose';
+
+import { NEW_TABLE, JOIN_TABLE, LEAVE_TABLE, REMOVE_TABLE } from '../../src/sockets/type';
 
 export default function(socket, io, store) {
 	socket.on('client.table.new', (payload) => {
+		const id = mongoose.Types.ObjectId();
+		const table = {
+			_id: id,
+			host: payload.user,
+			players: {
+				[payload.user._id]: payload.user
+			},
+			gameId: payload.gameId
+		};
 		const action = {
 			type: NEW_TABLE,
-			payload
+			payload: table
 		};
 		store.dispatch(action);
 		io.emit('server.table.new', action);
@@ -18,5 +28,23 @@ export default function(socket, io, store) {
 		};
 		store.dispatch(action);
 		io.emit('server.table.join', action);
+	});
+
+	socket.on('client.table.leave', (payload) => {
+		const action = {
+			type: LEAVE_TABLE,
+			payload
+		};
+		store.dispatch(action);
+		io.emit('server.table.leave', action);
+	});
+
+	socket.on('client.table.remove', (payload) => {
+		const action = {
+			type: REMOVE_TABLE,
+			payload
+		};
+		store.dispatch(action);
+		io.emit('server.table.remove', action);
 	});
 };
