@@ -3,7 +3,7 @@ import cx from 'classnames';
 
 import styles from './table.css';
 
-import socket from '../socket';
+import socket from '../sockets';
 
 class Table extends Component {
 	constructor(props) {
@@ -20,12 +20,15 @@ class Table extends Component {
 		let btns = [];
 		if(!_.some(players, player => player._id === user._id)) {
 			btns.push(<span className={cx(styles.btn, styles.green)}
+							key={0}
 							onMouseDown={this.joinTable}>JOIN</span>);
 		} else {
 			btns.push(<span className={cx(styles.btn, styles.red)}
+							key={1}
 							onMouseDown={this.leaveTable}>LEAVE</span>);
 			if(user._id === host._id)
 				btns.push(<span className={cx(styles.btn, styles.blue)}
+								key={2}
 								onMouseDown={this.startTable}>START</span>);
 		}
 
@@ -55,7 +58,7 @@ class Table extends Component {
 	}
 
 	startTable() {
-		
+
 	}
 }
 

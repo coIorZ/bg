@@ -7,7 +7,7 @@ import _ from 'lodash';
 import Table from './table';
 import styles from './game_info.css';
 
-import socket from '../socket';
+import socket from '../sockets';
 import { setGameInfoFolded, showLogin } from '../actions';
 
 class GameInfo extends Component {
