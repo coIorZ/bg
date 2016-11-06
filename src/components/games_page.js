@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Motion, spring } from 'react-motion';
 
-import GameInfo from '../game_info/game_info';
+import GameInfo from './game_info';
 import styles from './games_page.css';
 
-import { fetchGames, setGameInfoFolded } from '../../actions';
+import { fetchGames, setGameInfoFolded } from '../actions';
 
 class GamesPage extends Component {
 	constructor(props) {
@@ -29,8 +29,7 @@ class GamesPage extends Component {
 		const { clientHeight, clientWidth, games, folded } = this.props;
 		const { y, game } = this.state;
 		return (
-			<div className={styles.container}
-				style={{width: clientWidth}}>
+			<div className={styles.container}>
 				<Motion style={{y: spring(y)}}>
 					{({ y }) => 
 						<div style={{
@@ -40,7 +39,7 @@ class GamesPage extends Component {
 							}}
 							onWheel={this.handleWheel}
 							onMouseDown={() => this.props.setGameInfoFolded(1)}>
-							{games.map((game) => 
+							{games.map(game => 
 								<div className={styles.game}
 									key={game._id}
 									style={{backgroundImage: `url(${game.img_url})`}}>

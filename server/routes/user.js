@@ -7,6 +7,7 @@ export default function(router) {
 			password: req.body.password
 		}, (err, user) => {
 			if(err) res.send(err);
+			req.session.user = user;
 			res.json(user);
 		});
 	});

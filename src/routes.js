@@ -2,9 +2,9 @@ import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 
 import App from './components/app';
-import GamesPage from './components/games_page/games_page';
-import NewsPage from './components/news_page/news_page';
-import AboutPage from './components/about_page/about_page';
+import GamesPage from './components/games_page';
+import NewsPage from './components/news_page';
+import AboutPage from './components/about_page';
 
 export default (
 	<Route path='/' component={App}>

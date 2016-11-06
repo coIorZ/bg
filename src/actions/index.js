@@ -43,7 +43,7 @@ export function fetchGames() {
 		request.then((data) => {
 			dispatch({
 				type: FETCH_GAMES,
-				payload: data
+				payload: data.data
 			});
 		});
 	};
@@ -61,9 +61,19 @@ export function login(username, password) {
 		request.then((data) => {
 			dispatch({
 				type: LOGIN,
-				payload: data
+				payload: data.data
 			});
 		});
 	};
+
+	// return (dispatch) => {
+	// 	socket.emit('client.user.login', { username, password });
+	// 	socket.on('server.user.login', (data) => {
+	// 		dispatch({
+	// 			type: LOGIN,
+	// 			payload: data
+	// 		})
+	// 	})
+	// };
 };
 

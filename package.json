@@ -16,6 +16,7 @@
     "classnames": "^2.2.5",
     "css-loader": "^0.25.0",
     "express": "^4.14.0",
+    "express-session": "^1.14.2",
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.9.0",
     "img-loader": "^1.3.1",
@@ -31,6 +32,7 @@
     "redux": "^3.6.0",
     "redux-thunk": "^2.1.0",
     "socket.io": "^1.5.1",
+    "socket.io-client": "^1.5.1",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.3"
@@ -40,7 +42,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --watch",
     "babel-node": "babel-node --presets=es2015 --plugins=transform-object-rest-spread --ignore='node_modules'",
-    "start": "nodemon --exec npm run babel-node -- server.js"
+    "start": "nodemon --exec npm run babel-node -- server/server.js"
   },
   "keywords": [
     "board",

@@ -1,12 +1,12 @@
-import { FETCH_GAMES } from '../actions';
+import { NEW_TABLE } from '../sockets';
 
 const initialState = [];
 
 export default function(state = initialState, action) {
 	switch(action.type) {
-	case FETCH_GAMES:
-		return [...state, ...action.payload];
-		
+	case NEW_TABLE:
+		return action.payload;
+
 	default:
 		return state;
 	}

@@ -4,7 +4,7 @@ import cx from 'classnames';
 
 import styles from './login.css';
 
-import { login, showLogin } from '../../actions';
+import { login, showLogin } from '../actions';
 
 class Login extends Component {
 	constructor(props) {
@@ -34,12 +34,12 @@ class Login extends Component {
 					<div>
 						<input type='text'
 							value={username}
-							onChange={(e) => this.setState({username: e.target.value})} />
+							onChange={e => this.setState({username: e.target.value})} />
 					</div>
 					<div>
 						<input type='password'
 							value={password}
-							onChange={(e) => this.setState({password: e.target.value})} />
+							onChange={e => this.setState({password: e.target.value})} />
 					</div>
 					<div>
 						<button type='submit'>login</button>

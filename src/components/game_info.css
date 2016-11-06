@@ -2,16 +2,9 @@
 	position: absolute;
 	top: 0;
 	width: 720px;
-	color: #eee;
-	overflow: hidden;
-	background-color: rgba(92, 89, 86, .5);
-}
-
-.container:hover {
 	color: white;
+	overflow: hidden;
 	background-color: rgba(92, 89, 86, .8);
-	transition: color .3s;
-	transition: background-color .3s;
 }
 
 .full .intro {
@@ -23,8 +16,6 @@
 	left: 360px;
 	width: 720px;
 	height: 100%;
-	padding: 20px;
-	font-size: .7em;
 	transition: left .5s
 }
 
@@ -32,6 +23,7 @@
 	float: left;
 	width: 50%;
 	height: 100%;
+	padding: 20px;
 	border-right: 1px solid white;
 }
 
@@ -39,6 +31,7 @@
 	float: left;
 	width: 50%;
 	height: 100%;
+	padding: 0 20px 20px 20px;
 }
 
 .full .entrance {
@@ -70,7 +63,7 @@
 
 .btn {
 	display: inline-block;
-	padding: 10px 30px;
+	padding: 5px 15px;
 	background-color: transparent;
 	border: 2px solid white;
 	border-radius: 10px;
@@ -79,10 +72,10 @@
 }
 
 .btn:hover {
-	background-color: rgba(255, 255, 255, .5);
+	background-color: rgba(173, 255, 47, .5);
 }
 
 .btn-long {
 	composes: btn;
-	padding: 10px 60px;
+	padding: 7px 60px;
 }

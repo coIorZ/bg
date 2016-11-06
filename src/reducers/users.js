@@ -7,7 +7,7 @@ const initialState = {
 export default function(state = initialState, action) {
 	switch(action.type) {
 	case LOGIN:
-		return {...state, me: action.payload.data};
+		return {...state, me: action.payload};
 
 	default:
 		return state;

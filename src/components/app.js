@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { throttle } from 'lodash';
 
-import Header from './header/header';
-import Login from './login/login';
+import Login from './login';
 import styles from './app.css';
 
 import { setClientHeight, setClientWidth } from '../actions';
