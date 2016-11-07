@@ -2,8 +2,9 @@ import mongoose, { Schema } from 'mongoose';
 
 const gameSchema = Schema({
 	name: {type: String, required: true},
-	players: {type: String, required: true},
-	length: {type: Number},
+	min_players: {type: Number, required: true},
+	max_players: {type: Number, required: true},
+	length: {type: Number, required: true},
 	designer: {type: String},
 	img_url: {type: String}
 });

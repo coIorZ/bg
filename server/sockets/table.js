@@ -4,14 +4,14 @@ import { NEW_TABLE, JOIN_TABLE, LEAVE_TABLE, REMOVE_TABLE } from '../../src/sock
 
 export default function(socket, io, store) {
 	socket.on('client.table.new', (payload) => {
-		const id = mongoose.Types.ObjectId();
 		const table = {
-			_id: id,
+			_id: mongoose.Types.ObjectId(),
 			host: payload.user,
 			players: {
 				[payload.user._id]: payload.user
 			},
-			gameId: payload.gameId
+			game: payload.game,
+			started: false
 		};
 		const action = {
 			type: NEW_TABLE,

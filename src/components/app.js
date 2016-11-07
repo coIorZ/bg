@@ -15,7 +15,7 @@ class App extends Component {
 
 	componentDidMount() {
 		window.addEventListener('resize', this.resize);
-		this.props.userAuth();
+		// this.props.userAuth();
 	}
 
 	render() {

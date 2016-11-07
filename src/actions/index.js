@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import socket from '../sockets';
+
 // ---------- client ----------
 
 export const SET_CLIENTHEIGHT = 'SET_CLIENTHEIGHT';
@@ -32,6 +34,7 @@ export function login(username, password) {
 		request.then(({ data }) => {
 			dispatch({type: LOGIN, payload: data});
 			dispatch({type: SET_LOGIN_VISIBLE, payload: false});
+			if(data) socket.emit('client.all');
 		});
 	};
 };
@@ -42,6 +45,7 @@ export function userAuth() {
 	return (dispatch) => {
 		request.then(({ data }) => {
 			dispatch({type: USER_AUTH, payload: data});
+			if(data) socket.emit('client.all');
 		});
 	};
 };

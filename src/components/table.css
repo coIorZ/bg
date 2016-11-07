@@ -42,3 +42,7 @@
 .btn.red:hover {
 	background-color: rgba(240, 128, 128, .5);
 }
+
+.btn.orange:hover {
+	background-color: rgba(255, 165, 0, .5);
+}

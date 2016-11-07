@@ -12,26 +12,29 @@ class Table extends Component {
 		this.joinTable = this.joinTable.bind(this);
 		this.leaveTable = this.leaveTable.bind(this);
 		this.startTable = this.startTable.bind(this);
+		this.watchTable = this.watchTable.bind(this);
 	}
 
 	render() {
 		const { table, user } = this.props;
-		const { host, game, players } = table;
+		const { host, game, players, started } = table;
+		const { min_players, max_players } = game;
 
-		let btns = [];
-		if(!players.hasOwnProperty(user._id)) {
-			btns.push(<span className={cx(styles.btn, styles.green)}
-							key={0}
-							onMouseDown={this.joinTable}>JOIN</span>);
-		} else {
-			btns.push(<span className={cx(styles.btn, styles.red)}
-							key={1}
-							onMouseDown={this.leaveTable}>LEAVE</span>);
-			if(user._id === host._id)
-				btns.push(<span className={cx(styles.btn, styles.blue)}
-								key={2}
-								onMouseDown={this.startTable}>START</span>);
-		}
+		const onTable = players.hasOwnProperty(user._id);
+		const tableSize = _.size(players);
+		const joinable = tableSize < max_players;
+		const playable = tableSize >= min_players;
+		let joinBtn = null, leaveBtn = null, startBtn = null, watchBtn = null, rejoinBtn = null;
+		joinBtn = !onTable && !started && joinable
+				&& <span className={cx(styles.btn, styles.green)} key={0} onMouseDown={this.joinTable}>JOIN</span>;
+		leaveBtn = onTable && !started
+				&& <span className={cx(styles.btn, styles.red)} key={1} onMouseDown={this.leaveTable}>LEAVE</span>;
+		startBtn = onTable && !started && playable && (host._id === user._id)
+				&& <span className={cx(styles.btn, styles.blue)} key={2} onMouseDown={this.startTable}>START</span>;
+		watchBtn = !onTable && started
+				&& <span className={cx(styles.btn, styles.orange)} key={3} onMouseDown={this.watchTable}>WATCH</span>;
+		rejoinBtn = onTable && started
+				&& <span className={cx(styles.btn, styles.blue)} key={4} onMouseDown={this.startTable}>REJOIN</span>;
 
 		return (
 			<div className={styles.container}>
@@ -39,7 +42,11 @@ class Table extends Component {
 				<div className={styles.body}>
 					{_.map(players, player => <div key={player._id}>{player.name}</div>)}
 					<div className={styles['btn-group']}>
-						{btns}
+						{startBtn}
+						{rejoinBtn}
+						{joinBtn}
+						{leaveBtn}
+						{watchBtn}
 					</div>
 				</div>
 			</div>
@@ -68,6 +75,10 @@ class Table extends Component {
 	}
 
 	startTable() {
+
+	}
+
+	watchTable() {
 
 	}
 }
