@@ -38,7 +38,10 @@ class Table extends Component {
 
 		return (
 			<div className={styles.container}>
-				<div className={styles.header}>{`${host.name}'s game`}</div>
+				<div className={cx({
+					[styles.header]: true,
+					[styles.started]: started
+				})}>{`${host.name}'s game`}</div>
 				<div className={styles.body}>
 					{_.map(players, player => <div key={player._id}>{player.name}</div>)}
 					<div className={styles['btn-group']}>
@@ -75,11 +78,12 @@ class Table extends Component {
 	}
 
 	startTable() {
-
+		const { table } = this.props;
+		socket.emit('client.table.start', table);
 	}
 
 	watchTable() {
-
+		window.alert('working on it!');
 	}
 }
 

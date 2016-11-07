@@ -24,6 +24,11 @@ export function setLoginVisible(payload) {
 	return {type: SET_LOGIN_VISIBLE, payload};
 };
 
+export const SET_BOARD_VISIBLE = 'SET_BOARD_VISIBLE';
+export function setBoardVisible(payload) {
+	return {type: SET_BOARD_VISIBLE, payload};
+};
+
 export const LOGIN = 'LOGIN';
 export function login(username, password) {
 	const request = axios.post('api/user/login', {
@@ -54,7 +59,7 @@ export function userAuth() {
 
 export const FETCH_GAMES = 'FETCH_GAMES';
 export function fetchGames() {
-	const request = axios.get('api/game');
+	const request = axios.get('api/game/games');
 	return (dispatch) => {
 		request.then(({ data }) => {
 			dispatch({type: FETCH_GAMES, payload: data});

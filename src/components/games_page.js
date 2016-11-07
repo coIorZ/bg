@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Motion, spring } from 'react-motion';
 
 import GameInfo from './game_info';
+import Board from './board';
 import styles from './games_page.css';
 
 import { fetchGames, setGameInfoFolded } from '../actions';
@@ -49,6 +50,7 @@ class GamesPage extends Component {
 					}
 				</Motion>
 				<GameInfo game={game} />
+				<Board />
 			</div>
 		);
 	}

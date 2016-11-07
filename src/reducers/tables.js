@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { NEW_TABLE, JOIN_TABLE, SERVER_ALL_TABLES, LEAVE_TABLE, REMOVE_TABLE } from '../sockets/type';
+import { NEW_TABLE, JOIN_TABLE, SERVER_ALL_TABLES, LEAVE_TABLE, REMOVE_TABLE, START_TABLE } from '../sockets/type';
 
 const initialState = {};
 
@@ -38,6 +38,15 @@ export default function(state = initialState, { type, payload }) {
 
 	case REMOVE_TABLE:
 		return {..._.omit(state, payload)};
+
+	case START_TABLE:
+		return {
+			...state,
+			[payload]: {
+				...state[payload],
+				started: true
+			}
+		};
 
 	default:
 		return state;

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-import { NEW_TABLE, JOIN_TABLE, LEAVE_TABLE, REMOVE_TABLE } from '../../src/sockets/type';
+import { NEW_TABLE, JOIN_TABLE, LEAVE_TABLE, REMOVE_TABLE, START_TABLE } from '../../src/sockets/type';
 
 export default function(socket, io, store) {
 	socket.on('client.table.new', (payload) => {
@@ -46,5 +46,15 @@ export default function(socket, io, store) {
 		};
 		store.dispatch(action);
 		io.emit('server.table.remove', action);
+	});
+
+	socket.on('client.table.start', (payload) => {
+		const action = {
+			type: START_TABLE,
+			payload: payload._id
+		};
+		store.dispatch(action);
+		io.emit('server.table.start', action);
+		io.emit('server.board.show', payload);
 	});
 };

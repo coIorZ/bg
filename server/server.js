@@ -27,7 +27,7 @@ app.set('view engine', 'jade');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(session({
-	cookie: {maxAge: 60 * 1000},
+	cookie: {maxAge: 60 * 60 * 1000},
 	secret: 'bgc',
 	resave: true,
 	saveUninitialized: true
