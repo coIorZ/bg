@@ -8,7 +8,7 @@ import Table from './table';
 import styles from './game_info.css';
 
 import socket from '../sockets';
-import { setGameInfoFolded, showLogin } from '../actions';
+import { setGameInfoFolded, setLoginVisible } from '../actions';
 
 class GameInfo extends Component {
 	constructor(props) {
@@ -18,23 +18,23 @@ class GameInfo extends Component {
 	}
 
 	render() {
-		const { clientWidth, clientHeight, game, folded, me, tables } = this.props;
+		const { clientWidth, clientHeight, game, folded, user, tables } = this.props;
 		const { name, players, length, weight } = game;
 		const x = folded === 0 ?
 					clientWidth : folded === 1 ?
 						 clientWidth - 360 : clientWidth - 720;
 
 		let leftTables = [], rightTables = [];
-		if(me) {
+		if(user) {
 			_.each(tables, table => {
 				if(table.gameId === game._id) {
-					if(table.players.hasOwnProperty(me._id))
+					if(table.players.hasOwnProperty(user._id))
 						rightTables.push(table);
 					else leftTables.push(table);	
 				}
 			});
-			leftTables = leftTables.map(table => <Table table={table} user={me} key={table._id} />);
-			rightTables = rightTables.map(table => <Table table={table} user={me} key={table._id} />);
+			leftTables = leftTables.map(table => <Table table={table} user={user} key={table._id} />);
+			rightTables = rightTables.map(table => <Table table={table} user={user} key={table._id} />);
 		}
 
 		return (
@@ -80,31 +80,31 @@ class GameInfo extends Component {
 	}
 
 	handlePlay() {
-		const { me, setGameInfoFolded, showLogin } = this.props;
-		if(!me) {
-			showLogin(true);
+		const { user, setGameInfoFolded, setLoginVisible } = this.props;
+		if(!user) {
+			setLoginVisible(true);
 		} else {
 			setGameInfoFolded(2);
 		}
 	}
 
 	handleNewGame() {
-		const { me, game } = this.props;
+		const { user, game } = this.props;
 		socket.emit('client.table.new', {
-			user: me,
+			user: user,
 			gameId: game._id
 		});
 	}
 }
 
-function mapStateToProps({ client, users, tables }) {
+function mapStateToProps({ client, tables }) {
 	return {
 		clientWidth: client.clientWidth,
 		clientHeight: client.clientHeight,
 		folded: client.gameInfo.folded,
-		me: users.me,
+		user: client.user,
 		tables
 	};
 }
 
-export default connect(mapStateToProps, { setGameInfoFolded, showLogin })(GameInfo);
+export default connect(mapStateToProps, { setGameInfoFolded, setLoginVisible })(GameInfo);

@@ -11,4 +11,8 @@ export default function(router) {
 			res.json(user);
 		});
 	});
+
+	router.get('/user/auth', (req, res) => {
+		res.json(req.session.user);
+	});
 };

@@ -26,7 +26,12 @@ app.set('view engine', 'jade');
 // ---------- middleware ----------
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(session({secret: 'bgc'}));
+app.use(session({
+	cookie: {maxAge: 60 * 1000},
+	secret: 'bgc',
+	resave: true,
+	saveUninitialized: true
+}));
 app.use(morgan('dev'));
 
 

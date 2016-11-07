@@ -1,4 +1,6 @@
-import { SET_CLIENTHEIGHT, SET_CLIENTWIDTH, SET_GAMEINFO_FOLDED, SHOW_LOGIN } from '../actions';
+import {
+	SET_CLIENTHEIGHT, SET_CLIENTWIDTH, SET_GAMEINFO_FOLDED, SET_LOGIN_VISIBLE, LOGIN, USER_AUTH
+} from '../actions';
 
 const initialState = {
 	clientHeight: document.documentElement.clientHeight,
@@ -6,7 +8,8 @@ const initialState = {
 	gameInfo: {
 		folded: 1  // 0-folded  1-half  2-full
 	},
-	showLogin: false
+	loginVisible: false,
+	user: null
 };
 
 export default function(state = initialState, { type, payload }) {
@@ -23,8 +26,14 @@ export default function(state = initialState, { type, payload }) {
 			gameInfo: {folded: payload}
 		};
 
-	case SHOW_LOGIN:
-		return {...state, showLogin: payload};
+	case SET_LOGIN_VISIBLE:
+		return {...state, loginVisible: payload};
+
+	case LOGIN:
+		return {...state, user: payload};
+
+	case USER_AUTH:
+		return {...state, user: payload};
 
 	default:
 		return state;

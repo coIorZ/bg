@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import cx from 'classnames';
+import md5 from 'blueimp-md5';
 
 import styles from './login.css';
 
-import { login, showLogin } from '../actions';
+import { login } from '../actions';
 
 class Login extends Component {
 	constructor(props) {
@@ -14,12 +15,6 @@ class Login extends Component {
 			password: ''
 		};
 		this.handleSubmit = this.handleSubmit.bind(this);
-	}
-
-	componentWillReceiveProps({ me }) {
-		if(me !== this.props.me) {
-			this.props.showLogin(false);
-		}
 	}
 
 	render() {
@@ -52,7 +47,7 @@ class Login extends Component {
 	handleSubmit(e) {
 		e.preventDefault();
 		const { username, password } = this.state;
-		this.props.login(username, password);
+		this.props.login(username, md5(password));
 		this.setState({
 			username: '',
 			password: ''
@@ -60,10 +55,4 @@ class Login extends Component {
 	}
 }
 
-function mapStateToProps({ users }) {
-	return {
-		me: users.me
-	};
-}
-
-export default connect(mapStateToProps, { login, showLogin })(Login);
+export default connect(null, { login })(Login);

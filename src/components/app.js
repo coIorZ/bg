@@ -5,7 +5,7 @@ import { throttle } from 'lodash';
 import Login from './login';
 import styles from './app.css';
 
-import { setClientHeight, setClientWidth } from '../actions';
+import { setClientHeight, setClientWidth, userAuth } from '../actions';
 
 class App extends Component {
 	constructor(props) {
@@ -15,13 +15,14 @@ class App extends Component {
 
 	componentDidMount() {
 		window.addEventListener('resize', this.resize);
+		this.props.userAuth();
 	}
 
 	render() {
 		return (
 			<div className={styles.container}>
 				{this.props.children}
-				<Login visible={this.props.showLogin}/>
+				<Login visible={this.props.loginVisible}/>
 			</div>
 		);
 	}
@@ -35,8 +36,8 @@ class App extends Component {
 
 function mapStateToProps({ client }) {
 	return {
-		showLogin: client.showLogin
+		loginVisible: client.loginVisible
 	};
 }
 
-export default connect(mapStateToProps, { setClientHeight, setClientWidth })(App);
+export default connect(mapStateToProps, { setClientHeight, setClientWidth, userAuth })(App);
