@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { NEW_TABLE, JOIN_TABLE, FETCH_TABLES, LEAVE_TABLE, REMOVE_TABLE, START_TABLE } from '../actions';
+import { NEW_TABLE, JOIN_TABLE, FETCH_TABLES, LEAVE_TABLE, REMOVE_TABLE, START_TABLE } from '../sockets/table';
 
 const initialState = {};
 

@@ -43,6 +43,11 @@ sockets(io, store);
 app.use('/api', routes(router));
 
 
+// ---------- init ----------
+require('./models/users').fetchUsers((err, users) => {
+	store.dispatch({type: 'INIT_USERS', payload: users});
+});
+
 // ---------- render ----------
 app.get('*', (req, res) => {
 	res.render('index');

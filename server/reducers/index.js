@@ -1,7 +1,9 @@
 import { combineReducers } from 'redux';
 
-import tables from '../../src/reducers/tables';
+import tables from './tables';
+import users from './users';
 
 export default combineReducers({
-	tables
+	tables,
+	users
 });

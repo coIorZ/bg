@@ -14,3 +14,7 @@ export default User;
 export function login(query, callback) {
 	User.findOne(query, callback);
 };
+
+export function fetchUsers(callback) {
+	User.find(callback);
+};

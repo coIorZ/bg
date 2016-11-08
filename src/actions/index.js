@@ -2,8 +2,8 @@ import axios from 'axios';
 
 import socket from '../sockets';
 
-// ---------- client ----------
 
+// ---------- client ----------
 export const SET_CLIENTHEIGHT = 'SET_CLIENTHEIGHT';
 export function setClientHeight(payload) {
 	return {type: SET_CLIENTHEIGHT, payload};
@@ -39,7 +39,7 @@ export function login(username, password) {
 		request.then(({ data }) => {
 			dispatch({type: LOGIN, payload: data});
 			dispatch({type: SET_LOGIN_VISIBLE, payload: false});
-			if(data) socket.emit('client.all');
+			if(data) socket.emit('client.user.login', data._id);
 		});
 	};
 };
@@ -50,13 +50,13 @@ export function userAuth() {
 	return (dispatch) => {
 		request.then(({ data }) => {
 			dispatch({type: USER_AUTH, payload: data});
-			if(data) socket.emit('client.all');
+			if(data) socket.emit('client.user.login', data._id);
 		});
 	};
 };
 
-// ---------- games ----------
 
+// ---------- games ----------
 export const FETCH_GAMES = 'FETCH_GAMES';
 export function fetchGames() {
 	const request = axios.get('api/game/games');
@@ -67,7 +67,46 @@ export function fetchGames() {
 	};
 };
 
+
+// ---------- tables ----------
+export const FETCH_TABLES = 'FETCH_TABLES';
+export function fetchTables(payload) {
+	return {type: FETCH_TABLES, payload};
+};
+
+export const NEW_TABLE = 'NEW_TABLE';
+export function newTable(payload) {
+	return {type: NEW_TABLE, payload};
+};
+
+export const JOIN_TABLE = 'JOIN_TABLE';
+export function joinTable(payload) {
+	return {type: JOIN_TABLE, payload};
+};
+
+export const LEAVE_TABLE = 'LEAVE_TABLE';
+export function leaveTable(payload) {
+	return {type: LEAVE_TABLE, payload};
+};
+
+export const REMOVE_TABLE = 'REMOVE_TABLE';
+export function removeTable(payload) {
+	return {type: REMOVE_TABLE, payload};
+};
+
+export const START_TABLE = 'START_TABLE';
+export function startTable(payload) {
+	return {type: START_TABLE, payload};
+};
+
+
 // ---------- users ----------
+export const FETCH_USERS = 'FETCH_USERS';
+export function fetchUsers(payload) {
+	return {type: FETCH_USERS, payload};
+};
 
-
-
+export const USER_ONLINE = 'USER_ONLINE';
+export function userOnline(payload) {
+	return {type: USER_ONLINE, payload};
+};
