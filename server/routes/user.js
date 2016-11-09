@@ -1,8 +1,8 @@
-import { login } from '../models/users';
+import User from '../models/users';
 
 export default function(router) {
 	router.post('/user/login', (req, res) => {
-		login({
+		User.findOne({
 			username: req.body.username,
 			password: req.body.password
 		}, (err, user) => {

@@ -1,20 +1,22 @@
 import mongoose from 'mongoose';
 
+import { getCore } from '../../core';
+import Board from '../models/boards';
+
 export const NEW_TABLE = 'NEW_TABLE';
 export const JOIN_TABLE = 'JOIN_TABLE';
 export const LEAVE_TABLE = 'LEAVE_TABLE';
 export const REMOVE_TABLE = 'REMOVE_TABLE';
 export const START_TABLE = 'START_TABLE';
+export const BOARD_TABLE = 'BOARD_TABLE';
 
 export default function(socket, io, store) {
 	socket.on('client.table.new', payload => {
 		const table = {
 			_id: mongoose.Types.ObjectId(),
-			host: payload.user,
-			players: {
-				[payload.user._id]: payload.user
-			},
-			game: payload.game,
+			host: payload.userId,
+			players: [payload.userId],
+			game: payload.gameId,
 			started: false
 		};
 		const action = {
@@ -59,5 +61,14 @@ export default function(socket, io, store) {
 		};
 		store.dispatch(action);
 		io.emit('server.table.start', payload);
+		const board = new Board(getCore(payload.game).create(payload));
+		board.save();
+	});
+
+	socket.on('client.table.board', (tableId) => {
+		socket.join(tableId);
+		Board.findOne({'table._id': tableId}, (err, payload) => {
+			socket.emit('server.table.board', payload);
+		});
 	});
 };

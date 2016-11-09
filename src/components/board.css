@@ -4,10 +4,16 @@
 	top: 0;
 	width: 100%;
 	overflow: hidden;
-	z-index: 1000;
 	background-color: white;
+	z-index: 1000;
 }
 
 .container.active {
 	display: block;
+}
+
+.back {
+	position: absolute;
+	top: 0;
+	right: 0;
 }

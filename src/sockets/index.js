@@ -3,18 +3,22 @@ import io from 'socket.io-client';
 import store from '../store';
 
 import table from './table';
-import user from './user';
+// import user from './user';
 
-import { fetchTables, fetchUsers } from '../actions';
+import { fetchTables, fetchUsers, fetchGames } from '../actions';
 
 const socket = io();
 
+socket.on('server.game', payload => {
+	store.dispatch(fetchGames(payload));
+});
+
 socket.on('server.user.login', data => {
-	store.dispatch(fetchTables(data.tables));
 	store.dispatch(fetchUsers(data.users));
+	store.dispatch(fetchTables(data.tables));
 });
 
 table(socket, store);
-user(socket, store);
+// user(socket, store);
 
 export default socket;

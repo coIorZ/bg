@@ -58,13 +58,14 @@ export function userAuth() {
 
 // ---------- games ----------
 export const FETCH_GAMES = 'FETCH_GAMES';
-export function fetchGames() {
-	const request = axios.get('api/game/games');
-	return (dispatch) => {
-		request.then(({ data }) => {
-			dispatch({type: FETCH_GAMES, payload: data});
-		});
-	};
+export function fetchGames(payload) {
+	// const request = axios.get('api/game/games');
+	// return (dispatch) => {
+	// 	request.then(({ data }) => {
+	// 		dispatch({type: FETCH_GAMES, payload: data});
+	// 	});
+	// };
+	return {type: FETCH_GAMES, payload};
 };
 
 
@@ -99,6 +100,10 @@ export function startTable(payload) {
 	return {type: START_TABLE, payload};
 };
 
+export const BOARD_TABLE = 'BOARD_TABLE';
+export function boardTable(payload) {
+	return {type: BOARD_TABLE, payload};
+};
 
 // ---------- users ----------
 export const FETCH_USERS = 'FETCH_USERS';
@@ -106,7 +111,6 @@ export function fetchUsers(payload) {
 	return {type: FETCH_USERS, payload};
 };
 
-export const USER_ONLINE = 'USER_ONLINE';
-export function userOnline(payload) {
-	return {type: USER_ONLINE, payload};
-};
+
+
+

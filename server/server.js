@@ -10,6 +10,10 @@ import routes from './routes';
 import reducers from './reducers';
 import sockets from './sockets';
 
+import User from './models/users';
+import Game from './models/games';
+import Board from './models/boards';
+
 const app = express();
 const router = express.Router();
 const port = 8000;
@@ -44,9 +48,8 @@ app.use('/api', routes(router));
 
 
 // ---------- init ----------
-require('./models/users').fetchUsers((err, users) => {
-	store.dispatch({type: 'INIT_USERS', payload: users});
-});
+init();
+
 
 // ---------- render ----------
 app.get('*', (req, res) => {
@@ -61,3 +64,19 @@ mongoose.connect(`mongodb://${db_address}`);
 http.listen(port, () => 
 	console.log(`app listening on port ${port}`)
 );
+
+
+function init() {
+	User.find((err, users) => {
+		if(err) throw err;
+		store.dispatch({type: 'INIT_USERS', payload: users});
+	});
+	Game.find((err, games) => {
+		if(err) throw err;
+		store.dispatch({type: 'INIT_GAMES', payload: games});
+	});
+	Board.find((err, boards) => {
+		if(err) throw err;
+		store.dispatch({type: 'INIT_TABLES', payload: boards});
+	});
+}

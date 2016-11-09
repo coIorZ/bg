@@ -1,7 +1,5 @@
 import _ from 'lodash';
 
-import { fetchUsers } from '../models/users';
-
 const initialState = {};
 
 export default function(state = initialState, { type, payload }) {

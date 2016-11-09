@@ -2,30 +2,45 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 
+import LoveLetter from './love_letter/love_letter';
+import Coup from './coup/coup';
 import styles from './board.css';
+
+import { GAME_LOVE_LETTER, GAME_COUP, GAME_TNL, GAME_INNOVATION } from '../../core';
+
+import { setBoardVisible } from '../actions';
 
 class Board extends Component {
 	render() {
-		const { clientHeight, boardVisible } = this.props;
-
+		const { boardVisible, gameId } = this.props;
+		if(!boardVisible) {
+			return null
+		}
+		let gameBoard = null;
+		switch(gameId) {
+		case GAME_LOVE_LETTER:
+			gameBoard = <LoveLetter />;
+			break;
+		}
 		return (
 			<div className={cx({
 				[styles.container]: true,
 				[styles.active]: boardVisible
 			})}
-				style={{height: clientHeight}}>
-
+				style={{}}>
+				{gameBoard}
+				<button className={styles.back}
+					onClick={() => this.props.setBoardVisible(false)}>back</button>
+				}
 			</div>
 		);
 	}
 }
 
-function mapStateToProps({ client, board }) {
+function mapStateToProps({ client }) {
 	return {
-		clientHeight: client.clientHeight,
-		boardVisible: client.boardVisible,
-		board
+		boardVisible: client.boardVisible
 	};
 }
 
-export default connect(mapStateToProps, null)(Board);
+export default connect(mapStateToProps, { setBoardVisible })(Board);

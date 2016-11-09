@@ -6,6 +6,9 @@ const initialState = {};
 
 export default function(state = initialState, { type, payload }) {
 	switch(type) {
+	case 'INIT_TABLES':
+		return _.map(payload, board => board.table);
+
 	case FETCH_TABLES:
 		return payload;
 
@@ -17,10 +20,10 @@ export default function(state = initialState, { type, payload }) {
 			...state,
 			[payload.tableId]: {
 				...state[payload.tableId],
-				players: {
+				players: [
 					...state[payload.tableId].players,
-					[payload.user._id]: payload.user
-				}
+					payload.userId
+				]
 			}
 		};
 
@@ -31,8 +34,8 @@ export default function(state = initialState, { type, payload }) {
 			[id]: {
 				...state[id],
 				host: state[id].host._id === payload.userId ? 
-						{...state[id].players[Object.keys(state[id].players)[1]]} : state[id].host,
-				players: {..._.omit(state[id].players, payload.userId)}
+						state[id].players[1] : state[id].host,
+				players: _.without(state[id].players, payload.userId)
 			}
 		};
 

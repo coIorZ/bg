@@ -18,10 +18,6 @@ class GamesPage extends Component {
 		this.handleWheel = this.handleWheel.bind(this);
 	}
 
-	componentDidMount() {
-		this.props.fetchGames();
-	}
-
 	componentWillReceiveProps({ games }) {
 		if(games !== this.props.games) this.setState({game: games[0] || {}});
 	}
@@ -29,6 +25,9 @@ class GamesPage extends Component {
 	render() {
 		const { clientHeight, clientWidth, games, folded } = this.props;
 		const { y, game } = this.state;
+		if(!games) {
+			return null;
+		}
 		return (
 			<div className={styles.container}>
 				<Motion style={{y: spring(y)}}>
@@ -50,7 +49,7 @@ class GamesPage extends Component {
 					}
 				</Motion>
 				<GameInfo game={game} />
-				<Board />
+				<Board gameId={game._id} />
 			</div>
 		);
 	}

@@ -1,11 +1,10 @@
 import mongoose, { Schema } from 'mongoose';
 
 const boardSchema = Schema({
-	tableId: {type: String, required: true},
-	players: {type: Object, required: true}
-
+	table: {type: Schema.Types.Mixed, required: true},
+	data: {type: Schema.Types.Mixed, required: true}
 });
 
-const Board = mongoose.model('Boards', boardSchema);
+const Board = mongoose.model('Board', boardSchema);
 
 export default Board;

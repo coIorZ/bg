@@ -27,14 +27,14 @@ class GameInfo extends Component {
 		let leftTables = [], rightTables = [];
 		if(user) {
 			_.each(tables, table => {
-				if(table.game._id === game._id) {
-					if(table.players.hasOwnProperty(user._id))
+				if(table.game === game._id) {
+					if(_.includes(table.players, user._id))
 						rightTables.push(table);
-					else leftTables.push(table);	
+					else leftTables.push(table);
 				}
 			});
-			leftTables = leftTables.map(table => <Table table={table} user={user} key={table._id} />);
-			rightTables = rightTables.map(table => <Table table={table} user={user} key={table._id} />);
+			leftTables = leftTables.map(table => <Table table={table} game={game} key={table._id} />);
+			rightTables = rightTables.map(table => <Table table={table} game={game} key={table._id} />);
 		}
 
 		return (
@@ -98,7 +98,7 @@ class GameInfo extends Component {
 
 	handleNewGame() {
 		const { user, game } = this.props;
-		socket.emit('client.table.new', { user, game });
+		socket.emit('client.table.new', { userId: user._id, gameId: game._id });
 	}
 }
 

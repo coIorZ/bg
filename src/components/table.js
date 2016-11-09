@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import cx from 'classnames';
 import _ from 'lodash';
 
@@ -13,14 +14,15 @@ class Table extends Component {
 		this.leaveTable = this.leaveTable.bind(this);
 		this.startTable = this.startTable.bind(this);
 		this.watchTable = this.watchTable.bind(this);
+		this.rejoinTable = this.rejoinTable.bind(this);
 	}
 
 	render() {
-		const { table, user } = this.props;
-		const { host, game, players, started } = table;
+		const { table, users, user, games, game } = this.props;
+		const { host, players, started } = table;
 		const { min_players, max_players } = game;
 
-		const onTable = players.hasOwnProperty(user._id);
+		const onTable = _.includes(players, user._id);
 		const tableSize = _.size(players);
 		const joinable = tableSize < max_players;
 		const playable = tableSize >= min_players;
@@ -29,21 +31,21 @@ class Table extends Component {
 				&& <span className={cx(styles.btn, styles.green)} key={0} onMouseDown={this.joinTable}>JOIN</span>;
 		leaveBtn = onTable && !started
 				&& <span className={cx(styles.btn, styles.red)} key={1} onMouseDown={this.leaveTable}>LEAVE</span>;
-		startBtn = onTable && !started && playable && (host._id === user._id)
+		startBtn = onTable && !started && playable && (host === user._id)
 				&& <span className={cx(styles.btn, styles.blue)} key={2} onMouseDown={this.startTable}>START</span>;
 		watchBtn = !onTable && started
 				&& <span className={cx(styles.btn, styles.orange)} key={3} onMouseDown={this.watchTable}>WATCH</span>;
 		rejoinBtn = onTable && started
-				&& <span className={cx(styles.btn, styles.blue)} key={4} onMouseDown={this.startTable}>REJOIN</span>;
+				&& <span className={cx(styles.btn, styles.blue)} key={4} onMouseDown={this.rejoinTable}>REJOIN</span>;
 
 		return (
 			<div className={styles.container}>
 				<div className={cx({
 					[styles.header]: true,
 					[styles.started]: started
-				})}>{`${host.name}'s game`}</div>
+				})}>{`${users[host].name}'s game`}</div>
 				<div className={styles.body}>
-					{_.map(players, player => <div key={player._id}>{player.name}</div>)}
+					{_.map(players, player => <div key={player}>{users[player].name}</div>)}
 					<div className={styles['btn-group']}>
 						{startBtn}
 						{rejoinBtn}
@@ -60,13 +62,13 @@ class Table extends Component {
 		const { table, user } = this.props;
 		socket.emit('client.table.join', {
 			tableId: table._id,
-			user
+			userId: user._id
 		});
 	}
 
 	leaveTable() {
 		const { table, user } = this.props;
-		const { _id, players, host } = table;
+		const { _id, players } = table;
 		if(_.size(players) === 1) {
 			socket.emit('client.table.remove', _id);
 		} else {
@@ -82,9 +84,22 @@ class Table extends Component {
 		socket.emit('client.table.start', table);
 	}
 
+	rejoinTable() {
+		const { table } = this.props;
+		socket.emit('client.table.board', table._id);
+	}
+
 	watchTable() {
 		window.alert('working on it!');
 	}
 }
 
-export default Table;
+function mapStateToPros({ client, users, games }) {
+	return {
+		user: client.user,
+		users,
+		games
+	};
+}
+
+export default connect(mapStateToPros, null)(Table);

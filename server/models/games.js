@@ -13,7 +13,3 @@ const gameSchema = Schema({
 const Game = mongoose.model('Game', gameSchema);
 
 export default Game;
-
-export function fetchGames(callback) {
-	Game.find(callback);
-};
