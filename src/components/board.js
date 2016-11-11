@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import cx from 'classnames';
+import _ from 'lodash';
 
 import LoveLetter from './love_letter/love_letter';
 import Coup from './coup/coup';
@@ -12,7 +13,7 @@ import { setBoardVisible } from '../actions';
 
 class Board extends Component {
 	render() {
-		const { boardVisible, gameId } = this.props;
+		const { boardVisible, gameId, games, clientHeight } = this.props;
 		if(!boardVisible) {
 			return null
 		}
@@ -27,7 +28,12 @@ class Board extends Component {
 				[styles.container]: true,
 				[styles.active]: boardVisible
 			})}
-				style={{}}>
+				style={{height: clientHeight}}>
+				<div className={styles.mask}>
+					<div className={styles['mask-bg']}
+						style={{backgroundImage: `url(${_.find(games, game => game._id === gameId).img_url})`}}></div>
+					<div className={styles['mask-mask']}></div>
+				</div>
 				{gameBoard}
 				<button className={styles.back}
 					onClick={() => this.props.setBoardVisible(false)}>back</button>
@@ -37,9 +43,11 @@ class Board extends Component {
 	}
 }
 
-function mapStateToProps({ client }) {
+function mapStateToProps({ client, games }) {
 	return {
-		boardVisible: client.boardVisible
+		boardVisible: client.boardVisible,
+		clientHeight: client.clientHeight,
+		games
 	};
 }
 

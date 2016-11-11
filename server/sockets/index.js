@@ -1,6 +1,7 @@
 import { createStore } from 'redux';
 
 import table from './table';
+import loveLetter from './love_letter';
 
 export default function(io, store) {
 	io.on('connection', (socket) => {
@@ -14,5 +15,6 @@ export default function(io, store) {
 		});
 
 		table(socket, io, store);
+		loveLetter(socket, io, store);
 	});
 };

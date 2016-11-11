@@ -2,43 +2,43 @@ import _ from 'lodash';
 
 // ---------- cards ----------
 let CARDS = {};
-function registerCard(id, name, value, text, func) {
-	CARDS[id] = { id, name, value, text, func};
+function registerCard(id, name, value, text, img, func) {
+	CARDS[id] = { id, name, value, text, img, func };
 }
 function cloneCard(src, dest) {
 	if(!_.isArray(dest)) dest = [dest];
 	_.each(dest, id => CARDS[id] = {...CARDS[src], id});
 }
 
-registerCard(1, 'Guard', 1, '', () => {
+registerCard(1, 'Guard', 1, '', './img/love_letter/guard.jpg', () => {
 
 });
 
-registerCard(2, 'Priest', 2, '', () => {
+registerCard(2, 'Priest', 2, '', './img/love_letter/priest.jpg', () => {
 
 });
 
-registerCard(3, 'Baron', 3, '', () => {
+registerCard(3, 'Baron', 3, '', './img/love_letter/baron.jpg', () => {
 
 });
 
-registerCard(4, 'Handmaid', 4, '', () => {
+registerCard(4, 'Handmaid', 4, '', './img/love_letter/handmaid.jpg', () => {
 
 });
 
-registerCard(5, 'Prince', 5, '', () => {
+registerCard(5, 'Prince', 5, '', './img/love_letter/prince.jpg', () => {
 
 });
 
-registerCard(6, 'King', 6, '', () => {
+registerCard(6, 'King', 6, '', './img/love_letter/king.jpg', () => {
 
 });
 
-registerCard(7, 'Countess', 7, '', () => {
+registerCard(7, 'Countess', 7, '', './img/love_letter/countess.jpg', () => {
 
 });
 
-registerCard(8, 'Princess', 8, '', () => {
+registerCard(8, 'Princess', 8, '', './img/love_letter/princess.jpg', () => {
 
 });
 
@@ -69,7 +69,7 @@ export { DECK };
 function create(table) {
 	table.started = true;
 	const players = _.shuffle(table.players);
-	const data = setup(players);
+	const data = draw(setup(players));
 	const board = { table, data };
 	console.log(board);
 	return board;
@@ -82,6 +82,7 @@ function setup(people, winner) {
 	let vp = 4;
 	let players = [];
 	const removedFaceDown = deck.shift();
+	const activePlayer = 0;
 	if(size === 2) {
 		removedFaceUp.push(deck.shift());
 		removedFaceUp.push(deck.shift());
@@ -90,20 +91,23 @@ function setup(people, winner) {
 	} else if(size === 3) {
 		vp = 5;
 	}
-	if(winner) {
-		players = _.map(people, player => {
-			return {
-				...player,
-				hands: player.player === winner ? [deck.shift(), deck.shift()] : [deck.shift()]
-			};
-		});
-	} else {
-		players = _.map(people, (player, i) => {
-			return i === 0 ? { player, hands: [deck.shift(), deck.shift()], vp: 0 } 
-							: { player, hands: [deck.shift()], vp: 0 };
-		});
-	}
-	return { deck, players, vp, removedFaceUp, removedFaceDown, activePlayer: winner || players[0].player };
+	players = _.map(people, player => {
+		return {
+			id: player,
+			hands: [deck.shift()],
+			vp: 0,
+			discarded: [],
+			lastPlayed: null
+		};
+	});
+	
+	return { deck, players, vp, removedFaceUp, removedFaceDown, activePlayer };
+}
+
+function draw(data) {
+	let { deck, players, activePlayer } = data;
+	players[activePlayer].hands.push(deck.shift());
+	return data;
 }
 
 

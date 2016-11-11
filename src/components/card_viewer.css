@@ -1,0 +1,22 @@
+.container {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 300px;
+	height: 420px;
+	border-radius: 4px;
+	box-shadow: 0 0 2px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.1);
+}
+
+.container.visible {
+	display: block;
+}
+
+.bg {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 300px;
+	height: 420px;
+	border-radius: 4px;
+}

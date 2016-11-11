@@ -1,5 +1,5 @@
 import {
-	SET_CLIENTHEIGHT, SET_CLIENTWIDTH, SET_GAMEINFO_FOLDED, SET_LOGIN_VISIBLE, SET_BOARD_VISIBLE
+	SET_CLIENTHEIGHT, SET_CLIENTWIDTH, SET_GAMEINFO_FOLDED, SET_LOGIN_VISIBLE, SET_BOARD_VISIBLE, SET_CARD
 	, LOGIN, USER_AUTH
 } from '../actions';
 
@@ -9,6 +9,7 @@ const initialState = {
 	gameInfo: {
 		folded: 1  // 0-folded  1-half  2-full
 	},
+	card: null,
 	loginVisible: false,
 	boardVisible: false,
 	user: null
@@ -33,6 +34,9 @@ export default function(state = initialState, { type, payload }) {
 
 	case SET_BOARD_VISIBLE:
 		return {...state, boardVisible: payload};
+
+	case SET_CARD:
+		return {...state, card: payload};
 
 	case LOGIN:
 		return {...state, user: payload};

@@ -1,0 +1,28 @@
+.card {
+	display: inline-block;
+	position: relative;
+	width: 90px;
+	height: 126px;
+	margin: 0 5px;
+	border-radius: 8px;
+}
+
+.card .bg {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 90px;
+	height: 126px;
+	border-radius: 8px;
+}
+
+.card .text {
+	font-size: 10px;
+}
+
+.card .counter {
+	position: absolute;
+	top: 0;
+	color: white;
+	background-color: rgba(0, 0, 0, .6);
+}

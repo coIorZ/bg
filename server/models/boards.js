@@ -8,3 +8,9 @@ const boardSchema = Schema({
 const Board = mongoose.model('Board', boardSchema);
 
 export default Board;
+
+export function fetchBoardData(tableId, callback) {
+	Board.findOne({'table._id': tableId}, (err, board) => {
+		if(board) callback(board.data);
+	});
+};	

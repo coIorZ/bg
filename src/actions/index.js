@@ -29,6 +29,11 @@ export function setBoardVisible(payload) {
 	return {type: SET_BOARD_VISIBLE, payload};
 };
 
+export const SET_CARD = 'SET_CARD';
+export function setCard(payload) {
+	return {type: SET_CARD, payload};
+};
+
 export const LOGIN = 'LOGIN';
 export function login(username, password) {
 	const request = axios.post('api/user/login', {

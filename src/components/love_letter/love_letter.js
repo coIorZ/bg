@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 
+import Card from './card';
+import Deck from './deck';
+import CardViewer from '../card_viewer';
 import styles from './love_letter.css';
 
 import { CARDS } from '../../../core/love_letter';
@@ -16,7 +19,7 @@ class LoveLetter extends Component {
 
 	render() {
 		let a = this.props.board;
-		const { clientHeight, board, users } = this.props;
+		const { clientHeight, board, users, user } = this.props;
 		const { table, data } = board;
 		const { deck, players, activePlayer, vp, removedFaceDown, removedFaceUp } = data;
 
@@ -24,24 +27,32 @@ class LoveLetter extends Component {
 			<div className={styles.container}
 				style={{height: clientHeight}}>
 				<div>winning condition: {vp}vp</div>
-				<div>Deck {`(${deck.length})`}</div>
-				<div>removedFaceDown (1)</div>
-				{removedFaceUp.length ? <div>removedFaceUp (3): {_.map(removedFaceUp, id => 
-											<span key={id}>{CARDS[id].name}({CARDS[id].value})&nbsp;&nbsp;</span>
-										)}</div> : null}
-				<div>it's {`${users[activePlayer].name}'s turn`}</div>
+				<Deck deck={deck} />
+				<div className={styles.area}>
+					<div className={styles.label}>Removed</div>
+					<Card card={CARDS[removedFaceDown]} display={0} />
+					{removedFaceUp.length ? _.map(removedFaceUp, id => <Card card={CARDS[id]} display={1} key={id} />) 
+										: null}
+				</div>
+				
+				<div>it's {`${users[players[activePlayer].id].name}'s turn`}</div>
 				{players.map(player => {
 					return (
-						<div key={player.player}>
-							<div>{users[player.player].name}&nbsp;&nbsp; vp: {player.vp}</div>
+						<div key={player.id} style={{marginTop: 20, marginBottom: 20}}>
+							<div>{users[player.id].name}</div>
+							<div>vp: {player.vp}</div>
 							<div>hands: 
 								{player.hands.map(hand => {
-									return <span key={hand}>{CARDS[hand].name}({CARDS[hand].value})&nbsp;&nbsp;</span>
+									const display = player.id === user._id ? 1 : 0;
+									const playable = player.id === user._id;
+									return <Card card={CARDS[hand]} display={display} playable={player} key={hand} />
 								})}
 							</div>
 						</div>
 					);
 				})}
+
+				<CardViewer />
 			</div>
 		);
 	}

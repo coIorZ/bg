@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Motion, spring } from 'react-motion';
+import _ from 'lodash';
 
 import GameInfo from './game_info';
 import Board from './board';
@@ -39,7 +40,7 @@ class GamesPage extends Component {
 							}}
 							onWheel={this.handleWheel}
 							onMouseDown={() => this.props.setGameInfoFolded(1)}>
-							{games.map(game => 
+							{_.map(games, game => 
 								<div className={styles.game}
 									key={game._id}
 									style={{backgroundImage: `url(${game.img_url})`}}>
