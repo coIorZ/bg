@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import cx from 'classnames';
 
 import Card from './card';
-import Deck from './deck';
+import Player from './player';
 import CardViewer from '../card_viewer';
 import styles from './love_letter.css';
 
@@ -39,27 +39,25 @@ class LoveLetter extends Component {
 											: null}
 					</div>
 				</div>
-				{players.map((player, i) => {
-					return (
-						<div className={cx({
-								[styles.area]: true,
-								[styles.player]: true,
-								[styles.active]: i === activePlayer,
-								[styles.user]: player.id === user._id
-							})}
-							style={{top: player.id === user._id ? 'auto' : 155 * i + 10}}
-							key={player.id}>
-							<div>{users[player.id].name}</div>
-							<div>vp: {player.vp}</div>
-							<div>
-								{player.discarded.map(id => {
-									return <Card card={CARDS[id]} display={1} key={id} />
-								})}
-							</div>
-						</div>
-					);
-				})}
-				<div className={styles.hands}>
+				<div className={styles['others-holder']}>
+					{players.map((player, i) => {
+						if(player.id === user._id) return null;
+						return (
+							<Player player={player} 
+								user={user} 
+								users={users} 
+								active={activePlayer === i} 
+								key={player.id} /> 
+						);
+					})}
+				</div>
+				<div className={styles['me-holder']} >
+					<Player player={_.find(players, player => player.id === user._id)} 
+						user={user} 
+						users={users} 
+						active={players[activePlayer].id === user._id}/> 
+				</div>
+				<div className={styles['hands-holder']}>
 					{_.find(players, player => player.id === user._id).hands.map(id => {
 						const playable = players[activePlayer].id === user._id;
 						return <Card card={CARDS[id]} display={1} playable={playable} key={id} />
