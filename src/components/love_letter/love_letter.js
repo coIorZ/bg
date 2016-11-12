@@ -14,7 +14,7 @@ import { setBoardVisible } from '../../actions';
 class LoveLetter extends Component {
 	constructor(props) {
 		super(props);
-
+		this.handlePlayCard = this.handlePlayCard.bind(this);
 	}
 
 	render() {
@@ -35,7 +35,7 @@ class LoveLetter extends Component {
 					<div className={styles.area}>
 						<div className={styles.label}>Removed</div>
 						<Card display={0} />
-						{removedFaceUp.length ? _.map(removedFaceUp, id => <Card card={CARDS[id]} display={1} key={id} />) 
+						{removedFaceUp.length ? _.map(removedFaceUp, (id, i) => <Card card={CARDS[id]} display={1} key={i} />) 
 											: null}
 					</div>
 				</div>
@@ -58,15 +58,20 @@ class LoveLetter extends Component {
 						active={players[activePlayer].id === user._id}/> 
 				</div>
 				<div className={styles['hands-holder']}>
-					{_.find(players, player => player.id === user._id).hands.map(id => {
+					{_.find(players, player => player.id === user._id).hands.map((id, i) => {
 						const playable = players[activePlayer].id === user._id;
-						return <Card card={CARDS[id]} display={1} playable={playable} key={id} />
+						return <Card card={CARDS[id]} display={1} playable={playable} key={i}
+									onMouseDown={this.handlePlayCard} />
 					})}
 				</div>
 
 				<CardViewer />
 			</div>
 		);
+	}
+
+	handlePlayCard(card) {
+		
 	}
 }
 

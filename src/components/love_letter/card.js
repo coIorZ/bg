@@ -4,6 +4,7 @@ import cx from 'classnames';
 
 import styles from './card.css';
 
+import CARDS from '../../../core/love_letter';
 import { setCard } from '../../actions';
 
 class Card extends Component {
@@ -29,7 +30,7 @@ class Card extends Component {
 
 		case 1:
 			const { card, display, playable } = this.props;
-			const { id, name, value, text, img } = card;
+			const { name, value, text, img } = card;
 			return (
 				<div className={cx({
 						[styles.card]: true,
@@ -69,8 +70,8 @@ class Card extends Component {
 	}
 
 	handleMouseDown() {
-		const { onMouseDown } = this.props;
-		if(onMouseDown) onMouseDown();
+		const { onMouseDown, card } = this.props;
+		if(onMouseDown) onMouseDown(card);
 	}
 };
 

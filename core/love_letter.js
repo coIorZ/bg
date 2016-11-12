@@ -1,34 +1,34 @@
 import _ from 'lodash';
 
-// ---------- cards ----------
-let CARDS = {};
-function registerCard(id, name, value, text, img, func) {
-	CARDS[id] = { id, name, value, text, img, func };
-}
-function cloneCard(src, dest) {
-	if(!_.isArray(dest)) dest = [dest];
-	_.each(dest, id => CARDS[id] = {...CARDS[src], id});
+// ---------- cards & deck ----------
+let CARDS = {}, DECK = [];
+function registerCard(id, name, value, text, img, func, quantity = 1) {
+	CARDS[id] = { id, name, value, text, img, func, quantity };
+	while(quantity) {
+		DECK.push(id);
+		quantity--;
+	}
 }
 
 registerCard(1, 'Guard', 1, '', './img/love_letter/guard.jpg', () => {
 
-});
+}, 5);
 
 registerCard(2, 'Priest', 2, '', './img/love_letter/priest.jpg', () => {
 
-});
+}, 2);
 
 registerCard(3, 'Baron', 3, '', './img/love_letter/baron.jpg', () => {
 
-});
+}, 2);
 
 registerCard(4, 'Handmaid', 4, '', './img/love_letter/handmaid.jpg', () => {
 
-});
+}, 2);
 
 registerCard(5, 'Prince', 5, '', './img/love_letter/prince.jpg', () => {
 
-});
+}, 2);
 
 registerCard(6, 'King', 6, '', './img/love_letter/king.jpg', () => {
 
@@ -42,26 +42,7 @@ registerCard(8, 'Princess', 8, '', './img/love_letter/princess.jpg', () => {
 
 });
 
-cloneCard(1, [9, 10, 11, 12]);
-cloneCard(2, 13);
-cloneCard(3, 14);
-cloneCard(4, 15);
-cloneCard(5, 16);
-
 export { CARDS };
-
-// ---------- cards ----------
-function deckBuilder(size) {
-	let deck = [];
-	while(size) {
-		deck.unshift(size);
-		size--;
-	}
-	return deck;
-}
-
-const DECK = deckBuilder(16);
-
 export { DECK };
 
 

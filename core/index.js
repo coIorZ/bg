@@ -6,7 +6,6 @@ export const GAME_TNL = '5818a383bd446a1757fd792f';
 export const GAME_INNOVATION = '581ae4ce7a83ba1a71632118';
 
 export function getCore(gameId) {
-	console.log(gameId);
 	switch(gameId) {
 	case GAME_LOVE_LETTER:
 		return LoveLetter;
