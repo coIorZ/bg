@@ -23,6 +23,8 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const store = createStore(reducers);
 
+mongoose.Promise = global.Promise;
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, 'public', 'views'));
 app.set('view engine', 'jade');

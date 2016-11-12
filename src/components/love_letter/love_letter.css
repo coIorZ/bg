@@ -4,8 +4,7 @@
 }
 
 .area {
-	position: relative;
-	display: inline-block;
+	position: absolute;
 	padding: 0 5px;
 	box-shadow: 0 0 20px rgba(0,0,0,.9), inset 0 0 0 1px rgba(255,255,255,0.1);
 	border-radius: 5px;
@@ -15,7 +14,40 @@
 .area .label {
 	position: absolute;
 	top: 0;
+	left: 0;
 	color: white;
 	background-color: rgba(0, 0, 0, .6);
 	z-index: 5;
+}
+
+.player {
+	left: 10px;
+	width: 400px;
+	height: 135px;
+}
+
+.player.active {
+	box-shadow: 0 0 20px rgba(255,165,0,.9), inset 0 0 0 1px rgba(255,255,255,0.1);
+}
+
+.player.user {
+	position: absolute;
+	bottom: 10px;
+}
+
+.deck-holder {
+	position: absolute;
+	top: 40%;
+	left: 45%;
+}
+
+.deck-holder .area {
+	display: inline-block;
+	position: relative;
+}
+
+.hands {
+	position: absolute;
+	left: 45%;
+	bottom: 0;
 }

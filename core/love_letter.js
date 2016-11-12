@@ -71,7 +71,7 @@ function create(table) {
 	const players = _.shuffle(table.players);
 	const data = draw(setup(players));
 	const board = { table, data };
-	console.log(board);
+	// console.log(board);
 	return board;
 }
 

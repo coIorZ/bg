@@ -18,9 +18,7 @@ class Card extends Component {
 	}
 
 	render() {
-		const { card, display, playable } = this.props;
-		const { id, name, value, text, img } = card;
-		switch(display) {
+		switch(this.props.display) {
 		case 0:
 			return (
 				<div className={styles.card}>
@@ -30,6 +28,8 @@ class Card extends Component {
 			);
 
 		case 1:
+			const { card, display, playable } = this.props;
+			const { id, name, value, text, img } = card;
 			return (
 				<div className={cx({
 						[styles.card]: true,

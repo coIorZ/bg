@@ -60,9 +60,11 @@ export default function(socket, io, store) {
 			payload,
 		};
 		store.dispatch(action);
-		io.emit('server.table.start', payload);
-		const board = new Board(getCore(payload.game).create(payload));
-		board.save();
+		const board = new Board(getCore(payload.game).create({...payload}));
+		board.save((err) => {
+			if(err) throw 'error occurs when starting table';
+			io.emit('server.table.start', payload);
+		});
 	});
 
 	socket.on('client.table.board', (tableId) => {
