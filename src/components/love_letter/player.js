@@ -13,13 +13,14 @@ export default class Player extends Component {
 		this.handleConfirm = this.handleConfirm.bind(this);
 	}
 	render() {
-		const { player, user, users, active, selectable, selected, revealHands, confirmBtn } = this.props;
+		const { player, user, users, active, selectable, selected, out, revealHands, confirmBtn } = this.props;
 		return (
 			<div className={cx({
 					[styles.container]: true,
 					[styles.active]: active,
 					[styles.selectable]: selectable,
-					[styles.selected]: selected
+					[styles.selected]: selected,
+					[styles.out]: out
 				})}
 				onMouseDown={this.handleMouseDown}>
 				<div>
@@ -32,8 +33,8 @@ export default class Player extends Component {
 					})}
 				</div>
 				{revealHands ? <div className={styles.hands}>
-								{player.hands.map(id => {
-									return <Card card={CARDS[player.hands[0]]} display={1} />;
+								{player.hands.map((id, i) => {
+									return <Card card={CARDS[player.hands[0]]} display={1} key={i} />;
 								})}
 							</div> : null}
 				{confirmBtn ? <button className={styles.btn} onMouseDown={this.handleConfirm}>Ok</button> : null}

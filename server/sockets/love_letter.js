@@ -33,11 +33,8 @@ export default function(socket, io, store) {
 
 	socket.on('client.loveletter.game', ({ tableId }) => {
 		deleteBoard(tableId, () => {
-			Board.find((err, boards) => {
-				if(err) throw err;
-				store.dispatch({type: REMOVE_TABLE, payload: tableId});
-				io.emit('server.table.remove', tableId);
-			});
+			store.dispatch({type: REMOVE_TABLE, payload: tableId});
+			io.emit('server.table.remove', tableId);
 		});
 	});
 };

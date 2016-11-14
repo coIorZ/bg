@@ -2,7 +2,7 @@
 	position: relative;
 	margin: 10px;
 	padding: 0 5px;
-	width: 400px;
+	min-width: 400px;
 	height: 115px;
 	box-shadow: 0 0 20px rgba(0,0,0,.9), inset 0 0 0 1px rgba(255,255,255,0.1);
 	border-radius: 5px;
@@ -22,9 +22,14 @@
 	box-shadow: 0 0 20px rgba(0,191,255,.9), inset 0 0 0 1px rgba(255,255,255,0.1);
 }
 
+.container.out {
+	opacity: .5;
+	box-shadow: none;
+}
+
 .hands {
 	position: absolute;
-	left: 420px;
+	right: -80px;
 	top: 0;
 }
 
@@ -34,7 +39,7 @@
 
 .btn {
 	position: absolute;
-	left: 420px;
+	right: -80px;
 	bottom: 0;
 	padding: 2px 15px;
 	background-color: transparent;

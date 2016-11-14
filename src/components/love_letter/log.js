@@ -21,14 +21,16 @@ export default class Log extends Component {
 						return users[id].name;
 					});
 					let pieces = log.split('|');
-					return <div key={i}>
+					return <div className={styles.line} key={i}>
 						{pieces.map((piece, j) => {
 							let str = null;
 							if(str = piece.match(/^c:(\w+)/)) {
 								let id = str[1];
 								return <Card card={CARDS[id]} display={2} key={j} />;
+							} else if(piece.match(/^hr:/)) {
+								return <div className={styles.seperator} key={j}></div>;
 							} else {
-								return <span key={j}>{piece}</span>
+								return <span key={j}>{piece}</span>;
 							}
 						})}
 					</div>

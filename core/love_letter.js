@@ -55,7 +55,7 @@ function setup(people) {
 		removedFaceUp.push(deck.shift());
 		removedFaceUp.push(deck.shift());
 		removedFaceUp.push(deck.shift());
-		vp = 7;
+		vp = 1;
 	} else if(size === 3) {
 		vp = 5;
 	}
@@ -78,7 +78,7 @@ function setup(people) {
 function drawCard(data, player) {
 	if(!player.out) {
 		player.hands.push(data.deck.shift());
-		data.logs.push(`|p:${player.id}| draws a card`);
+		data.logs.push(`|p:${player.id}| draws a card.`);
 	}
 }
 
@@ -90,7 +90,7 @@ function discardCard(data, player, cardId) {
 		player.out = true;
 	}
 	if(player.out) {
-		data.logs.push(`|p:${player.id}| is knocked out`);
+		data.logs.push(`|p:${player.id}| is knocked out.`);
 	}
 }
 
@@ -135,13 +135,13 @@ function choosePlayer(board, playerId) {
 			data.phase = 'effect';
 			data.effect = playerId;
 		} else {
-			data.logs.push(`|p:${currentPlayer.id}| plays |c:${cardId}| against |p:${targetPlayer.id}|`);
-			data.logs.push('blocked by |c:4|');
+			data.logs.push(`|p:${currentPlayer.id}| plays |c:${cardId}| against |p:${targetPlayer.id}|.`);
+			data.logs.push('blocked by |c:4|.');
 			nextTurn(data);
 		}
 		break;
 	case 3:
-		data.logs.push(`|p:${currentPlayer.id}| plays |c:${cardId}| against |p:${targetPlayer.id}|`);
+		data.logs.push(`|p:${currentPlayer.id}| plays |c:${cardId}| against |p:${targetPlayer.id}|.`);
 		if(targetPlayer.lastPlayed !== 4) {
 			const targetCard = targetPlayer.hands[0];
 			const currentCard = currentPlayer.hands[0];
@@ -153,30 +153,30 @@ function choosePlayer(board, playerId) {
 				discardCard(data, targetPlayer, targetCard);
 			}
 		} else {
-			data.logs.push('blocked by |c:4|');
+			data.logs.push('blocked by |c:4|.');
 		}
 		nextTurn(data);
 		break;
 	case 5:
-		data.logs.push(`|p:${currentPlayer.id}| plays |c:${cardId}| against |p:${targetPlayer.id}|`);
+		data.logs.push(`|p:${currentPlayer.id}| plays |c:${cardId}| against |p:${targetPlayer.id}|.`);
 		if(targetPlayer.lastPlayed !== 4 || targetPlayer.id === currentPlayer.id) {
 			data.logs.push(`|p:${targetPlayer.id}| discards a card`);
 			discardCard(data, targetPlayer, targetPlayer.hands[0]);
 			drawCard(data, targetPlayer);
 		} else {
-			data.logs.push('blocked by |c:4|');
+			data.logs.push('blocked by |c:4|.');
 		}
 		nextTurn(data);
 		break;
 	case 6:
-		data.logs.push(`|p:${currentPlayer.id}| plays |c:${cardId}| against |p:${targetPlayer.id}|`);
+		data.logs.push(`|p:${currentPlayer.id}| plays |c:${cardId}| against |p:${targetPlayer.id}|.`);
 		if(targetPlayer.lastPlayed !== 4) {
 			const targetCard = targetPlayer.hands[0];
 			const currentCard = currentPlayer.hands[0];
 			currentPlayer.hands = [targetCard];
 			targetPlayer.hands = [currentCard];
 		} else {
-			data.logs.push('blocked by |c:4|');
+			data.logs.push('blocked by |c:4|.');
 		}
 		nextTurn(data);
 		break;
@@ -191,7 +191,7 @@ function effect(board, payload) {
 	data.logs = [];
 	switch(data.cardId) {
 	case 1:
-		data.logs.push(`|p:${players[activePlayer].id}| plays |c:${cardId}| against |p:${player.id}| on |c:${payload.cardId}|`);
+		data.logs.push(`|p:${players[activePlayer].id}| plays |c:${cardId}| against |p:${player.id}| on |c:${payload.cardId}|.`);
 		if(player.hands[0] === payload.cardId) {
 			player.out = true;
 			discardCard(data, player, payload.cardId);
@@ -199,7 +199,7 @@ function effect(board, payload) {
 		nextTurn(data);
 		break;
 	case 2:
-		data.logs.push(`|p:${players[activePlayer].id}| plays |c:${cardId}| against |p:${player.id}|`);
+		data.logs.push(`|p:${players[activePlayer].id}| plays |c:${cardId}| against |p:${player.id}|.`);
 		nextTurn(data);
 		break;
 	}
@@ -208,6 +208,7 @@ function effect(board, payload) {
 
 function nextTurn(data) {
 	let deck = data.deck;
+	data.logs.push(`|hr:|`);
 	const remainingPlayers = _.filter(data.players, player => !player.out);
 	if(remainingPlayers.length === 1) {
 		lastManStanding(data, remainingPlayers[0].id);
@@ -226,7 +227,14 @@ function nextTurn(data) {
 
 function lastManStanding(data, playerId) {
 	const { players, vp } = data;
-	let player = _.find(players, player => player.id === playerId);
+	let player;
+	_.each(players, p => {
+		if(p.id === playerId) {
+			player = p;
+		} else {
+			p.out = true;
+		}
+	});
 	player.vp++;
 	data.winner = _.indexOf(players, player);
 	if(player.vp === vp) {
@@ -242,6 +250,11 @@ function highestWinning(data) {
 	let player = _.maxBy(remainingPlayers, p => p.hands[0]);
 	let maxPlayers = _.filter(players, p => p.hands[0] === player.hands[0]);
 	player = _.maxBy(maxPlayers, p => p.discarded.length);
+	_.each(remainingPlayers, p => {
+		if(p.id !== player.id) {
+			p.out = true;
+		}
+	});
 	player.vp++;
 	data.winner = _.indexOf(players, player);
 	if(player.vp === vp) {
@@ -276,7 +289,7 @@ function round(board) {
 	});
 	players[winner].hands.push(data.deck.shift());
 	data.logs = ['a new round starts'];
-	data.logs.push(`|p:${players[winner].id}| draws a card`);
+	data.logs.push(`|p:${players[winner].id}| draws a card.`);
 	return board;
 }
 
