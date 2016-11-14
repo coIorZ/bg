@@ -35,7 +35,7 @@ class Board extends Component {
 					<div className={styles['mask-mask']}></div>
 				</div>
 				{gameBoard}
-				<button className={styles.back}
+				<button className={styles.btn}
 					onClick={() => this.props.setBoardVisible(false)}>back</button>
 				}
 			</div>

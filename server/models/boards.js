@@ -9,8 +9,25 @@ const Board = mongoose.model('Board', boardSchema);
 
 export default Board;
 
-export function fetchBoardData(tableId, callback) {
+export function fetchBoard(tableId, callback = noop) {
 	Board.findOne({'table._id': tableId}, (err, board) => {
-		if(board) callback(board.data);
+		if(err) throw 'database error: fetch board';
+		if(board) callback(board);
 	});
 };	
+
+export function updateBoard(board, callback = noop) {
+	board.markModified('data');
+	board.save((err) => {
+		if(err) throw 'database error: update board';
+		callback();
+	});
+};
+
+export function deleteBoard(tableId , callback = noop) {
+	Board.remove({'table._id': tableId}, err => {
+		callback();
+	});
+};
+
+function noop() {}

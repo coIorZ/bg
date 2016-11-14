@@ -23,7 +23,7 @@ class Card extends Component {
 		case 0:
 			return (
 				<div className={styles.card}>
-					<span className={styles.text}>Back</span>
+					<span className={styles.small}>Back</span>
 					<img src={'./img/love_letter/back.jpg'} className={styles.bg} />
 				</div>
 			);
@@ -40,16 +40,17 @@ class Card extends Component {
 					onMouseEnter={this.handleMouseEnter}
 					onMouseLeave={this.handleMouseLeave}
 					onMouseDown={this.handleMouseDown}>
-					<span className={styles.text}>{name}</span>
+					<span className={styles.small}>{name}</span>
 					<img src={img} className={styles.bg} />
 				</div>
 			);
 
 		case 2:
 			return (
-				<span style={{color: 'orange'}}
+				<span className={styles.text}
+					style={{color: this.props.card.color}}
 					onMouseEnter={this.handleMouseEnter}
-					onMouseLeave={this.handleMouseLeave}>{name}</span>
+					onMouseLeave={this.handleMouseLeave}>{this.props.card.name}</span>
 			);
 
 		default:
@@ -70,8 +71,8 @@ class Card extends Component {
 	}
 
 	handleMouseDown() {
-		const { onMouseDown, card } = this.props;
-		if(onMouseDown) onMouseDown(card);
+		const { onMouseDown, card, playable } = this.props;
+		if(playable && onMouseDown) onMouseDown(card);
 	}
 };
 

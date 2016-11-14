@@ -1,6 +1,9 @@
 import _ from 'lodash';
 
-import { newTable, joinTable, leaveTable, removeTable, startTable, setBoardVisible, boardTable } from '../actions';
+import { 
+	newTable, joinTable, leaveTable, removeTable, startTable, 
+	setBoardVisible, updateBoard, clearLogs, updateLogs
+} from '../actions';
 
 export default function(socket, store) {
 	socket.on('server.table.new', payload => store.dispatch(newTable(payload)));
@@ -20,7 +23,9 @@ export default function(socket, store) {
 
 	socket.on('server.table.board', payload => {
 		if(payload) {
-			store.dispatch(boardTable(payload));
+			store.dispatch(clearLogs());
+			store.dispatch(updateBoard(payload));
+			store.dispatch(updateLogs(payload));
 			store.dispatch(setBoardVisible(true));
 		}
 	});

@@ -105,10 +105,6 @@ export function startTable(payload) {
 	return {type: START_TABLE, payload};
 };
 
-export const BOARD_TABLE = 'BOARD_TABLE';
-export function boardTable(payload) {
-	return {type: BOARD_TABLE, payload};
-};
 
 // ---------- users ----------
 export const FETCH_USERS = 'FETCH_USERS';
@@ -117,5 +113,21 @@ export function fetchUsers(payload) {
 };
 
 
+// ---------- boards ----------
+export const UPDATE_BOARD = 'UPDATE_BOARD';
+export function updateBoard(payload) {
+	return {type: UPDATE_BOARD, payload};
+};
 
+
+// ---------- logs ----------
+export const CLEAR_LOGS = 'CLEAR_LOGS';
+export function clearLogs(payload) {
+	return {type: CLEAR_LOGS, payload};
+};
+
+export const UPDATE_LOGS = 'UPDATE_LOGS';
+export function updateLogs(payload) {
+	return {type: UPDATE_LOGS, payload};
+};
 

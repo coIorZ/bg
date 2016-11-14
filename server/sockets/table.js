@@ -62,7 +62,7 @@ export default function(socket, io, store) {
 		store.dispatch(action);
 		const board = new Board(getCore(payload.game).create({...payload}));
 		board.save((err) => {
-			if(err) throw 'error occurs when starting table';
+			if(err) throw 'database error: create board';
 			io.emit('server.table.start', payload);
 		});
 	});

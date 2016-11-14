@@ -4,6 +4,7 @@ import store from '../store';
 
 import table from './table';
 // import user from './user';
+import loveLetter from './love_letter';
 
 import { fetchTables, fetchUsers, fetchGames } from '../actions';
 
@@ -20,5 +21,6 @@ socket.on('server.user.login', data => {
 
 table(socket, store);
 // user(socket, store);
+loveLetter(socket, store);
 
 export default socket;

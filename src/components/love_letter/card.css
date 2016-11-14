@@ -26,6 +26,10 @@
 	border-radius: 8px;
 }
 
-.card .text {
+.card .small {
 	font-size: 10px;
+}
+
+.text {
+	font-weight: bold;
 }

@@ -30,7 +30,7 @@ export default function(state = initialState, { type, payload }) {
 			...state,
 			[id]: {
 				...state[id],
-				host: state[id].host._id === payload.userId ? 
+				host: state[id].host === payload.userId ? 
 						state[id].players[1] : state[id].host,
 				players: _.without(state[id].players, payload.userId)
 			}

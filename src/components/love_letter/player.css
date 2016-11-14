@@ -3,7 +3,7 @@
 	margin: 10px;
 	padding: 0 5px;
 	width: 400px;
-	height: 135px;
+	height: 115px;
 	box-shadow: 0 0 20px rgba(0,0,0,.9), inset 0 0 0 1px rgba(255,255,255,0.1);
 	border-radius: 5px;
 	background-color: rgba(100, 100, 100, .8);
@@ -11,4 +11,40 @@
 
 .container.active {	
 	box-shadow: 0 0 20px rgba(255,165,0,.9), inset 0 0 0 1px rgba(255,255,255,0.1);
+}
+
+.container.selectable {
+	box-shadow: 0 0 20px rgba(0,255,0,.9), inset 0 0 0 1px rgba(255,255,255,0.1);
+	cursor: pointer;
+}
+
+.container.selected {
+	box-shadow: 0 0 20px rgba(0,191,255,.9), inset 0 0 0 1px rgba(255,255,255,0.1);
+}
+
+.hands {
+	position: absolute;
+	left: 420px;
+	top: 0;
+}
+
+.right {
+	float: right;
+}
+
+.btn {
+	position: absolute;
+	left: 420px;
+	bottom: 0;
+	padding: 2px 15px;
+	background-color: transparent;
+	border: 1px solid white;
+	border-radius: 10px;
+	cursor: pointer;
+	color: white;
+	transition: background-color .3s;
+}
+
+.btn:hover {
+	background-color: rgba(200,200,200, .6);
 }
