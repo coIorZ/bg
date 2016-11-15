@@ -55,7 +55,7 @@ function setup(people) {
 		removedFaceUp.push(deck.shift());
 		removedFaceUp.push(deck.shift());
 		removedFaceUp.push(deck.shift());
-		vp = 1;
+		vp = 7;
 	} else if(size === 3) {
 		vp = 5;
 	}
@@ -77,7 +77,11 @@ function setup(people) {
 
 function drawCard(data, player) {
 	if(!player.out) {
-		player.hands.push(data.deck.shift());
+		if(data.deck.length) {
+			player.hands.push(data.deck.shift());
+		} else {
+			player.hands.push(data.removedFaceDown);
+		}
 		data.logs.push(`|p:${player.id}| draws a card.`);
 	}
 }
@@ -160,7 +164,7 @@ function choosePlayer(board, playerId) {
 	case 5:
 		data.logs.push(`|p:${currentPlayer.id}| plays |c:${cardId}| against |p:${targetPlayer.id}|.`);
 		if(targetPlayer.lastPlayed !== 4 || targetPlayer.id === currentPlayer.id) {
-			data.logs.push(`|p:${targetPlayer.id}| discards a card`);
+			data.logs.push(`|p:${targetPlayer.id}| discards |c:${targetPlayer.hands[0]}|.`);
 			discardCard(data, targetPlayer, targetPlayer.hands[0]);
 			drawCard(data, targetPlayer);
 		} else {
@@ -288,7 +292,7 @@ function round(board) {
 		player.out = false;
 	});
 	players[winner].hands.push(data.deck.shift());
-	data.logs = ['a new round starts'];
+	data.logs = ['a new round starts.'];
 	data.logs.push(`|p:${players[winner].id}| draws a card.`);
 	return board;
 }

@@ -25,7 +25,10 @@ export default class Score extends Component {
 					})}
 				</div>
 				<div className={styles['btn-holder']}>
-					<button className={styles.btn} onMouseDown={this.handleMouseDown}>Ok</button>
+					<button className={styles.btn} 
+						onMouseDown={this.handleMouseDown}>
+						{phase === 'round' ? 'Ok' : 'Exit'}
+					</button>
 				</div>
 			</div>
 		);

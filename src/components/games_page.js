@@ -42,7 +42,7 @@ class GamesPage extends Component {
 							onMouseDown={() => this.props.setGameInfoFolded(1)}>
 							{_.map(games, game => 
 								<div className={styles.game}
-									key={game._id}
+									key={game.id}
 									style={{backgroundImage: `url(${game.img_url})`}}>
 								</div>
 							)}
@@ -50,7 +50,7 @@ class GamesPage extends Component {
 					}
 				</Motion>
 				<GameInfo game={game} />
-				<Board gameId={game._id} />
+				<Board gameId={game.id} />
 			</div>
 		);
 	}

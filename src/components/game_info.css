@@ -51,10 +51,11 @@
 }
 
 .intro .section {
-	margin: 80px 0;
+	height: 120px;
+	line-height: 120px;
 }
 
-.intro .section.name {
+.intro .m30 {
 	margin: 30px 0;
 }
 

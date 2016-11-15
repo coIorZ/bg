@@ -19,7 +19,7 @@ class GameInfo extends Component {
 
 	render() {
 		const { clientWidth, clientHeight, game, folded, user, tables } = this.props;
-		const { name, min_players, max_players, length, weight } = game;
+		const { name, min_players, max_players, length, weight, rule_url } = game;
 		const x = folded === 0 ?
 					clientWidth : folded === 1 ?
 						 clientWidth - 360 : clientWidth - 720;
@@ -27,7 +27,7 @@ class GameInfo extends Component {
 		let leftTables = [], rightTables = [];
 		if(user) {
 			_.each(tables, table => {
-				if(table.game === game._id) {
+				if(table.game === game.id) {
 					if(_.includes(table.players, user._id))
 						rightTables.push(table);
 					else leftTables.push(table);
@@ -50,7 +50,7 @@ class GameInfo extends Component {
 						WebkitTransform: `translateX(${x}px)`
 					}}>
 					<div className={styles.intro}>
-						<h1 className={cx(styles.section, styles.name)}>{name}</h1>
+						<h1 className={cx(styles.section, styles.m30)}>{name}</h1>
 						<h3 className={styles.section}>
 							<span className={styles.value}>
 								{min_players === max_players ? min_players : `${min_players} - ${max_players}`}
@@ -62,9 +62,11 @@ class GameInfo extends Component {
 						<h3 className={styles.section}>
 							<span className={styles.value}>{weight}</span> / 5 WEIGHT
 						</h3>
-						<div className={styles.section}>
+						<div className={styles.m30}>
 							<span className={styles['btn-long']}
 								onMouseDown={this.handlePlay}><strong>PLAY</strong></span>
+							<br />
+							<a href={rule_url} target='_blank'>How to play</a>
 						</div>
 					</div>
 					<div className={styles.entrance}>
@@ -98,7 +100,7 @@ class GameInfo extends Component {
 
 	handleNewGame() {
 		const { user, game } = this.props;
-		socket.emit('client.table.new', { userId: user._id, gameId: game._id });
+		socket.emit('client.table.new', { userId: user._id, gameId: game.id });
 	}
 }
 

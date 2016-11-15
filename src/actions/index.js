@@ -64,12 +64,6 @@ export function userAuth() {
 // ---------- games ----------
 export const FETCH_GAMES = 'FETCH_GAMES';
 export function fetchGames(payload) {
-	// const request = axios.get('api/game/games');
-	// return (dispatch) => {
-	// 	request.then(({ data }) => {
-	// 		dispatch({type: FETCH_GAMES, payload: data});
-	// 	});
-	// };
 	return {type: FETCH_GAMES, payload};
 };
 

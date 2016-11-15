@@ -31,7 +31,7 @@ class Board extends Component {
 				style={{height: clientHeight}}>
 				<div className={styles.mask}>
 					<div className={styles['mask-bg']}
-						style={{backgroundImage: `url(${_.find(games, game => game._id === gameId).img_url})`}}></div>
+						style={{backgroundImage: `url(${_.find(games, game => game.id === gameId).img_url})`}}></div>
 					<div className={styles['mask-mask']}></div>
 				</div>
 				{gameBoard}

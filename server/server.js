@@ -11,7 +11,6 @@ import reducers from './reducers';
 import sockets from './sockets';
 
 import User from './models/users';
-import Game from './models/games';
 import Board from './models/boards';
 
 const app = express();
@@ -72,10 +71,6 @@ function init() {
 	User.find((err, users) => {
 		if(err) throw err;
 		store.dispatch({type: 'INIT_USERS', payload: users});
-	});
-	Game.find((err, games) => {
-		if(err) throw err;
-		store.dispatch({type: 'INIT_GAMES', payload: games});
 	});
 	Board.find((err, boards) => {
 		if(err) throw err;
