@@ -9,7 +9,7 @@ export default class Score extends Component {
 	}
 
 	render() {
-		const { board, users, phase } = this.props;
+		const { board, users, phase, watch } = this.props;
 		const { players, winner, vp } = board.data;
 		if(phase !== 'round' && phase !== 'game') return null;
 		return (
@@ -24,12 +24,12 @@ export default class Score extends Component {
 							</div>
 					})}
 				</div>
-				<div className={styles['btn-holder']}>
+				{!watch ? <div className={styles['btn-holder']}>
 					<button className={styles.btn} 
 						onMouseDown={this.handleMouseDown}>
 						{phase === 'round' ? 'Ok' : 'Exit'}
 					</button>
-				</div>
+				</div> : null}
 			</div>
 		);
 	}

@@ -29,7 +29,6 @@
 
 .hands {
 	position: absolute;
-	right: -80px;
 	top: 0;
 }
 
@@ -39,7 +38,7 @@
 
 .btn {
 	position: absolute;
-	right: -80px;
+	right: -60px;
 	bottom: 0;
 	padding: 2px 15px;
 	background-color: transparent;

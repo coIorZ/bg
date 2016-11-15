@@ -60,8 +60,8 @@ class LoveLetter extends Component {
 								active={activePlayer === i} 
 								selectable={phase === 'choose.player' && myTurn}
 								selected={selected}
-								revealHands={(selected && cardId === 2) || phase === 'round'}
-								confirmBtn={selected && cardId === 2}
+								revealHands={(selected && cardId === 2) || phase === 'round' || !myself}
+								confirmBtn={selected && cardId === 2 && myself}
 								out={player.out}
 								onConfirm={this.handleRevealHandsConfirm}
 								key={player.id}
@@ -69,7 +69,7 @@ class LoveLetter extends Component {
 						);
 					})}
 				</div>
-				<div className={styles['me-holder']} >
+				{myself ? <div className={styles['me-holder']} >
 					<Player player={myself} 
 						user={user} 
 						users={users} 
@@ -78,20 +78,20 @@ class LoveLetter extends Component {
 						selected={phase === 'effect' && effect === user._id}
 						out={myself.out}
 						onMouseDown={this.choosePlayer}/> 
-				</div>
-				<div className={styles['hands-holder']}>
-					{_.find(players, player => player.id === user._id).hands.map((id, i) => {
+				</div> : null}
+				{myself ? <div className={styles['hands-holder']}>
+					{myself.hands.map((id, i) => {
 						const playable = myTurn && phase === 'play.card';
 						return <Card card={CARDS[id]} display={1} playable={playable} key={i}
 									onMouseDown={this.playCard} />
 					})}
-				</div>
+				</div> : null}
 				<CardList visible={phase === 'effect' && cardId === 1 && myTurn}
 					onMouseDown={this.chooseNonGuardCard} />
-				<Score board={board} users={users} phase={phase}
+				<Score board={board} users={users} phase={phase} watch={!myself}
 					onConfirm={this.handleConfirmScore} />
 				<CardViewer />
-				<Log logs={logs} users={users} height={clientHeight - 440} />
+				<Log logs={logs} users={users} height={clientHeight - 445} />
 			</div>
 		);
 	}

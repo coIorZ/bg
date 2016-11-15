@@ -299,6 +299,7 @@ function round(board) {
 
 function gameOver(data) {
 	data.phase = 'game';
+	data.logs.push(`|p:${data.players[data.winner].id}| is the winner!`);
 }
 
 export default {

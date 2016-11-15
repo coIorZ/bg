@@ -32,9 +32,10 @@ export default class Player extends Component {
 						return <Card card={CARDS[id]} display={1} key={i} />
 					})}
 				</div>
-				{revealHands ? <div className={styles.hands}>
+				{revealHands ? <div className={styles.hands}
+									style={{right: -64 * player.hands.length - 10}}>
 								{player.hands.map((id, i) => {
-									return <Card card={CARDS[player.hands[0]]} display={1} key={i} />;
+									return <Card card={CARDS[id]} display={1} key={i} />;
 								})}
 							</div> : null}
 				{confirmBtn ? <button className={styles.btn} onMouseDown={this.handleConfirm}>Ok</button> : null}

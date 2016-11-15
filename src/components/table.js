@@ -13,7 +13,6 @@ class Table extends Component {
 		this.joinTable = this.joinTable.bind(this);
 		this.leaveTable = this.leaveTable.bind(this);
 		this.startTable = this.startTable.bind(this);
-		this.watchTable = this.watchTable.bind(this);
 		this.rejoinTable = this.rejoinTable.bind(this);
 	}
 
@@ -34,7 +33,7 @@ class Table extends Component {
 		startBtn = onTable && !started && playable && (host === user._id)
 				&& <span className={cx(styles.btn, styles.blue)} key={2} onMouseDown={this.startTable}>START</span>;
 		watchBtn = !onTable && started
-				&& <span className={cx(styles.btn, styles.orange)} key={3} onMouseDown={this.watchTable}>WATCH</span>;
+				&& <span className={cx(styles.btn, styles.orange)} key={3} onMouseDown={this.rejoinTable}>WATCH</span>;
 		rejoinBtn = onTable && started
 				&& <span className={cx(styles.btn, styles.blue)} key={4} onMouseDown={this.rejoinTable}>REJOIN</span>;
 
@@ -87,10 +86,6 @@ class Table extends Component {
 	rejoinTable() {
 		const { table } = this.props;
 		socket.emit('client.table.board', table._id);
-	}
-
-	watchTable() {
-		window.alert('working on it!');
 	}
 }
 
