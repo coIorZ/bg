@@ -42,9 +42,12 @@ export function login(username, password) {
 	});
 	return (dispatch) => {
 		request.then(({ data }) => {
-			dispatch({type: LOGIN, payload: data});
-			dispatch({type: SET_LOGIN_VISIBLE, payload: false});
-			if(data) socket.emit('client.user.login', data._id);
+			if(data) {
+				dispatch({type: LOGIN, payload: data});
+				dispatch({type: SET_LOGIN_VISIBLE, payload: false});
+				dispatch({type: SET_GAMEINFO_FOLDED, payload: 2});
+				socket.emit('client.user.login', data._id);
+			}
 		});
 	};
 };

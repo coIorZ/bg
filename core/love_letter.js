@@ -89,7 +89,6 @@ function drawCard(data, player) {
 function discardCard(data, player, cardId) {
 	player.hands.splice(_.indexOf(player.hands, cardId), 1);
 	player.discarded.push(cardId);
-	// data.logs.push(`|p:${player.id}| discards |c:${cardId}|.`);
 	if(cardId === 8) {
 		player.out = true;
 	}
@@ -101,10 +100,9 @@ function discardCard(data, player, cardId) {
 function playCard(board, cardId) {
 	let data = board.data;
 	let player = data.players[data.activePlayer];
-	discardCard(data, player, cardId);
+	data.logs = [];
 	player.lastPlayed = cardId;
 	data.cardId = cardId;
-	data.logs = [];
 	switch(cardId) {
 	case 1:
 	case 2:
@@ -112,13 +110,17 @@ function playCard(board, cardId) {
 	case 5:
 	case 6:
 		data.phase = 'choose.player';
+		discardCard(data, player, cardId);
 		break;
 	case 4:
 	case 7:
 		data.logs.push(`|p:${player.id}| plays |c:${cardId}|.`);
+		discardCard(data, player, cardId);
 		nextTurn(data);
 		break;
 	case 8:
+		data.logs.push(`|p:${player.id}| plays |c:${cardId}|.`);
+		discardCard(data, player, cardId);
 		nextTurn(data);
 		break;
 	}

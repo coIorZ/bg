@@ -23,7 +23,7 @@ export default class Player extends Component {
 					[styles.out]: out
 				})}
 				onMouseDown={this.handleMouseDown}>
-				<div>
+				<div className={styles.name}>
 					<span>{users[player.id].name}</span>
 					<span className={styles.right}>vp: {player.vp}</span>
 				</div>

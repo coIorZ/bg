@@ -7,7 +7,11 @@ const initialState = {};
 export default function(state = initialState, { type, payload }) {
 	switch(type) {
 	case 'INIT_TABLES':
-		return _.map(payload, board => board.table);
+		let tables = {};
+		_.each(payload, board => {
+			tables[board.table._id] = board.table;
+		});
+		return tables;
 
 	case FETCH_TABLES:
 		return payload;

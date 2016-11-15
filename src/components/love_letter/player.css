@@ -27,6 +27,10 @@
 	box-shadow: none;
 }
 
+.name {
+	margin-bottom: 10px;
+}
+
 .hands {
 	position: absolute;
 	top: 0;
