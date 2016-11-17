@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import styles from './about_page.css';
+import styles from './index_page.css';
 
-import { setHeaderPage } from '../actions';
-
-class AboutPage extends Component {
-	componentDidMount() {
-		this.props.setHeaderPage('about');
-	}
-
+class IndexPage extends Component {
 	render() {
 		const { clientHeight } = this.props;
 		return (
@@ -31,4 +25,4 @@ function mapStateToProps({ client }) {
 	};
 }
 
-export default connect(mapStateToProps, { setHeaderPage })(AboutPage);
+export default connect(mapStateToProps, null)(IndexPage);

@@ -4,6 +4,7 @@ import { throttle } from 'lodash';
 import  { NotificationStack } from 'react-notification';
 
 import Login from './login';
+import Header from './header';
 import styles from './app.css';
 
 import { setClientHeight, setClientWidth, userAuth, dismissNotification } from '../actions';
@@ -24,6 +25,7 @@ class App extends Component {
 		return (
 			<div className={styles.container}>
 				{children}
+				<Header />
 				<Login visible={loginVisible}/>
 				<NotificationStack
 					notifications={notifications}

@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 import {
 	SET_CLIENTHEIGHT, SET_CLIENTWIDTH, SET_GAMEINFO_FOLDED, SET_LOGIN_VISIBLE, SET_BOARD_VISIBLE, SET_CARD
-	, LOGIN, USER_AUTH, NOTIFY, DISMISS_NOTIFICATION
+	, SET_HEADER_PAGE, LOGIN, USER_AUTH, NOTIFY, DISMISS_NOTIFICATION
 } from '../actions';
 
 const notifyType = {
@@ -19,6 +19,7 @@ const initialState = {
 		folded: 1  // 0-folded  1-half  2-full
 	},
 	card: null,
+	page: 'cosmos',
 	loginVisible: false,
 	boardVisible: false,
 	user: null,
@@ -47,6 +48,9 @@ export default function(state = initialState, { type, payload }) {
 
 	case SET_CARD:
 		return {...state, card: payload};
+
+	case SET_HEADER_PAGE:
+		return {...state, page: payload};
 
 	case LOGIN:
 		return {...state, user: payload};

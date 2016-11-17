@@ -7,7 +7,7 @@ import GameInfo from './game_info';
 import Board from './board';
 import styles from './games_page.css';
 
-import { fetchGames, setGameInfoFolded } from '../actions';
+import { setGameInfoFolded, setHeaderPage } from '../actions';
 
 class GamesPage extends Component {
 	constructor(props) {
@@ -19,8 +19,17 @@ class GamesPage extends Component {
 		this.handleWheel = this.handleWheel.bind(this);
 	}
 
+	componentDidMount() {
+		if(this.props.games) {
+			this.setState({game: this.props.games[0] || {}});
+		}
+		this.props.setHeaderPage('play');
+	}
+
 	componentWillReceiveProps({ games }) {
-		if(games !== this.props.games) this.setState({game: games[0] || {}});
+		if(games != this.props.games) {
+			this.setState({game: games[0] || {}});
+		}
 	}
 
 	render() {
@@ -82,7 +91,7 @@ class GamesPage extends Component {
 	}
 };
 
-function mapStateToProps({ client, games}) {
+function mapStateToProps({ client, games }) {
 	return {
 		clientHeight: client.clientHeight,
 		clientWidth: client.clientWidth,
@@ -90,4 +99,4 @@ function mapStateToProps({ client, games}) {
 	};
 }
 
-export default connect(mapStateToProps, { fetchGames, setGameInfoFolded })(GamesPage);
+export default connect(mapStateToProps, { setGameInfoFolded, setHeaderPage })(GamesPage);

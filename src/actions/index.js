@@ -34,6 +34,11 @@ export function setCard(payload) {
 	return {type: SET_CARD, payload};
 };
 
+export const SET_HEADER_PAGE = 'SET_HEADER_PAGE';
+export function setHeaderPage(payload) {
+	return {type: SET_HEADER_PAGE, payload};
+};
+
 export const NOTIFY = 'NOTIFY';
 export function notify(payload) {
 	return {type: NOTIFY, payload};
