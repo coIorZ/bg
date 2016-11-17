@@ -1,3 +1,76 @@
 .container {
-	background: gray;
+	position: relative;
+	background-repeat: no-repeat;
+	background-size: cover;
 }
+
+.corner {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	color: white;
+}
+
+.btn {
+	display: inline-block;
+	padding: 5px 20px;
+	color: white;
+	background-color: transparent;
+	border: 1px solid white;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: background-color .3s;
+}
+
+.btn:hover {
+	background-color: rgba(255, 255, 255, .5);
+}
+
+.logout {
+	cursor: pointer;
+}
+
+.logout:hover {
+	color: rgb(240, 128, 128);
+	transition: color .3s;
+}
+
+.window {
+	font-size: 14px;
+	overflow: auto;
+}
+
+.area {
+	padding: 0 5px;
+	box-shadow: 0 0 10px rgba(0,0,0,.9), inset 0 0 0 1px rgba(255,255,255,0.1);
+	border-radius: 5px;
+	background-color: rgba(50, 50, 50, .8);
+}
+
+.wrapper {
+	height: 100%;
+	text-align: center;
+}
+
+.body {
+	display: inline-block;
+	width: 1000px;
+	text-align: left;
+}
+
+.title {
+	margin: 50px 0 20px;
+	color: white;
+}
+
+.input {
+	margin-top: 5px;
+}
+
+.input input {
+	width: 920px;
+	padding: 4px;
+	margin-right: 5px;
+	border-radius: 8px;
+}
+

@@ -6,6 +6,7 @@
 	min-width: 1000px;
 	overflow: hidden;
 	background-color: white;
+	z-index: 1;
 }
 
 .container.active {

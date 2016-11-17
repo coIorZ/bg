@@ -25,27 +25,24 @@ class Header extends Component {
 							[styles.item]: true,
 							[styles.active]: page === 'cosmos'
 						})}
-						onMouseDown={this.handleCosmos}
 					>
-						<Link to='index'> Cosmos </Link>
+						<Link to='index' onMouseDown={this.handleCosmos}> Cosmos </Link>
 					</li>
 					<li 
 						className={cx({
 							[styles.item]: true,
 							[styles.active]: page === 'play'
 						})}
-						onMouseDown={this.handlePlay}
 					>
-						<Link to='play'> Play </Link>
+						<Link to='play' onMouseDown={this.handlePlay}> Play </Link>
 					</li>
 					<li 
 						className={cx({
 							[styles.item]: true,
 							[styles.active]: page === 'about'
 						})}
-						onMouseDown={this.handleAbout}
 					>
-						<Link to='about'> About </Link>
+						<Link to='about' onMouseDown={this.handleAbout}> About </Link>
 					</li>
 				</ul>
 			</div>

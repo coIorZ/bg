@@ -6,6 +6,7 @@ import users from './users';
 import tables from './tables';
 import board from './board';
 import logs from './logs';
+import messages from './messages';
 
 export default combineReducers({
 	client,
@@ -13,5 +14,6 @@ export default combineReducers({
 	users,
 	tables,
 	board,
-	logs
+	logs,
+	messages
 });

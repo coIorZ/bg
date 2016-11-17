@@ -44,7 +44,7 @@ class Login extends Component {
 						/>
 					</div>
 					<div>
-						<button className={styles.btn} type='submit'>login</button>
+						<button className={styles.btn} type='submit'>log in</button>
 						<button 
 							className={styles.btn} 
 							style={{marginLeft: 20}}

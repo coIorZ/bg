@@ -49,6 +49,11 @@ export function dismissNotification(payload) {
 	return {type: DISMISS_NOTIFICATION, payload};
 };
 
+export const LOGOUT = 'LOGOUT';
+export function logout() {
+	return {type: LOGOUT};
+};
+
 export const LOGIN = 'LOGIN';
 export function login(username, password) {
 	const request = axios.post('api/user/login', {
@@ -126,6 +131,18 @@ export function startTable(payload) {
 export const FETCH_USERS = 'FETCH_USERS';
 export function fetchUsers(payload) {
 	return {type: FETCH_USERS, payload};
+};
+
+
+// ---------- messages ----------
+export const FETCH_MESSAGES = 'FETCH_MESSAGES';
+export function fetchMessages(payload) {
+	return {type: FETCH_MESSAGES, payload};
+};
+
+export const NEW_MESSAGE = 'NEW_MESSAGE';
+export function newMessage(payload) {
+	return {type: NEW_MESSAGE, payload};
 };
 
 
