@@ -21,20 +21,26 @@ class Login extends Component {
 		const { username, password } = this.state;
 		const { visible } = this.props;
 		return (
-			<div className={cx({
-				[styles.container]: true,
-				[styles.visible]: visible
-			})}>
+			<div 
+				className={cx({
+					[styles.container]: true,
+					[styles.visible]: visible
+				})}
+			>
 				<form onSubmit={this.handleSubmit}>
 					<div>
-						<input type='text'
+						<input 
+							type='text'
 							value={username}
-							onChange={e => this.setState({username: e.target.value})} />
+							onChange={e => this.setState({username: e.target.value})} 
+						/>
 					</div>
 					<div>
-						<input type='password'
+						<input 
+							type='password'
 							value={password}
-							onChange={e => this.setState({password: e.target.value})} />
+							onChange={e => this.setState({password: e.target.value})} 
+						/>
 					</div>
 					<div>
 						<button className={styles.btn} type='submit'>login</button>

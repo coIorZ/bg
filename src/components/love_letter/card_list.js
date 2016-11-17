@@ -13,8 +13,13 @@ export default class CardList extends Component {
 			<div className={styles.container}>
 				<div className={styles.label}>Choose a non-Guard card</div>
 				{[2,3,4,5,6,7,8].map(i => {
-					return <Card card={CARDS[i]} display={1} playable={1} key={i}
-								onMouseDown={(card) => onMouseDown(card)} />
+					return <Card 
+								card={CARDS[i]} 
+								display={1} 
+								playable={1} 
+								key={i}
+								onMouseDown={(card) => onMouseDown(card)} 
+							/>
 				})}
 			</div>
 		);

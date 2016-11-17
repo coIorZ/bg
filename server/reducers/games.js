@@ -3,7 +3,7 @@ const initialState = [{
 	name : 'Love Letter', 
 	length : 20, 
 	designer : 'Seiji Kanai', 
-	img_url : './img/love_letter.jpg', 
+	img_url : './img/love_letter/love_letter.jpg', 
 	rule_url: 'files/love_letter.pdf',
 	weight : 1.21, 
 	min_players : 2, 
@@ -18,6 +18,16 @@ const initialState = [{
 	weight : 1.44, 
 	min_players : 2, 
 	max_players : 6
+}, {
+	id : '3', 
+	name : 'Bloody Inn', 
+	length : 45, 
+	designer : 'Nicolas Robert', 
+	img_url : './img/bloody_inn/bloody_inn.jpg', 
+	rule_url: 'files/bloody_inn.pdf',
+	weight : 2.36, 
+	min_players : 1,
+	max_players : 4
 }];
 
 export default function(state = initialState, { type, payload }) {

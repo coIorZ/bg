@@ -32,14 +32,16 @@ class Card extends Component {
 			const { card, display, playable } = this.props;
 			const { name, value, text, img } = card;
 			return (
-				<div className={cx({
+				<div 
+					className={cx({
 						[styles.card]: true,
 						[styles.playable]: playable,
 						[styles.forward]: this.state.forward
 					})}
 					onMouseEnter={this.handleMouseEnter}
 					onMouseLeave={this.handleMouseLeave}
-					onMouseDown={this.handleMouseDown}>
+					onMouseDown={this.handleMouseDown}
+				>
 					<span className={styles.small}>{name}</span>
 					<img src={img} className={styles.bg} />
 				</div>
@@ -47,10 +49,14 @@ class Card extends Component {
 
 		case 2:
 			return (
-				<span className={styles.text}
+				<span 
+					className={styles.text}
 					style={{color: this.props.card.color}}
 					onMouseEnter={this.handleMouseEnter}
-					onMouseLeave={this.handleMouseLeave}>{this.props.card.name}</span>
+					onMouseLeave={this.handleMouseLeave}
+				>
+					{this.props.card.name}
+				</span>
 			);
 
 		default:

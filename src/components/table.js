@@ -6,6 +6,7 @@ import _ from 'lodash';
 import styles from './table.css';
 
 import socket from '../sockets';
+import { notify } from '../actions';
 
 class Table extends Component {
 	constructor(props) {
@@ -39,10 +40,14 @@ class Table extends Component {
 
 		return (
 			<div className={styles.container}>
-				<div className={cx({
-					[styles.header]: true,
-					[styles.started]: started
-				})}>{`${users[host].name}'s game`}</div>
+				<div 
+					className={cx({
+						[styles.header]: true,
+						[styles.started]: started
+					})}
+				>
+					{`${users[host].name}'s game`}
+				</div>
 				<div className={styles.body}>
 					{_.map(players, player => <div key={player}>{users[player].name}</div>)}
 					<div className={styles['btn-group']}>
@@ -79,7 +84,11 @@ class Table extends Component {
 	}
 
 	startTable() {
-		const { table } = this.props;
+		const { table, notify } = this.props;
+		if(table.game !== '1') {
+			notify({message: 'this game is still in progress'});
+			return;
+		}
 		socket.emit('client.table.start', table);
 	}
 
@@ -97,4 +106,4 @@ function mapStateToPros({ client, users, games }) {
 	};
 }
 
-export default connect(mapStateToPros, null)(Table);
+export default connect(mapStateToPros, { notify })(Table);

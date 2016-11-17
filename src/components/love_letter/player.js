@@ -15,14 +15,16 @@ export default class Player extends Component {
 	render() {
 		const { player, user, users, active, selectable, selected, out, revealHands, confirmBtn } = this.props;
 		return (
-			<div className={cx({
+			<div 
+				className={cx({
 					[styles.container]: true,
 					[styles.active]: active,
 					[styles.selectable]: selectable,
 					[styles.selected]: selected,
 					[styles.out]: out
 				})}
-				onMouseDown={this.handleMouseDown}>
+				onMouseDown={this.handleMouseDown}
+			>
 				<div className={styles.name}>
 					<span>{users[player.id].name}</span>
 					<span className={styles.right}>vp: {player.vp}</span>
@@ -32,13 +34,21 @@ export default class Player extends Component {
 						return <Card card={CARDS[id]} display={1} key={i} />
 					})}
 				</div>
-				{revealHands ? <div className={styles.hands}
-									style={{right: -64 * player.hands.length - 10}}>
-								{player.hands.map((id, i) => {
-									return <Card card={CARDS[id]} display={1} key={i} />;
-								})}
-							</div> : null}
-				{confirmBtn ? <button className={styles.btn} onMouseDown={this.handleConfirm}>Ok</button> : null}
+				{revealHands ? 
+					<div 
+						className={styles.hands}
+						style={{right: -64 * player.hands.length - 10}}
+					>
+						{player.hands.map((id, i) => {
+							return <Card card={CARDS[id]} display={1} key={i} />;
+						})}
+					</div> 
+					: null
+				}
+				{confirmBtn ? 
+					<button className={styles.btn} onMouseDown={this.handleConfirm}>Ok</button> 
+					: null
+				}
 			</div>
 		);
 	}

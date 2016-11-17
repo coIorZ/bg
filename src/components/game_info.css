@@ -50,17 +50,17 @@
 	transition: left .5s;
 }
 
-@media screen and (min-height: 900px) {
+@media screen and (min-height: 768px) {
 	.intro .section {
-		height: 160px;
-		line-height: 160px;
+		height: 150px;
+		line-height: 150px;
 	}
 	.intro .m30 {
 		margin: 40px 0;
 	}
 }
 
-@media screen and (min-height: 550px) {
+@media screen and (min-height: 550px) and (max-height: 768px) {
 	.intro .section {
 		height: 110px;
 		line-height: 110px;

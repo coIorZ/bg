@@ -33,17 +33,21 @@ class GamesPage extends Component {
 			<div className={styles.container}>
 				<Motion style={{y: spring(y)}}>
 					{({ y }) => 
-						<div style={{
+						<div 
+							style={{
 								height: clientHeight,
 								transform: `translate3d(0, ${y}px, 0)`,
 								WebkitTransform: `translate3d(0, ${y}px, 0)`
 							}}
 							onWheel={this.handleWheel}
-							onMouseDown={() => this.props.setGameInfoFolded(1)}>
+							onMouseDown={() => this.props.setGameInfoFolded(1)}
+						>
 							{_.map(games, game => 
-								<div className={styles.game}
+								<div 
+									className={styles.game}
 									key={game.id}
-									style={{backgroundImage: `url(${game.img_url})`}}>
+									style={{backgroundImage: `url(${game.img_url})`}}
+								>
 								</div>
 							)}
 						</div>
@@ -59,7 +63,7 @@ class GamesPage extends Component {
 		const { clientHeight, games } = this.props;
 		const limit = games.length - 1;
 		let y = this.state.y;
-		y += e.deltaY * -1.5;
+		y += e.deltaY * -2.5;
 		if(y >= 0) y = 0;
 		if(y <= -1 * clientHeight * limit) y = -1 * clientHeight * limit;
 		this.setState({ y });

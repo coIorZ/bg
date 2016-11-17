@@ -13,27 +13,29 @@ export default class Log extends Component {
 	render() {
 		const { logs, users, height } = this.props;
 		return (
-			<div className={styles.container}
+			<div 
+				className={styles.container}
 				style={{ height }}
-				ref='container'>
+				ref='container'
+			>
 				{logs.map((log, i) => {
 					log = log.replace(/\|p:(\w+)\|/g, (s, id) => {
 						return users[id].name;
 					});
 					let pieces = log.split('|');
 					return <div className={styles.line} key={i}>
-						{pieces.map((piece, j) => {
-							let str = null;
-							if(str = piece.match(/^c:(\w+)/)) {
-								let id = str[1];
-								return <Card card={CARDS[id]} display={2} key={j} />;
-							} else if(piece.match(/^hr:/)) {
-								return <div className={styles.seperator} key={j}></div>;
-							} else {
-								return <span key={j}>{piece}</span>;
-							}
-						})}
-					</div>
+								{pieces.map((piece, j) => {
+									let str = null;
+									if(str = piece.match(/^c:(\w+)/)) {
+										let id = str[1];
+										return <Card card={CARDS[id]} display={2} key={j} />;
+									} else if(piece.match(/^hr:/)) {
+										return <div className={styles.seperator} key={j}></div>;
+									} else {
+										return <span key={j}>{piece}</span>;
+									}
+								})}
+							</div>
 				})}
 			</div>
 		);

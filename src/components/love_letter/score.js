@@ -19,17 +19,22 @@ export default class Score extends Component {
 				<div className={styles.list}>
 					{players.map(player => {
 						return <div key={player.id}>
-								<span>{users[player.id].name}</span>
-								<span className={styles.right}>{`${player.vp} vp`}</span>
-							</div>
+									<span>{users[player.id].name}</span>
+									<span className={styles.right}>{`${player.vp} vp`}</span>
+								</div>
 					})}
 				</div>
-				{!watch ? <div className={styles['btn-holder']}>
-					<button className={styles.btn} 
-						onMouseDown={this.handleMouseDown}>
-						{phase === 'round' ? 'Ok' : 'Exit'}
-					</button>
-				</div> : null}
+				{!watch ? 
+					<div className={styles['btn-holder']}>
+						<button 
+							className={styles.btn} 
+							onMouseDown={this.handleMouseDown}
+						>
+							{phase === 'round' ? 'Ok' : 'Exit'}
+						</button>
+					</div> 
+					: null
+				}
 			</div>
 		);
 	}

@@ -1,7 +1,16 @@
+import _ from 'lodash';
+
 import {
 	SET_CLIENTHEIGHT, SET_CLIENTWIDTH, SET_GAMEINFO_FOLDED, SET_LOGIN_VISIBLE, SET_BOARD_VISIBLE, SET_CARD
-	, LOGIN, USER_AUTH
+	, LOGIN, USER_AUTH, NOTIFY, DISMISS_NOTIFICATION
 } from '../actions';
+
+const notifyType = {
+	info: '#337ab7',
+	warning: '#f0ad4e',
+	error: '#d9534f',
+	success: '#5cb85c'
+};
 
 const initialState = {
 	clientHeight: document.documentElement.clientHeight,
@@ -12,7 +21,8 @@ const initialState = {
 	card: null,
 	loginVisible: false,
 	boardVisible: false,
-	user: null
+	user: null,
+	notifications: []
 };
 
 export default function(state = initialState, { type, payload }) {
@@ -43,6 +53,25 @@ export default function(state = initialState, { type, payload }) {
 
 	case USER_AUTH:
 		return {...state, user: payload};
+
+	case NOTIFY:
+		return {
+			...state,
+			notifications: [
+				...state.notifications, 
+				{
+					...payload,
+					key: Date.now(),
+					dismissAfter: payload.dismissAfter || 3000
+				}
+			]
+		};
+
+	case DISMISS_NOTIFICATION:
+		return {
+			...state,
+			notifications: _.filter(state.notifications, n => n.key !== payload)
+		};
 
 	default:
 		return state;

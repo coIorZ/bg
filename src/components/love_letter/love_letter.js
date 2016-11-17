@@ -13,7 +13,7 @@ import styles from './love_letter.css';
 import socket from '../../sockets';
 import { CARDS } from '../../../core/love_letter';
 
-import { setBoardVisible } from '../../actions';
+import { setBoardVisible, notify } from '../../actions';
 
 class LoveLetter extends Component {
 	constructor(props) {
@@ -34,19 +34,22 @@ class LoveLetter extends Component {
 		const myself = _.find(players, player => player.id === user._id);
 
 		return (
-			<div className={styles.container}
-				style={{height: clientHeight}}>
+			<div 
+				className={styles.container}
+				style={{height: clientHeight}}
+			>
 				<div className={styles['deck-holder']}>
-					<div className={styles.area}
-						style={{marginRight: 20}}>
+					<div className={styles.area} style={{marginRight: 20}}>
 						<div className={styles.label}>Deck({deck.length})</div>
 						<Card display={0} />
 					</div>
 					<div className={styles.area}>
 						<div className={styles.label}>Removed</div>
 						<Card display={0} />
-						{removedFaceUp.length ? _.map(removedFaceUp, (id, i) => <Card card={CARDS[id]} display={1} key={i} />) 
-											: null}
+						{removedFaceUp.length ? 
+							_.map(removedFaceUp, (id, i) => <Card card={CARDS[id]} display={1} key={i} />) 
+							: null
+						}
 					</div>
 				</div>
 				<div className={styles['others-holder']}>
@@ -54,7 +57,8 @@ class LoveLetter extends Component {
 						if(player.id === user._id) return null;
 						const selected = phase === 'effect' && effect === player.id;
 						return (
-							<Player player={player} 
+							<Player 
+								player={player} 
 								user={user} 
 								users={users} 
 								active={activePlayer === i} 
@@ -65,31 +69,52 @@ class LoveLetter extends Component {
 								out={player.out}
 								onConfirm={this.handleRevealHandsConfirm}
 								key={player.id}
-								onMouseDown={this.choosePlayer} /> 
+								onMouseDown={this.choosePlayer} 
+							/> 
 						);
 					})}
 				</div>
-				{myself ? <div className={styles['me-holder']} >
-					<Player player={myself} 
-						user={user} 
-						users={users} 
-						active={myTurn}
-						selectable={phase === 'choose.player' && cardId === 5 && myTurn}
-						selected={phase === 'effect' && effect === user._id}
-						out={myself.out}
-						onMouseDown={this.choosePlayer}/> 
-				</div> : null}
-				{myself ? <div className={styles['hands-holder']}>
-					{myself.hands.map((id, i) => {
-						const playable = myTurn && phase === 'play.card';
-						return <Card card={CARDS[id]} display={1} playable={playable} key={i}
-									onMouseDown={this.playCard} />
-					})}
-				</div> : null}
-				<CardList visible={phase === 'effect' && cardId === 1 && myTurn}
-					onMouseDown={this.chooseNonGuardCard} />
-				<Score board={board} users={users} phase={phase} watch={!myself}
-					onConfirm={this.handleConfirmScore} />
+				{myself ? 
+					<div className={styles['me-holder']} >
+						<Player 
+							player={myself} 
+							user={user} 
+							users={users} 
+							active={myTurn}
+							selectable={phase === 'choose.player' && cardId === 5 && myTurn}
+							selected={phase === 'effect' && effect === user._id}
+							out={myself.out}
+							onMouseDown={this.choosePlayer}
+						/> 
+					</div> 
+					: null
+				}
+				{myself ? 
+					<div className={styles['hands-holder']}>
+						{myself.hands.map((id, i) => {
+							const playable = myTurn && phase === 'play.card';
+							return <Card 
+										card={CARDS[id]} 
+										display={1} 
+										playable={playable} 
+										key={i}
+										onMouseDown={this.playCard} 
+									/>
+						})}
+					</div> 
+					: null
+				}
+				<CardList 
+					visible={phase === 'effect' && cardId === 1 && myTurn}
+					onMouseDown={this.chooseNonGuardCard} 
+				/>
+				<Score 
+					board={board} 
+					users={users} 
+					phase={phase} 
+					watch={!myself}
+					onConfirm={this.handleConfirmScore} 
+				/>
 				<CardViewer />
 				<Log logs={logs} users={users} height={clientHeight - 445} />
 			</div>
@@ -100,7 +125,7 @@ class LoveLetter extends Component {
 		const { table, data } = this.props.board;
 		const hands = data.players[data.activePlayer].hands;
 		if(_.includes(hands, 7) && (card.id === 5 || card.id === 6)) {
-			alert('you must play Countess');
+			this.props.notify({message: 'you must play Countess'});
 			return;
 		}
 		socket.emit(`client.loveletter.${data.phase}`, {
@@ -154,4 +179,4 @@ function mapStateToProps({ client, board, users, logs }) {
 	};
 }
 
-export default connect(mapStateToProps, { setBoardVisible })(LoveLetter);
+export default connect(mapStateToProps, { setBoardVisible, notify })(LoveLetter);

@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { throttle } from 'lodash';
+import  { NotificationStack } from 'react-notification';
 
 import Login from './login';
 import styles from './app.css';
 
-import { setClientHeight, setClientWidth, userAuth } from '../actions';
+import { setClientHeight, setClientWidth, userAuth, dismissNotification } from '../actions';
 
 class App extends Component {
 	constructor(props) {
@@ -15,14 +16,19 @@ class App extends Component {
 
 	componentDidMount() {
 		window.addEventListener('resize', this.resize);
-		// this.props.userAuth();
+		this.props.userAuth();
 	}
 
 	render() {
+		const { children, loginVisible, notifications, dismissNotification } = this.props;
 		return (
 			<div className={styles.container}>
-				{this.props.children}
-				<Login visible={this.props.loginVisible}/>
+				{children}
+				<Login visible={loginVisible}/>
+				<NotificationStack
+					notifications={notifications}
+					onDismiss={notification => dismissNotification(notification.key)}
+				/>
 			</div>
 		);
 	}
@@ -36,8 +42,9 @@ class App extends Component {
 
 function mapStateToProps({ client }) {
 	return {
-		loginVisible: client.loginVisible
+		loginVisible: client.loginVisible,
+		notifications: client.notifications
 	};
 }
 
-export default connect(mapStateToProps, { setClientHeight, setClientWidth, userAuth })(App);
+export default connect(mapStateToProps, { setClientHeight, setClientWidth, userAuth, dismissNotification })(App);

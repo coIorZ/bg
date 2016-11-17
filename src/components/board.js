@@ -24,20 +24,28 @@ class Board extends Component {
 			break;
 		}
 		return (
-			<div className={cx({
-				[styles.container]: true,
-				[styles.active]: boardVisible
-			})}
-				style={{height: clientHeight}}>
+			<div 
+				className={cx({
+					[styles.container]: true,
+					[styles.active]: boardVisible
+				})}
+				style={{height: clientHeight}}
+			>
 				<div className={styles.mask}>
-					<div className={styles['mask-bg']}
-						style={{backgroundImage: `url(${_.find(games, game => game.id === gameId).img_url})`}}></div>
+					<div 
+						className={styles['mask-bg']}
+						style={{backgroundImage: `url(${_.find(games, game => game.id === gameId).img_url})`}}
+					>
+					</div>
 					<div className={styles['mask-mask']}></div>
 				</div>
 				{gameBoard}
-				<button className={styles.btn}
-					onClick={() => this.props.setBoardVisible(false)}>back</button>
-				}
+				<button 
+					className={styles.btn}
+					onClick={() => this.props.setBoardVisible(false)}
+				>
+					back
+				</button>
 			</div>
 		);
 	}

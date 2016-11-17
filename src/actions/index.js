@@ -34,6 +34,16 @@ export function setCard(payload) {
 	return {type: SET_CARD, payload};
 };
 
+export const NOTIFY = 'NOTIFY';
+export function notify(payload) {
+	return {type: NOTIFY, payload};
+};
+
+export const DISMISS_NOTIFICATION = 'DISMISS_NOTIFICATION';
+export function dismissNotification(payload) {
+	return {type: DISMISS_NOTIFICATION, payload};
+};
+
 export const LOGIN = 'LOGIN';
 export function login(username, password) {
 	const request = axios.post('api/user/login', {
@@ -47,6 +57,10 @@ export function login(username, password) {
 				dispatch({type: SET_LOGIN_VISIBLE, payload: false});
 				dispatch({type: SET_GAMEINFO_FOLDED, payload: 2});
 				socket.emit('client.user.login', data._id);
+			} else {
+				dispatch({type: NOTIFY, payload: {
+					message: 'wrong username or password'
+				}});
 			}
 		});
 	};
