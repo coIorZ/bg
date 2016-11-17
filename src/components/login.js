@@ -5,7 +5,7 @@ import md5 from 'blueimp-md5';
 
 import styles from './login.css';
 
-import { login } from '../actions';
+import { login, setLoginVisible } from '../actions';
 
 class Login extends Component {
 	constructor(props) {
@@ -15,6 +15,7 @@ class Login extends Component {
 			password: ''
 		};
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleCancel = this.handleCancel.bind(this);
 	}
 
 	render() {
@@ -44,6 +45,13 @@ class Login extends Component {
 					</div>
 					<div>
 						<button className={styles.btn} type='submit'>login</button>
+						<button 
+							className={styles.btn} 
+							style={{marginLeft: 20}}
+							onMouseDown={this.handleCancel}
+						>
+							cancel
+						</button>
 					</div>
 				</form>
 			</div>
@@ -59,6 +67,10 @@ class Login extends Component {
 			password: ''
 		});
 	}
+
+	handleCancel() {
+		this.props.setLoginVisible(false);
+	}
 }
 
-export default connect(null, { login })(Login);
+export default connect(null, { login, setLoginVisible })(Login);

@@ -8,10 +8,12 @@ export default function(io, store) {
 		console.log('---------- a socket connected ----------');
 
 		socket.emit('server.game', store.getState().games);
+		socket.emit('server.user', store.getState().users);
 
 		socket.on('client.user.login', payload => {
 			store.dispatch({type: 'USER_ONLINE', payload});
-			socket.emit('server.user.login', store.getState());
+			socket.emit('server.table', store.getState().tables);
+			io.emit('server.user', store.getState().users);
 		});
 
 		table(socket, io, store);

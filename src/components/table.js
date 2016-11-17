@@ -49,7 +49,16 @@ class Table extends Component {
 					{`${users[host].name}'s game`}
 				</div>
 				<div className={styles.body}>
-					{_.map(players, player => <div key={player}>{users[player].name}</div>)}
+					{_.map(players, player => {
+						return <div key={player}>
+							<span
+								className={cx({
+									[styles.status]: true,
+									[styles.online]: users[player].online
+								})}>
+							</span> {users[player].name}
+						</div>
+					})}
 					<div className={styles['btn-group']}>
 						{startBtn}
 						{rejoinBtn}
