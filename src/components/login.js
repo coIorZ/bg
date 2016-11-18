@@ -11,15 +11,17 @@ class Login extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			username: '',
-			password: ''
+			username: window.localStorage.getItem('username') || '',
+			password: '',
+			isRemember: JSON.parse(window.localStorage.getItem('isRemember')) || false
 		};
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleCancel = this.handleCancel.bind(this);
+		this.handleRemember = this.handleRemember.bind(this);
 	}
 
 	render() {
-		const { username, password } = this.state;
+		const { username, password, isRemember } = this.state;
 		const { visible } = this.props;
 		return (
 			<div 
@@ -43,6 +45,13 @@ class Login extends Component {
 							onChange={e => this.setState({password: e.target.value})} 
 						/>
 					</div>
+					<div className={styles.remember}>
+						<input 
+							type='checkbox' 
+							checked={isRemember} 
+							onChange={this.handleRemember}
+						/> Remember me
+					</div>
 					<div>
 						<button className={styles.btn} type='submit'>log in</button>
 						<button 
@@ -60,12 +69,14 @@ class Login extends Component {
 
 	handleSubmit(e) {
 		e.preventDefault();
-		const { username, password } = this.state;
-		this.props.login(username, md5(password));
-		this.setState({
-			username: '',
-			password: ''
-		});
+		const { username, password, isRemember } = this.state;
+		this.props.login(username, md5(password), isRemember);
+		this.setState({password: ''});
+	}
+
+	handleRemember(e) {
+		window.localStorage.setItem('isRemember', e.target.checked);
+		this.setState({isRemember: e.target.checked});
 	}
 
 	handleCancel() {

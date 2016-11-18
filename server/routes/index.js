@@ -7,7 +7,11 @@ export default function(router) {
 			password: req.body.password
 		}, (err, user) => {
 			if(err) res.send(err);
-			req.session.user = user;
+			if(req.body.isRemember) {
+				req.session.user = user;
+			} else {
+				req.session.user = null;
+			}
 			res.json(user);
 		});
 	});

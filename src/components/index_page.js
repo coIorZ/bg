@@ -19,6 +19,10 @@ class IndexPage extends Component {
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
+	componentDidMount() {
+		this.refs.chat.scrollTop = this.refs.chat.scrollHeight;
+	}
+
 	componentDidUpdate() {
 		this.refs.chat.scrollTop = this.refs.chat.scrollHeight;
 	}

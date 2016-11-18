@@ -55,10 +55,11 @@ export function logout() {
 };
 
 export const LOGIN = 'LOGIN';
-export function login(username, password) {
+export function login(username, password, isRemember) {
 	const request = axios.post('api/user/login', {
 		username,
-		password
+		password,
+		isRemember
 	});
 	return (dispatch) => {
 		request.then(({ data }) => {
@@ -67,6 +68,7 @@ export function login(username, password) {
 				dispatch({type: SET_LOGIN_VISIBLE, payload: false});
 				dispatch({type: SET_GAMEINFO_FOLDED, payload: 2});
 				socket.emit('client.user.login', data._id);
+				window.localStorage.setItem('username', data.username);
 			} else {
 				dispatch({type: NOTIFY, payload: {
 					message: 'wrong username or password'
@@ -131,6 +133,16 @@ export function startTable(payload) {
 export const FETCH_USERS = 'FETCH_USERS';
 export function fetchUsers(payload) {
 	return {type: FETCH_USERS, payload};
+};
+
+export const USER_ONLINE = 'USER_ONLINE';
+export function userOnline(payload) {
+	return {type: USER_ONLINE, payload};
+};
+
+export const USER_OFFLINE = 'USER_OFFLINE';
+export function userOffline(payload) {
+	return {type: USER_OFFLINE, payload};
 };
 
 

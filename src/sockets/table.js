@@ -1,11 +1,13 @@
 import _ from 'lodash';
 
 import { 
-	newTable, joinTable, leaveTable, removeTable, startTable, 
+	fetchTables, newTable, joinTable, leaveTable, removeTable, startTable, 
 	setBoardVisible, updateBoard, clearLogs, updateLogs
 } from '../actions';
 
 export default function(socket, store) {
+	socket.on('server.table', payload => store.dispatch(fetchTables(payload)));
+
 	socket.on('server.table.new', payload => store.dispatch(newTable(payload)));
 
 	socket.on('server.table.join', payload => store.dispatch(joinTable(payload)));
