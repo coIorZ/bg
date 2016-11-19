@@ -13,7 +13,8 @@ class Login extends Component {
 		this.state = {
 			username: window.localStorage.getItem('username') || '',
 			password: '',
-			isRemember: JSON.parse(window.localStorage.getItem('isRemember')) || false
+			isRemember: JSON.parse(window.localStorage.getItem('isRemember')) || false,
+			tip: false
 		};
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleCancel = this.handleCancel.bind(this);
@@ -51,6 +52,22 @@ class Login extends Component {
 							checked={isRemember} 
 							onChange={this.handleRemember}
 						/> Remember me
+						<br />
+						<div style={{position: 'relative'}}>
+							<span
+								className={styles.dash}
+								onMouseOver={() => this.setState({tip: true})}
+								onMouseLeave={() => this.setState({tip: false})}
+							>
+								No account?
+							</span>
+							{this.state.tip ?
+								<div className={styles.tip}>
+									Sign up is not permitted for now. Please contact the author to get an account.
+								</div>
+								: null
+							}
+						</div>
 					</div>
 					<div>
 						<button className={styles.btn} type='submit'>log in</button>

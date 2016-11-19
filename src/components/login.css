@@ -42,3 +42,18 @@
 	text-align: left;
 	color: white;
 }
+
+.dash {
+	border-bottom: 1px dotted white;
+}
+
+.tip {
+	position: absolute;
+	top: 16px;
+	left: 0;
+	width: 160px;
+	padding: 5px;
+	border: 1px solid black;
+	border-radius: 8px;
+	background-color: rgba(0, 0, 0, .8);
+}
