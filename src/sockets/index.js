@@ -6,9 +6,21 @@ import table from './table';
 import user from './user';
 import loveLetter from './love_letter';
 
-import { fetchGames, fetchMessages, newMessage } from '../actions';
+import { fetchGames, fetchMessages, newMessage, notify, dismissNotification } from '../actions';
 
 const socket = io();
+
+socket.on('connect', () => {
+	store.dispatch(notify({
+		message: 'Connected to server'
+	}));
+});
+
+socket.on('reconnecting', () => {
+	store.dispatch(notify({
+		message: 'Disconnected from server. Trying to reconnect'
+	}));
+});
 
 socket.on('server.game', payload => {
 	store.dispatch(fetchGames(payload));

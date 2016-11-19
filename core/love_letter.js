@@ -11,19 +11,12 @@ function registerCard(id, name, value, text, img, quantity = 1, color = '#ffa500
 }
 
 registerCard(1, 'Guard', 1, '', './img/love_letter/guard.jpg', 5);
-
 registerCard(2, 'Priest', 2, '', './img/love_letter/priest.jpg', 2);
-
 registerCard(3, 'Baron', 3, '', './img/love_letter/baron.jpg', 2);
-
 registerCard(4, 'Handmaid', 4, '', './img/love_letter/handmaid.jpg', 2);
-
 registerCard(5, 'Prince', 5, '', './img/love_letter/prince.jpg', 2);
-
 registerCard(6, 'King', 6, '', './img/love_letter/king.jpg');
-
 registerCard(7, 'Countess', 7, '', './img/love_letter/countess.jpg');
-
 registerCard(8, 'Princess', 8, '', './img/love_letter/princess.jpg');
 
 export { CARDS };
@@ -32,7 +25,6 @@ export { DECK };
 
 // ---------- logic ----------
 function create(table) {
-	table.started = true;
 	const players = _.shuffle(table.players);
 	const data = setup(players);
 	const board = { table, data };

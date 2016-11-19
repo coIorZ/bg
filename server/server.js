@@ -38,6 +38,10 @@ app.use(session({
 	saveUninitialized: true
 }));
 app.use(morgan('dev'));
+app.use((req, res, next) => {
+	res.io = io;
+	next();
+});
 
 
 // ---------- sockets ----------
@@ -45,7 +49,7 @@ sockets(io, store);
 
 
 // ---------- api ----------
-app.use('/api', routes(router));
+app.use('/api', routes(router, store));
 
 
 // ---------- init ----------

@@ -7,16 +7,18 @@ import Login from './login';
 import Header from './header';
 import styles from './app.css';
 
-import { setClientHeight, setClientWidth, userAuth, dismissNotification } from '../actions';
+import { setClientHeight, setClientWidth, userAuth, dismissNotification, logout } from '../actions';
 
 class App extends Component {
 	constructor(props) {
 		super(props);
-		this.resize = throttle(this.resize.bind(this), 300);
+		this.handleResize = throttle(this.handleResize.bind(this), 300);
+		this.handleUnload = this.handleUnload.bind(this);
 	}
 
 	componentDidMount() {
-		window.addEventListener('resize', this.resize);
+		window.addEventListener('resize', this.handleResize);
+		window.addEventListener('unload', this.handleUnload);
 		this.props.userAuth();
 	}
 
@@ -35,18 +37,23 @@ class App extends Component {
 		);
 	}
 
-	resize() {
-		let { clientHeight, clientWidth } = document.documentElement;
+	handleResize() {
+		const { clientHeight, clientWidth } = document.documentElement;
 		this.props.setClientHeight(clientHeight);
 		this.props.setClientWidth(clientWidth);
+	}
+
+	handleUnload() {
+		this.props.logout(this.props.user._id);
 	}
 }
 
 function mapStateToProps({ client }) {
 	return {
 		loginVisible: client.loginVisible,
-		notifications: client.notifications
+		notifications: client.notifications,
+		user: client.user
 	};
 }
 
-export default connect(mapStateToProps, { setClientHeight, setClientWidth, userAuth, dismissNotification })(App);
+export default connect(mapStateToProps, { setClientHeight, setClientWidth, userAuth, dismissNotification, logout })(App);

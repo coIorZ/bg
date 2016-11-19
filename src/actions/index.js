@@ -50,7 +50,8 @@ export function dismissNotification(payload) {
 };
 
 export const LOGOUT = 'LOGOUT';
-export function logout() {
+export function logout(id) {
+	axios.post('api/user/logout', { id });
 	return {type: LOGOUT};
 };
 
@@ -63,15 +64,15 @@ export function login(username, password, isRemember) {
 	});
 	return (dispatch) => {
 		request.then(({ data }) => {
-			if(data) {
-				dispatch({type: LOGIN, payload: data});
+			if(data.user) {
+				dispatch({type: LOGIN, payload: data.user});
 				dispatch({type: SET_LOGIN_VISIBLE, payload: false});
 				dispatch({type: SET_GAMEINFO_FOLDED, payload: 2});
-				socket.emit('client.user.login', data._id);
-				window.localStorage.setItem('username', data.username);
+				socket.emit('client.user.login', data.user._id);
+				window.localStorage.setItem('username', data.user.username);
 			} else {
 				dispatch({type: NOTIFY, payload: {
-					message: 'wrong username or password'
+					message: data.message
 				}});
 			}
 		});

@@ -68,7 +68,7 @@ export default function(state = initialState, { type, payload }) {
 				...state.notifications, 
 				{
 					...payload,
-					key: Date.now(),
+					key: payload.key || Date.now(),
 					dismissAfter: payload.dismissAfter || 3000
 				}
 			]

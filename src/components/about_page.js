@@ -19,7 +19,8 @@ class AboutPage extends Component {
 					height: clientHeight
 				}}
 			>
-				
+				<h3>作者很懒，什么都没写。。。</h3>
+				<h3>The author is too lazy to write some css...</h3>
 			</div>
 		);
 	}

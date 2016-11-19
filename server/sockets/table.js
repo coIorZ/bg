@@ -60,17 +60,22 @@ export default function(socket, io, store) {
 			payload,
 		};
 		store.dispatch(action);
-		const board = new Board(getCore(payload.game).create({...payload}));
+		let board = new Board(getCore(payload.game).create({...payload}));
+		board.table.started = true;
 		board.save((err) => {
 			if(err) throw 'database error: create board';
 			io.emit('server.table.start', payload);
 		});
 	});
 
-	socket.on('client.table.board', (tableId) => {
+	socket.on('client.table.board', tableId => {
 		socket.join(tableId);
 		Board.findOne({'table._id': tableId}, (err, payload) => {
 			socket.emit('server.table.board', payload);
 		});
+	});
+
+	socket.on('client.board.leave', tableId => {
+		socket.leave(tableId);
 	});
 };

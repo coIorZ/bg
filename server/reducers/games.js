@@ -10,6 +10,16 @@ const initialState = [{
 	max_players : 4
 }, {
 	id : '2', 
+	name : 'The Resistance: Avalon', 
+	length : 30, 
+	designer : 'Don Eskridge', 
+	img_url : './img/avalon/avalon.jpg', 
+	rule_url: 'files/avalon.pdf',
+	weight : 1.78, 
+	min_players : 5, 
+	max_players : 10
+}, {
+	id : '3', 
 	name : 'Coup', 
 	length : 15, 
 	designer : 'Rikki Tahta', 
@@ -19,7 +29,7 @@ const initialState = [{
 	min_players : 2, 
 	max_players : 6
 }, {
-	id : '3', 
+	id : '4', 
 	name : 'Bloody Inn', 
 	length : 45, 
 	designer : 'Nicolas Robert', 

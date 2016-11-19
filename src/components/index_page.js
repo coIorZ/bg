@@ -81,7 +81,8 @@ class IndexPage extends Component {
 	}
 
 	handleLogout() {
-		this.props.logout();
+		const { logout, user } = this.props;
+		logout(user._id);
 	}
 
 	handleSubmit(e) {

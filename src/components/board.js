@@ -7,11 +7,16 @@ import LoveLetter from './love_letter/love_letter';
 import Coup from './coup/coup';
 import styles from './board.css';
 
+import socket from '../sockets';
 import { GAME_LOVE_LETTER, GAME_COUP, GAME_TNL, GAME_INNOVATION } from '../../core';
-
 import { setBoardVisible } from '../actions';
 
 class Board extends Component {
+	constructor(props) {
+		super(props);
+		this.handleback = this.handleback.bind(this);
+	}
+	
 	render() {
 		const { boardVisible, gameId, games, clientHeight } = this.props;
 		if(!boardVisible) {
@@ -42,20 +47,27 @@ class Board extends Component {
 				{gameBoard}
 				<button 
 					className={styles.btn}
-					onClick={() => this.props.setBoardVisible(false)}
+					onClick={this.handleback}
 				>
 					back
 				</button>
 			</div>
 		);
 	}
+
+	handleback() {
+		const { board, setBoardVisible } = this.props;
+		setBoardVisible(false);
+		socket.emit('client.board.leave', board.table._id);
+	}
 }
 
-function mapStateToProps({ client, games }) {
+function mapStateToProps({ client, games, board }) {
 	return {
 		boardVisible: client.boardVisible,
 		clientHeight: client.clientHeight,
-		games
+		games,
+		board
 	};
 }
 
