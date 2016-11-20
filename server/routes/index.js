@@ -39,7 +39,6 @@ export default function(router, store) {
 	});
 
 	router.post('/user/logout', (req, res) => {
-		console.log(req.body.id);
 		const index = users.indexOf(req.body.id);
 		if(index >= 0) {
 			const userId = users.splice(index, 1)[0];

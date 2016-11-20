@@ -3,23 +3,23 @@
 	margin: 10px;
 	padding: 0 5px;
 	min-width: 400px;
-	height: 115px;
-	box-shadow: 0 0 10px rgba(0,0,0,.5), inset 0 0 0 1px rgba(255,255,255,0.1);
+	height: 120px;
+	box-shadow: 0 0 12px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.1);
 	border-radius: 5px;
 	background-color: rgba(100, 100, 100, .8);
 }
 
 .container.active {	
-	box-shadow: 0 0 20px rgba(255,165,0,.9), inset 0 0 0 1px rgba(255,255,255,0.1);
+	border: 1px solid #ffa500;
 }
 
 .container.selectable {
-	box-shadow: 0 0 20px rgba(0,255,0,.9), inset 0 0 0 1px rgba(255,255,255,0.1);
+	border: 1px solid #00ff00;
 	cursor: pointer;
 }
 
 .container.selected {
-	box-shadow: 0 0 20px rgba(0,191,255,.9), inset 0 0 0 1px rgba(255,255,255,0.1);
+	border: 1px solid #00BFFF;
 }
 
 .container.out {

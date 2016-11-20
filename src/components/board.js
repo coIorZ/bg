@@ -16,7 +16,7 @@ class Board extends Component {
 		super(props);
 		this.handleback = this.handleback.bind(this);
 	}
-	
+
 	render() {
 		const { boardVisible, gameId, games, clientHeight } = this.props;
 		if(!boardVisible) {
@@ -39,7 +39,7 @@ class Board extends Component {
 				<div className={styles.mask}>
 					<div 
 						className={styles['mask-bg']}
-						style={{backgroundImage: `url(${_.find(games, game => game.id === gameId).img_url})`}}
+						style={{backgroundImage: `url(${_.find(games, game => game.id === gameId).bg_url})`}}
 					>
 					</div>
 					<div className={styles['mask-mask']}></div>

@@ -39,11 +39,11 @@ class LoveLetter extends Component {
 				style={{height: clientHeight}}
 			>
 				<div className={styles['deck-holder']}>
-					<div className={styles.area} style={{marginRight: 20}}>
+					<div className={styles.holder} style={{marginRight: 40}}>
 						<div className={styles.label}>Deck({deck.length})</div>
 						<Card display={0} />
 					</div>
-					<div className={styles.area}>
+					<div className={styles.holder}>
 						<div className={styles.label}>Removed</div>
 						<Card display={0} />
 						{removedFaceUp.length ? 

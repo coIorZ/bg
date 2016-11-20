@@ -45,6 +45,7 @@
 
 .dash {
 	border-bottom: 1px dotted white;
+	cursor: default;
 }
 
 .tip {

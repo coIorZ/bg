@@ -42,9 +42,9 @@
 
 .area {
 	padding: 0 5px;
-	box-shadow: 0 0 10px rgba(0,0,0,.9), inset 0 0 0 1px rgba(255,255,255,0.1);
+	box-shadow: 0 0 1px rgba(0,0,0,.9), inset 0 0 0 1px rgba(255,255,255,0.1);
 	border-radius: 5px;
-	background-color: rgba(50, 50, 50, .8);
+	background-color: rgba(50, 50, 50, .6);
 }
 
 .wrapper {
