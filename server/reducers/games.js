@@ -4,7 +4,7 @@ const initialState = [{
 	length : 20, 
 	designer : 'Seiji Kanai', 
 	img_url : './img/love_letter/love_letter.jpg', 
-	bg_url: './img/love_letter/game.jpg',
+	bg_url: './img/love_letter/bg_1.jpg',
 	rule_url: 'files/love_letter.pdf',
 	weight : 1.21, 
 	min_players : 2, 

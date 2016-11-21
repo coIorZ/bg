@@ -73,6 +73,7 @@ function drawCard(data, player) {
 			player.hands.push(data.deck.shift());
 		} else {
 			player.hands.push(data.removedFaceDown);
+			data.removedFaceDown = 0;
 		}
 		data.logs.push(`|p:${player.id}| draws a card.`);
 	}
@@ -247,7 +248,7 @@ function highestWinning(data) {
 	let remainingPlayers = _.without(players, player => player.out);
 	let player = _.maxBy(remainingPlayers, p => p.hands[0]);
 	let maxPlayers = _.filter(players, p => p.hands[0] === player.hands[0]);
-	player = _.maxBy(maxPlayers, p => p.discarded.length);
+	player = _.maxBy(maxPlayers, p => _.sum(p.discarded));
 	_.each(remainingPlayers, p => {
 		if(p.id !== player.id) {
 			p.out = true;

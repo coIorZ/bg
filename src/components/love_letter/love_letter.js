@@ -45,7 +45,10 @@ class LoveLetter extends Component {
 					</div>
 					<div className={styles.holder}>
 						<div className={styles.label}>Removed</div>
-						<Card display={0} />
+						{removedFaceDown ?
+							<Card display={0} />
+							: null
+						}
 						{removedFaceUp.length ? 
 							_.map(removedFaceUp, (id, i) => <Card card={CARDS[id]} display={1} key={i} />) 
 							: null

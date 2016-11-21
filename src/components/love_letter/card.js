@@ -22,7 +22,10 @@ class Card extends Component {
 		switch(this.props.display) {
 		case 0:
 			return (
-				<div className={styles.card}>
+				<div 
+					className={styles.card}
+					style={{marginRight: this.props.mr || 2}}
+				>
 					<span className={styles.small}>Back</span>
 					<img src={'./img/love_letter/back.jpg'} className={styles.bg} />
 				</div>
@@ -38,6 +41,7 @@ class Card extends Component {
 						[styles.playable]: playable,
 						[styles.forward]: this.state.forward
 					})}
+					style={{marginRight: this.props.mr || 2}}
 					onMouseEnter={this.handleMouseEnter}
 					onMouseLeave={this.handleMouseLeave}
 					onMouseDown={this.handleMouseDown}

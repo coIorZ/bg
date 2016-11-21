@@ -69,6 +69,8 @@ export default function(state = initialState, { type, payload }) {
 				{
 					...payload,
 					key: payload.key || Date.now(),
+					activeBarStyle: {zIndex: 1000},
+					barStyle: {zIndex: 1000},
 					dismissAfter: payload.dismissAfter || 3000
 				}
 			]

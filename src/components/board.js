@@ -39,7 +39,7 @@ class Board extends Component {
 				<div className={styles.mask}>
 					<div 
 						className={styles['mask-bg']}
-						style={{backgroundImage: `url(${_.find(games, game => game.id === gameId).bg_url})`}}
+						style={{backgroundImage: `url(./img/board.jpg)`}}
 					>
 					</div>
 					<div className={styles['mask-mask']}></div>
@@ -47,7 +47,7 @@ class Board extends Component {
 				{gameBoard}
 				<button 
 					className={styles.btn}
-					onClick={this.handleback}
+					onMouseDown={this.handleback}
 				>
 					back
 				</button>
@@ -62,11 +62,10 @@ class Board extends Component {
 	}
 }
 
-function mapStateToProps({ client, games, board }) {
+function mapStateToProps({ client, board }) {
 	return {
 		boardVisible: client.boardVisible,
 		clientHeight: client.clientHeight,
-		games,
 		board
 	};
 }

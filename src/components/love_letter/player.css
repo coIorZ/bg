@@ -2,28 +2,28 @@
 	position: relative;
 	margin: 10px;
 	padding: 0 5px;
-	min-width: 400px;
+	width: 320px;
 	height: 120px;
-	box-shadow: 0 0 12px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.1);
+	box-shadow: 0 0 10px rgba(0,0,0,0.9), inset 0 0 0 2px rgba(255,255,255,0.1);
 	border-radius: 5px;
-	background-color: rgba(100, 100, 100, .8);
+	background-color: rgba(80, 80, 80, .2);
 }
 
 .container.active {	
-	border: 1px solid #ffa500;
+	border: 2px solid #ffa500;
 }
 
 .container.selectable {
-	border: 1px solid #00ff00;
+	border: 2px solid #00ff00;
 	cursor: pointer;
 }
 
 .container.selected {
-	border: 1px solid #00BFFF;
+	border: 2px solid #00BFFF;
 }
 
 .container.out {
-	opacity: .5;
+	opacity: .4;
 	box-shadow: none;
 }
 
