@@ -67,7 +67,7 @@ export function login(username, password, isRemember) {
 			if(data.user) {
 				dispatch({type: LOGIN, payload: data.user});
 				dispatch({type: SET_LOGIN_VISIBLE, payload: false});
-				dispatch({type: SET_GAMEINFO_FOLDED, payload: 2});
+				// dispatch({type: SET_GAMEINFO_FOLDED, payload: 2});
 				socket.emit('client.user.login', data.user._id);
 				window.localStorage.setItem('username', data.user.username);
 			} else {

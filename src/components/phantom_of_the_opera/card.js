@@ -18,20 +18,32 @@ class Card extends Component {
 	}
 
 	render() {
-		switch(this.props.display) {
+		const { display } = this.props;
+		switch(display) {
+		case -1:
+			return (
+				<div 
+					className={styles.card}
+					style={{marginRight: this.props.mr || 4}}
+				>
+					<span className={styles.small}>Alibi Back</span>
+					<img src={'./img/phantom_of_the_opera/alibi_back.jpg'} className={styles.bg} />
+				</div>
+			);
+
 		case 0:
 			return (
 				<div 
 					className={styles.card}
 					style={{marginRight: this.props.mr || 4}}
 				>
-					<span className={styles.small}>Back</span>
-					<img src={'./img/love_letter/back.jpg'} className={styles.bg} />
+					<span className={styles.small}>Role Back</span>
+					<img src={'./img/phantom_of_the_opera/role_back.jpg'} className={styles.bg} />
 				</div>
 			);
 
 		case 1:
-			const { card, display, playable } = this.props;
+			const { card, playable } = this.props;
 			const { name, value, text, img } = card;
 			return (
 				<div 

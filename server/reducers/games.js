@@ -1,5 +1,9 @@
+import { 
+	GAME_LOVE_LETTER, GAME_PHANTOM_OF_THE_OPERA, GAME_The_RESISTANCE_AVALON, GAME_COUP 
+} from '../../core';
+
 const initialState = [{
-	id : '1', 
+	id : GAME_LOVE_LETTER, 
 	name : 'Love Letter', 
 	length : 20, 
 	designer : 'Seiji Kanai', 
@@ -10,7 +14,7 @@ const initialState = [{
 	min_players : 2, 
 	max_players : 4
 }, {
-	id : '2', 
+	id : GAME_PHANTOM_OF_THE_OPERA, 
 	name : "Le Fantôme de l'Opéra", 
 	length : 30, 
 	designer : 'Bruno Cathala', 
@@ -20,7 +24,7 @@ const initialState = [{
 	min_players : 2, 
 	max_players : 2
 }, {
-	id : '3', 
+	id : GAME_The_RESISTANCE_AVALON, 
 	name : 'The Resistance: Avalon', 
 	length : 30, 
 	designer : 'Don Eskridge', 
@@ -30,7 +34,7 @@ const initialState = [{
 	min_players : 5, 
 	max_players : 10
 }, {
-	id : '4', 
+	id : GAME_COUP, 
 	name : 'Coup', 
 	length : 15, 
 	designer : 'Rikki Tahta', 

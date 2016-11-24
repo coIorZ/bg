@@ -4,11 +4,11 @@ import cx from 'classnames';
 import _ from 'lodash';
 
 import LoveLetter from './love_letter/love_letter';
-import Coup from './coup/coup';
+import POTO from './phantom_of_the_opera/phantom_of_the_opera';
 import styles from './board.css';
 
 import socket from '../sockets';
-import { GAME_LOVE_LETTER, GAME_COUP, GAME_TNL, GAME_INNOVATION } from '../../core';
+import { GAME_LOVE_LETTER, GAME_PHANTOM_OF_THE_OPERA } from '../../core';
 import { setBoardVisible } from '../actions';
 
 class Board extends Component {
@@ -26,6 +26,9 @@ class Board extends Component {
 		switch(gameId) {
 		case GAME_LOVE_LETTER:
 			gameBoard = <LoveLetter />;
+			break;
+		case GAME_PHANTOM_OF_THE_OPERA:
+			gameBoard = <POTO />;
 			break;
 		}
 		return (

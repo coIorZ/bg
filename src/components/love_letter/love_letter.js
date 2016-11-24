@@ -26,7 +26,6 @@ class LoveLetter extends Component {
 	}
 
 	render() {
-		let a = this.props.board;
 		const { clientHeight, board, users, user, logs } = this.props;
 		const { table, data } = board;
 		const { deck, players, activePlayer, vp, removedFaceDown, removedFaceUp, phase, cardId, effect } = data;

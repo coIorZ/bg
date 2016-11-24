@@ -15,7 +15,7 @@ export default class Player extends Component {
 	render() {
 		const { player, user, users, active, selectable, selected, out, revealHands, confirmBtn } = this.props;
 		const n = player.discarded.length;
-		const mr = n > 5 ? (300 - 60 * n) / (n - 1) : 2;
+		const mr = n > 5 ? (310 - 60 * n) / (n - 1) : 4;
 		return (
 			<div 
 				className={cx({

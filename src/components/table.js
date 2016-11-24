@@ -94,7 +94,7 @@ class Table extends Component {
 
 	startTable() {
 		const { table, notify } = this.props;
-		if(table.game !== '1') {
+		if(table.game !== '1' && table.game !== '2') {
 			notify({message: 'this game is still in progress'});
 			return;
 		}

@@ -1,0 +1,32 @@
+.container {
+	position: relative;
+	color: white;
+}
+
+.board {
+	position: absolute;
+	left: 300px;
+	width: 800px;
+	height: 450px;
+	box-shadow: 0 0 20px rgba(0, 0, 0, .6);
+}
+
+.bg {
+	width: 800px;
+	height: 450px;
+}
+
+.label {
+	position: absolute;
+	top: 0;
+	left: 2px;
+	color: white;
+	font-size: 12px;
+	background-color: rgba(0, 0, 0, .6);
+	z-index: 5;
+}
+
+.roles-holder {
+	position: absolute;
+	left: 20px;
+}
