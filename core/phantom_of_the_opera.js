@@ -22,7 +22,7 @@ registerCard(13, 'Christine Daeé', 5, '', './img/phantom_of_the_opera/christin
 registerCard(14, 'M. Moncharmin', 6, '', './img/phantom_of_the_opera/moncharmin_i.jpg');
 registerCard(15, 'M. Richard', 7, '', './img/phantom_of_the_opera/richard_i.jpg');
 registerCard(16, 'The Persian', 8, '', './img/phantom_of_the_opera/persian_i.jpg');
-registerCard(17, 'Phantom', 9, '', './img/phantom_of_the_opera/phantom.png');
+registerCard(17, 'Phantom', 9, '', './img/phantom_of_the_opera/phantom.jpg');
 
 export { CARDS };
 
@@ -33,22 +33,24 @@ function registerToken(id, value, img) {
 	TOKENS[id] = { id, value, img };
 }
 
-registerToken(1, 1, './img/phantom_of_the_opera/raoul_t.jpg');
-registerToken(2, 2, './img/phantom_of_the_opera/meg_t.jpg');
-registerToken(3, 3, './img/phantom_of_the_opera/madame_t.jpg');
-registerToken(4, 4, './img/phantom_of_the_opera/joseph_t.jpg');
-registerToken(5, 5, './img/phantom_of_the_opera/christine_t.jpg');
-registerToken(6, 6, './img/phantom_of_the_opera/moncharmin_t.jpg');
-registerToken(7, 7, './img/phantom_of_the_opera/richard_t.jpg');
-registerToken(8, 8, './img/phantom_of_the_opera/persian_t.jpg');
-registerToken(9, 1, './img/phantom_of_the_opera/raoul_t_i.jpg');
-registerToken(10, 2, './img/phantom_of_the_opera/meg_t_i.jpg');
-registerToken(11, 3, './img/phantom_of_the_opera/madame_t_i.jpg');
-registerToken(12, 4, './img/phantom_of_the_opera/joseph_t_i.jpg');
-registerToken(13, 5, './img/phantom_of_the_opera/christine_t_i.jpg');
-registerToken(14, 6, './img/phantom_of_the_opera/moncharmin_t_i.jpg');
-registerToken(15, 7, './img/phantom_of_the_opera/richard_t_i.jpg');
-registerToken(16, 8, './img/phantom_of_the_opera/persian_t_i.jpg');
+registerToken(1, 1, './img/phantom_of_the_opera/raoul_t.png');
+registerToken(2, 2, './img/phantom_of_the_opera/meg_t.png');
+registerToken(3, 3, './img/phantom_of_the_opera/madame_t.png');
+registerToken(4, 4, './img/phantom_of_the_opera/joseph_t.png');
+registerToken(5, 5, './img/phantom_of_the_opera/christine_t.png');
+registerToken(6, 6, './img/phantom_of_the_opera/moncharmin_t.png');
+registerToken(7, 7, './img/phantom_of_the_opera/richard_t.png');
+registerToken(8, 8, './img/phantom_of_the_opera/persian_t.png');
+registerToken(9, 1, './img/phantom_of_the_opera/raoul_t_i.png');
+registerToken(10, 2, './img/phantom_of_the_opera/meg_t_i.png');
+registerToken(11, 3, './img/phantom_of_the_opera/madame_t_i.png');
+registerToken(12, 4, './img/phantom_of_the_opera/joseph_t_i.png');
+registerToken(13, 5, './img/phantom_of_the_opera/christine_t_i.png');
+registerToken(14, 6, './img/phantom_of_the_opera/moncharmin_t_i.png');
+registerToken(15, 7, './img/phantom_of_the_opera/richard_t_i.png');
+registerToken(16, 8, './img/phantom_of_the_opera/persian_t_i.png');
+
+export { TOKENS };
 
 
 // ---------- rooms ----------
@@ -110,7 +112,7 @@ function setup(players) {
 		alibis: []
 	};
 	for(let i = 0; i < 11; i++) {
-		if(alibis[i] !== 9) {
+		if(alibis[i] !== 17) {
 			phantom.phantom = alibis.splice(i, 1)[0];
 			break;
 		}

@@ -4,6 +4,7 @@ import cx from 'classnames';
 
 import styles from './card.css';
 
+import { CARDS, TOKENS } from '../../../core/phantom_of_the_opera';
 import { setCard } from '../../actions';
 
 class Card extends Component {
@@ -18,13 +19,13 @@ class Card extends Component {
 	}
 
 	render() {
-		const { display } = this.props;
+		const { display, id, playable, mr } = this.props;
 		switch(display) {
 		case -1:
 			return (
 				<div 
 					className={styles.card}
-					style={{marginRight: this.props.mr || 4}}
+					style={{marginRight: mr || 4}}
 				>
 					<span className={styles.small}>Alibi Back</span>
 					<img src={'./img/phantom_of_the_opera/alibi_back.jpg'} className={styles.bg} />
@@ -35,7 +36,7 @@ class Card extends Component {
 			return (
 				<div 
 					className={styles.card}
-					style={{marginRight: this.props.mr || 4}}
+					style={{marginRight: mr || 4}}
 				>
 					<span className={styles.small}>Role Back</span>
 					<img src={'./img/phantom_of_the_opera/role_back.jpg'} className={styles.bg} />
@@ -43,8 +44,7 @@ class Card extends Component {
 			);
 
 		case 1:
-			const { card, playable } = this.props;
-			const { name, value, text, img } = card;
+			const { name, value, text, img } = CARDS[id];
 			return (
 				<div 
 					className={cx({
@@ -52,13 +52,13 @@ class Card extends Component {
 						[styles.playable]: playable,
 						[styles.forward]: this.state.forward
 					})}
-					style={{marginRight: this.props.mr || 4}}
+					style={{marginRight: mr || 4}}
 					onMouseEnter={this.handleMouseEnter}
 					onMouseLeave={this.handleMouseLeave}
 					onMouseDown={this.handleMouseDown}
 				>
-					<span className={styles.small}>{name}</span>
-					<img src={img} className={styles.bg} />
+					<span className={styles.small}>{CARDS[id].name}</span>
+					<img src={CARDS[id].img} className={styles.bg} />
 				</div>
 			);
 
@@ -66,12 +66,23 @@ class Card extends Component {
 			return (
 				<span 
 					className={styles.text}
-					style={{color: this.props.card.color}}
+					style={{color: CARDS[id].color}}
 					onMouseEnter={this.handleMouseEnter}
 					onMouseLeave={this.handleMouseLeave}
 				>
-					{this.props.card.name}
+					{CARDS[id].name}
 				</span>
+			);
+
+		case 3:
+			return (
+				<div
+					className={styles.token}
+					onMouseEnter={this.handleMouseEnter}
+					onMouseLeave={this.handleMouseLeave}
+				>
+					<img src={TOKENS[id].img} className={styles['token-img']} />
+				</div>
 			);
 
 		default:
@@ -80,20 +91,20 @@ class Card extends Component {
 	}
 
 	handleMouseEnter() {
-		const { card, setCard, playable } = this.props;
-		setCard(card);
+		const { id, setCard, playable } = this.props;
+		setCard(CARDS[id]);
 		if(playable) this.setState({forward: true});
 	}
 
 	handleMouseLeave() {
-		const { card, setCard, playable } = this.props;
+		const { id, setCard, playable } = this.props;
 		setCard(null);
 		if(playable) this.setState({forward: false});
 	}
 
 	handleMouseDown() {
-		const { onMouseDown, card, playable } = this.props;
-		if(playable && onMouseDown) onMouseDown(card);
+		const { onMouseDown, id, playable } = this.props;
+		if(playable && onMouseDown) onMouseDown(CARDS[id]);
 	}
 };
 
