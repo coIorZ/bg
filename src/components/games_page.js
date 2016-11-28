@@ -7,34 +7,25 @@ import GameInfo from './game_info';
 import Board from './board';
 import styles from './games_page.css';
 
-import { setGameInfoFolded, setHeaderPage } from '../actions';
+import { setGameInfoFolded, setHeaderPage, fetchGames, setGameInfoGame } from '../actions';
 
 class GamesPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			y: 0,
-			game: {}
+			y: 0
 		};
 		this.handleWheel = this.handleWheel.bind(this);
 	}
 
 	componentDidMount() {
-		if(this.props.games) {
-			this.setState({game: this.props.games[0] || {}});
-		}
+		this.props.fetchGames();
 		this.props.setHeaderPage('play');
 	}
 
-	componentWillReceiveProps({ games }) {
-		if(games != this.props.games) {
-			this.setState({game: games[0] || {}});
-		}
-	}
-
 	render() {
-		const { clientHeight, clientWidth, games, folded } = this.props;
-		const { y, game } = this.state;
+		const { clientHeight, clientWidth, games, game } = this.props;
+		const { y } = this.state;
 		if(!games) {
 			return null;
 		}
@@ -62,7 +53,7 @@ class GamesPage extends Component {
 						</div>
 					}
 				</Motion>
-				<GameInfo game={game} />
+				<GameInfo />
 				<Board gameId={game.id} />
 			</div>
 		);
@@ -82,10 +73,8 @@ class GamesPage extends Component {
 			let n = y / clientHeight | 0;
 			n = Math.abs(y % clientHeight) >= clientHeight / 2 ? n - 1 : n;
 			y = clientHeight * n;
-			this.setState({
-				y,
-				game: games[-1 * n]
-			});
+			this.setState({ y });
+			this.props.setGameInfoGame(games[-1 * n]);
 			this.props.setGameInfoFolded(1);
 		}, 100);
 	}
@@ -95,8 +84,9 @@ function mapStateToProps({ client, games }) {
 	return {
 		clientHeight: client.clientHeight,
 		clientWidth: client.clientWidth,
+		game: client.gameInfo.game,
 		games
 	};
 }
 
-export default connect(mapStateToProps, { setGameInfoFolded, setHeaderPage })(GamesPage);
+export default connect(mapStateToProps, { setGameInfoFolded, setHeaderPage, fetchGames, setGameInfoGame })(GamesPage);

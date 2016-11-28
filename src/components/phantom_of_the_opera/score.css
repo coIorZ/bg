@@ -1,0 +1,36 @@
+.container {
+	position: absolute;
+	left: 40%;
+	top: 30%;
+	width: 500px;
+	background-color: rgba(100,100,100,.9);
+	padding: 20px 20px 10px;
+	border-radius: 10px;
+	box-shadow: 0 0 20px rgba(0,0,0,.9), inset 0 0 0 1px rgba(255,255,255,0.1);
+	z-index: 10;
+}
+
+.desc {
+	margin-top: 5px;
+	font-size: 10px;
+}
+
+.btn-holder {
+	margin-top: 10px;
+	text-align: center;
+}
+
+.btn {
+	display: inline-block;
+	padding: 2px 15px;
+	background-color: transparent;
+	border: 1px solid white;
+	border-radius: 10px;
+	cursor: pointer;
+	color: white;
+	transition: background-color .3s;
+}
+
+.btn:hover {
+	background-color: rgba(200,200,200, .6);
+}

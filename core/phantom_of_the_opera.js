@@ -99,6 +99,9 @@ function setup(players) {
 	const laCarlotta = 4;
 	const exit = 22;
 	const phase = 'play.card';
+	const cardId = 0;
+	const suspect = 8;
+	const actions = {move: false, effect: false, end: false};
 	let lock;
 	let rooms = {};
 	let roles = [];
@@ -135,8 +138,9 @@ function setup(players) {
 	roles.push({id: deck.shift(), available: true});
 	logs.push(`|p:${players[0]}| plays phantom.`);
 	logs.push(`|p:${players[1]}| plays investigator.`);
+	logs.push(`|hr:|`);
 
-	return { deck, alibis, turn, laCarlotta, exit, lock, rooms, roles, investigator, phantom, phase, logs };
+	return { deck, alibis, turn, laCarlotta, exit, lock, rooms, roles, investigator, phantom, phase, cardId, suspect, actions, logs };
 }
 
 function getCorridorByRooms(id1, id2) {
@@ -148,7 +152,360 @@ function getCorridorByRooms(id1, id2) {
 	}
 }
 
+function playCard(board, cardId) {
+	let data = board.data;
+	let { actions, turn, roles, investigator, phantom } = data;
+	data.logs = [`|p:${turn ? investigator.player : phantom.player}| plays |c:${cardId}|.`];
+	data.cardId = cardId;
+	data.phase = 'choose.action';
+	_.find(roles, r => r.id === cardId).available = false;
+	actions.move = true;
+	switch(cardId) {
+	case 1:
+	case 2:
+	case 5:
+	case 6:
+	case 8:
+		actions.effect = false;
+		actions.end = false;
+		break;
+	case 3:
+	case 4:
+	case 7:
+		actions.effect = true;
+		actions.end = false;
+		break;
+	}
+
+	return board;
+}
+
+function move(board) {
+	let data = board.data;
+	let { rooms, lock, cardId } = data;
+	const isMeg = CARDS[cardId].value === 2;
+	let room = _getRoomByCardId(rooms, cardId);
+	let count = room.tokens.length - 1;
+	let playableRooms = _around(room.id, lock);
+	if(isMeg) {
+		playableRooms = playableRooms.concat(ROOMS[room.id].passages);
+	}
+	if(count) {
+		while(count--) {
+			let res = [...playableRooms];
+			_.each(res, id => {
+				playableRooms = playableRooms.concat(_around(id, lock));
+				if(isMeg) {
+					playableRooms = playableRooms.concat(ROOMS[id].passages);
+				}
+			});
+			playableRooms = _.pull(_.uniq(playableRooms), room.id);
+		}
+	}
+	return playableRooms;
+}
+
+function _getRoomByCardId(rooms, id) {
+	return _.find(rooms, r => {
+		return r.tokens.indexOf(id) >= 0 || r.tokens.indexOf(id + 8) >= 0;
+	});
+}
+
+function _getTokenByCardId(room, id) {
+	return _.find(room.tokens, t => {
+		return t === id || t === id + 8;
+	});
+}
+
+function _pullTokenByCardId(room, id) {
+	for(let i = 0, len = room.tokens.length; i < len; i++) {
+		let token = room.tokens[i];
+		if(token === id || token === id + 8) {
+			return room.tokens.splice(i, 1)[0];
+		}
+	}
+}
+
+function _around(id, lock) {
+	let res = [];
+	const flag = CORRIDORS[lock].indexOf(id) >= 0;
+	_.each(ROOMS[id].corridors, corridor => {
+		if(!flag || CORRIDORS[lock].indexOf(corridor) < 0) {
+			res.push(corridor);
+		}
+	});
+	return res;
+}
+
+function action(board, payload) {
+	let data = board.data;
+	let { actions, cardId, rooms, turn, investigator, phantom, roles, lock, alibis, effect } = data;
+	let room, token, targetRoom, player;
+	data.logs = [];
+	switch(payload.action) {
+	case 'move':
+		room = _getRoomByCardId(rooms, cardId);
+		token = _pullTokenByCardId(room, cardId);
+		rooms[payload.roomId].tokens.push(token);
+		actions.move = false;
+		data.logs.push(`|p:${turn ? investigator.player : phantom.player}| moves |c:${token}| from |r:${room.id}| to |r:${payload.roomId}|.`);
+		switch(cardId) {
+		case 1:
+			let alibi = alibis.shift();
+			player = turn ? investigator : phantom;
+			player.alibis.push(alibi);
+			if(alibi === 17) {
+				data.laCarlotta += turn ? -1 : 1;
+			} else if(turn) {
+				room = _getRoomByCardId(rooms, alibi - 8);
+				_.each(room.tokens, (t, i) => {
+					if(t === alibi - 8) {
+						room.tokens[i] = alibi;
+						data.suspect--;
+					}
+				});
+			}
+			data.logs.push(`|p:${turn ? investigator.player : phantom.player}| draws an alibi card.`);
+			actions.end = true;
+			break;
+		case 2:
+		case 7:
+			actions.effect = false;
+			actions.end = true;
+			break;
+		case 3:
+		case 4:
+			actions.end = !actions.effect;
+			break;
+		case 5:
+			actions.effect = true;
+			actions.end = true;
+			break;
+		case 6:
+			actions.effect = true;
+			actions.end = true;
+			targetRoom = rooms[payload.roomId];
+			if(targetRoom.tokens.length === 1) {
+				actions.effect = false;
+			} else {
+				data.effect = {
+					to: targetRoom.id,
+					tokens: _.without(targetRoom.tokens, 6, 14),
+					rooms: _around(targetRoom.id, lock)
+				};
+			}
+			break;
+		case 8:
+			actions.effect = true;
+			actions.end = true;
+			if(!room.tokens.length) {
+				actions.effect = false;
+			} else {
+				data.effect = {
+					from: room.id,
+					to: payload.roomId
+				};
+			}
+			break;
+		}
+		break;
+
+	case 'effect':
+		actions.effect = false;
+		switch(cardId) {
+		case 3:
+			room = _getRoomByCardId(rooms, cardId);
+			token = _getTokenByCardId(room, cardId);
+			data.lock = payload.corridorId;
+			data.logs.push(`|c:${token}| moves the padlock.`);
+			actions.end = !actions.move;
+			break;
+		case 4:
+			room = _.find(rooms, r => !r.lit);
+			room.lit = true;
+			rooms[payload.roomId].lit = false;
+			room = _getRoomByCardId(rooms, cardId);
+			token = _getTokenByCardId(room, cardId);
+			data.logs.push(`|c:${token}| fails power of |r:${payload.roomId}|.`);
+			actions.end = !actions.move;
+			break;
+		case 5:
+			room = _getRoomByCardId(rooms, cardId);
+			token = _getTokenByCardId(room, cardId);
+			_.each(_around(room.id, lock), id => {
+				room.tokens = room.tokens.concat(rooms[id].tokens);
+				rooms[id].tokens = [];
+			});
+			data.logs.push(`|c:${token}| attracts characters in adjacent rooms.`);
+			break;
+		case 6:
+			room = _getRoomByCardId(rooms, cardId);
+			token = _getTokenByCardId(room, cardId);
+			_.pull(rooms[effect.to].tokens, payload.tokenId);
+			_.pull(effect.tokens, payload.tokenId);
+			rooms[payload.roomId].tokens.push(payload.tokenId);
+			if(!effect.tokens.length) {
+				actions.end = true;
+			}
+			data.logs.push(`|c:${token}| causes |c:${payload.tokenId}| to flee to |r:${payload.roomId}|.`);
+			break;
+		case 7:
+			room = _getRoomByCardId(rooms, cardId);
+			token = _pullTokenByCardId(room, cardId);
+			targetRoom = _getRoomByCardId(rooms, payload.tokenId);
+			room.tokens.push(payload.tokenId);
+			_.pull(targetRoom.tokens, payload.tokenId);
+			targetRoom.tokens.push(token);
+			actions.move = false;
+			actions.end = true;
+			data.logs.push(`|c:${token}| swap places with |c:${payload.tokenId}|.`);
+			break;
+		case 8:
+			_.pull(rooms[effect.from].tokens, payload.tokenId);
+			rooms[payload.roomId].tokens.push(payload.tokenId);
+			actions.end = true;
+			break;
+		}
+		break;
+
+	case 'end':
+		const n = _.filter(roles, role => role.available).length;
+		data.phase = 'play.card';
+		data.logs.push(`|hr:|`);
+		if(n !== 2) {
+			data.turn = !turn;
+		} 
+		if(n === 0) {
+			endRound(data);
+		}
+		break;
+	}
+	return board;
+}
+
+function endRound(data) {
+	let { deck, turn, rooms, phantom, exit } = data;
+	let room = _getRoomByCardId(rooms, phantom.phantom - 8);
+	let appear = !room.lit || room.tokens.length === 1;
+	_.each(rooms, r => {
+		_.each(r.tokens, (t, i) => {
+			if(t !== phantom.phantom - 8 && t <= 8 && ((appear && r.lit && r.tokens.length > 1) || (!appear && (!r.lit || r.tokens.length === 1)))) {
+				r.tokens[i] += 8;
+				data.suspect--;
+			}
+		});
+	});
+	data.logs.push(`Round ends. Phantom ${appear ? 'appears' : 'can not appear'}.`);
+	data.logs.push(`${data.suspect} remaining suspects.`);
+	data.logs.push(`|hr:|`);
+	if(data.suspect <= 1) {
+		investigatorWin(data);
+	} else {
+		data.laCarlotta += appear ? data.suspect + 1 : data.suspect;
+		if(data.laCarlotta >= exit) {
+			phantomWin(data);
+		} else {
+			if(deck.length) {
+				data.roles = deck.map(id => {
+					return { id, available: true};
+				});
+				data.deck = [];
+			} else {
+				data.roles = [];
+				data.deck = _.shuffle([1,2,3,4,5,6,7,8]);
+				data.roles.push({id: data.deck.shift(), available: true});
+				data.roles.push({id: data.deck.shift(), available: true});
+				data.roles.push({id: data.deck.shift(), available: true});
+				data.roles.push({id: data.deck.shift(), available: true});
+			}
+		}
+	}
+}
+
+function investigatorWin(data) {
+	data.phase = 'game';
+	data.winner = data.investigator;
+	data.logs.push(`|p:${data.winner.player}| wins the game!`);
+}
+
+function phantomWin(data) {
+	data.phase = 'game';
+	data.winner = data.phantom;
+	data.logs.push(`|p:${data.winner.player}| wins the game!`);
+}
+
+function effect(board, which) {
+	let data = board.data;
+	let { cardId, lock, rooms, effect } = data;
+	let playableRooms = [], tokens = [], corridors = [];
+	const action = 'effect';
+	switch(cardId) {
+	case 3:
+		corridors = _.pull([1,2,3,4,5,6,7,8,9,10,11], lock);
+		break;
+	case 4:
+		let room = _.find(rooms, r => !r.lit);
+		playableRooms = _.pull([1,2,3,4,5,6,7,8,9,10], room.id);
+		break;
+	case 6:
+		if(which === 'token') {
+			tokens = effect.tokens;
+		} else if(which === 'room') {
+			playableRooms = effect.rooms;
+		}
+		break;
+	case 7:
+		tokens = [1,2,3,4,5,6,8,9,10,11,12,13,14,16];
+		break;
+	case 8:
+		if(which === 'token') {
+			tokens = rooms[effect.from].tokens;
+		} else if(which === 'room') {
+			const n = rooms[effect.from].tokens.length + 1;
+			playableRooms = _path(effect.from, effect.to, n, lock);
+		}
+		break;
+	}
+	return { action, rooms: playableRooms, tokens, corridors };
+}
+
+function _path(from, to, n, lock) {
+	let path = [], steps = {}, step = 1;
+	steps[step] = _around(from, lock);
+	while(--n) {
+		_.each(steps[step++], id => {
+			steps[step] = steps[step] || [];
+			steps[step] = steps[step].concat(_around(id, lock));
+		});
+		steps[step] = _.uniq(steps[step]);
+	}
+	_.each(steps, (rooms, step) => {
+		if(rooms.indexOf(to) >= 0) {
+			path = path.concat(_step(to, steps, +step, []));
+		}
+	});
+	return _.uniq(path).concat(to);
+}
+
+function _step(to, steps, step, path) {
+	while(--step) {
+		_.each(ROOMS[to].corridors, c => {
+			if(steps[step].indexOf(c) >= 0) {
+				path.push(c);
+				if(step > 1) {
+					path = path.concat(_step(c, steps, step, path));
+				}
+			}
+		})
+	}
+	return path;
+}
+
 
 export default {
-	create
+	create,
+	playCard,
+	action,
+	move,
+	effect
 };

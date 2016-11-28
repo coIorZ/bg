@@ -3,13 +3,13 @@ import { createStore } from 'redux';
 
 import table from './table';
 import loveLetter from './love_letter';
-import avalon from './avalon';
+import POTO from './phantom_of_the_opera';
+// import avalon from './avalon';
 
 export default function(io, store) {
 	io.on('connection', (socket) => {
 		console.log('---------- a socket connected ----------');
 
-		socket.emit('server.game', store.getState().games);
 		socket.emit('server.user', store.getState().users);
 		socket.emit('server.message', store.getState().messages);
 
@@ -33,6 +33,7 @@ export default function(io, store) {
 
 		table(socket, io, store);
 		loveLetter(socket, io, store);
-		avalon(socket, io, store);
+		POTO(socket, io, store);
+		// avalon(socket, io, store);
 	});
 };

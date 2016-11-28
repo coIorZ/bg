@@ -18,12 +18,12 @@ class Board extends Component {
 	}
 
 	render() {
-		const { boardVisible, gameId, games, clientHeight } = this.props;
+		const { boardVisible, clientHeight } = this.props;
 		if(!boardVisible) {
 			return null
 		}
 		let gameBoard = null;
-		switch(gameId) {
+		switch(boardVisible) {
 		case GAME_LOVE_LETTER:
 			gameBoard = <LoveLetter />;
 			break;

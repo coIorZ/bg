@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import Card from './card';
 import styles from './log.css';
 
 import { CARDS } from '../../../core/phantom_of_the_opera';
@@ -24,12 +25,15 @@ export default class Log extends Component {
 					let pieces = log.split('|');
 					return <div className={styles.line} key={i}>
 								{pieces.map((piece, j) => {
-									let str = null;
+									let str, id;
 									if(str = piece.match(/^c:(\w+)/)) {
-										let id = str[1];
-										return <Card card={CARDS[id]} display={2} key={j} />;
+										id = str[1];
+										return <Card id={id} display={2} key={j} />;
 									} else if(piece.match(/^hr:/)) {
 										return <div className={styles.seperator} key={j}></div>;
+									} else if(str = piece.match(/^r:(\w+)/)) {
+										id = str[1];
+										return <div className={styles.room} key={j}>{id}</div>;
 									} else {
 										return <span key={j}>{piece}</span>;
 									}

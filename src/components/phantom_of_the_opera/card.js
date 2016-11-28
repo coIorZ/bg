@@ -19,7 +19,7 @@ class Card extends Component {
 	}
 
 	render() {
-		const { display, id, playable, mr } = this.props;
+		const { display, id, playable, used, mr } = this.props;
 		switch(display) {
 		case -1:
 			return (
@@ -50,7 +50,8 @@ class Card extends Component {
 					className={cx({
 						[styles.card]: true,
 						[styles.playable]: playable,
-						[styles.forward]: this.state.forward
+						[styles.forward]: this.state.forward && !used,
+						[styles.used]: used
 					})}
 					style={{marginRight: mr || 4}}
 					onMouseEnter={this.handleMouseEnter}
@@ -77,9 +78,13 @@ class Card extends Component {
 		case 3:
 			return (
 				<div
-					className={styles.token}
+					className={cx({
+						[styles.token]: true,
+						[styles.playable]: playable
+					})}
 					onMouseEnter={this.handleMouseEnter}
 					onMouseLeave={this.handleMouseLeave}
+					onMouseDown={this.handleMouseDown}
 				>
 					<img src={TOKENS[id].img} className={styles['token-img']} />
 				</div>

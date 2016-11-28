@@ -116,6 +116,7 @@ function mapStateToProps({ client, tables }) {
 		clientWidth: client.clientWidth,
 		clientHeight: client.clientHeight,
 		folded: client.gameInfo.folded,
+		game: client.gameInfo.game,
 		user: client.user,
 		tables
 	};

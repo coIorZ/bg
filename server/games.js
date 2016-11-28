@@ -1,8 +1,8 @@
 import { 
 	GAME_LOVE_LETTER, GAME_PHANTOM_OF_THE_OPERA, GAME_The_RESISTANCE_AVALON, GAME_COUP 
-} from '../../core';
+} from '../core';
 
-const initialState = [{
+export default [{
 	id : GAME_LOVE_LETTER, 
 	name : 'Love Letter', 
 	length : 20, 
@@ -54,10 +54,3 @@ const initialState = [{
 	min_players : 1,
 	max_players : 4
 }];
-
-export default function(state = initialState, { type, payload }) {
-	switch(type) {
-	default:
-		return state;
-	}
-};

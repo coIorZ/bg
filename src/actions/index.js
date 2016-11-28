@@ -19,6 +19,11 @@ export function setGameInfoFolded(payload) {
 	return {type: SET_GAMEINFO_FOLDED, payload};
 };
 
+export const SET_GAMEINFO_GAME = 'SET_GAMEINFO_GAME';
+export function setGameInfoGame(payload) {
+	return {type: SET_GAMEINFO_GAME, payload};
+};
+
 export const SET_LOGIN_VISIBLE = 'SET_LOGIN_VISIBLE';
 export function setLoginVisible(payload) {
 	return {type: SET_LOGIN_VISIBLE, payload};
@@ -37,6 +42,11 @@ export function setCard(payload) {
 export const SET_HEADER_PAGE = 'SET_HEADER_PAGE';
 export function setHeaderPage(payload) {
 	return {type: SET_HEADER_PAGE, payload};
+};
+
+export const SET_TABLEID = 'SET_TABLEID';
+export function setTableId(payload) {
+	return {type: SET_TABLEID, payload};
 };
 
 export const NOTIFY = 'NOTIFY';
@@ -93,8 +103,19 @@ export function userAuth() {
 
 // ---------- games ----------
 export const FETCH_GAMES = 'FETCH_GAMES';
-export function fetchGames(payload) {
-	return {type: FETCH_GAMES, payload};
+// export function fetchGames(payload) {
+// 	return {type: FETCH_GAMES, payload};
+// };
+export function fetchGames() {
+	const request = axios.get('api/games');
+	return (dispatch) => {
+		request.then(({ data }) => {
+			dispatch({type: FETCH_GAMES, payload: data});
+			if(data) {
+				dispatch({type: SET_GAMEINFO_GAME, payload: data[0]});
+			}
+		});
+	};
 };
 
 

@@ -1,6 +1,7 @@
 import _ from 'lodash';
 
 import User from '../models/users';
+import games from '../games';
 
 let users = [];
 
@@ -45,6 +46,10 @@ export default function(router, store) {
 			store.dispatch({type: 'USER_OFFLINE', payload: userId});
 			res.io.emit('server.user.offline', userId);
 		}
+	});
+
+	router.get('/games', (req, res) => {
+		res.json(games);
 	});
 	
 	return router;

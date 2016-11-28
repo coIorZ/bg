@@ -1,8 +1,8 @@
 import _ from 'lodash';
 
 import {
-	SET_CLIENTHEIGHT, SET_CLIENTWIDTH, SET_GAMEINFO_FOLDED, SET_LOGIN_VISIBLE, SET_BOARD_VISIBLE, SET_CARD
-	, SET_HEADER_PAGE, LOGIN, LOGOUT, USER_AUTH, NOTIFY, DISMISS_NOTIFICATION
+	SET_CLIENTHEIGHT, SET_CLIENTWIDTH, SET_GAMEINFO_FOLDED, SET_GAMEINFO_GAME, SET_LOGIN_VISIBLE, SET_BOARD_VISIBLE, SET_CARD
+	, SET_HEADER_PAGE, SET_TABLEID, LOGIN, LOGOUT, USER_AUTH, NOTIFY, DISMISS_NOTIFICATION
 } from '../actions';
 
 const notifyType = {
@@ -16,8 +16,10 @@ const initialState = {
 	clientHeight: document.documentElement.clientHeight,
 	clientWidth: document.documentElement.clientWidth,
 	gameInfo: {
-		folded: 1  // 0-folded  1-half  2-full
+		folded: 1,  // 0-folded  1-half  2-full
+		game: {}
 	},
+	tableId: null,
 	card: null,
 	page: 'cosmos',
 	loginVisible: false,
@@ -37,7 +39,25 @@ export default function(state = initialState, { type, payload }) {
 	case SET_GAMEINFO_FOLDED:
 		return {
 			...state,
-			gameInfo: {folded: payload}
+			gameInfo: {
+				...state.gameInfo,
+				folded: payload
+			}
+		};
+
+	case SET_GAMEINFO_GAME:
+		return {
+			...state,
+			gameInfo: {
+				...state.gameInfo,
+				game: payload
+			}
+		};
+
+	case SET_TABLEID:
+		return {
+			...state,
+			tableId: payload
 		};
 
 	case SET_LOGIN_VISIBLE:
