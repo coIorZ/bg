@@ -17,6 +17,10 @@ export default function(io, store) {
 			socket.emit('server.table', store.getState().tables);
 		});
 
+		socket.on('client.user.online', userId => {
+			io.emit('server.user.online', userId);
+		});
+
 		socket.on('client.message.new', payload => {
 			const message = {
 				user: payload.user,

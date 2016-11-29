@@ -19,7 +19,7 @@ class Card extends Component {
 	}
 
 	render() {
-		const { display, id, playable, used, mr } = this.props;
+		const { display, id, playable, used, myTurn, mr } = this.props;
 		switch(display) {
 		case -1:
 			return (
@@ -50,7 +50,7 @@ class Card extends Component {
 					className={cx({
 						[styles.card]: true,
 						[styles.playable]: playable,
-						[styles.forward]: this.state.forward && !used,
+						[styles.forward]: this.state.forward && !used && myTurn,
 						[styles.used]: used
 					})}
 					style={{marginRight: mr || 4}}

@@ -13,8 +13,12 @@ const socket = io();
 
 socket.on('connect', () => {
 	const tableId = store.getState().client.tableId;
+	const user = store.getState().client.user;
 	if(tableId) {
 		socket.emit('client.table.board', tableId);
+	}
+	if(user) {
+		socket.emit('client.user.online', user._id);
 	}
 	store.dispatch(notify({
 		message: 'Connected to server'

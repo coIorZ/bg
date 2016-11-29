@@ -141,6 +141,7 @@ class POTO extends Component {
 									display={1} 
 									playable={!watch && phase === 'play.card' && myTurn && role.available}
 									used={!role.available}
+									myTurn={myTurn}
 									key={role.id}
 									onMouseDown={this.handlePlayRole}
 								/>
@@ -362,8 +363,8 @@ export default connect(mapStateToProps, { setBoardVisible })(POTO);
 const roomUI = {
 	'1': {left: 250, top: 100, width: 170, height: 70},
 	'2': {left: 470, top: 100, width: 160, height: 90},
-	'3': {left: 650, top: 220, width: 110, height: 90},
-	'4': {left: 630, top: 330, width: 110, height: 80},
+	'3': {left: 650, top: 220, width: 135, height: 90},
+	'4': {left: 630, top: 330, width: 135, height: 80},
 	'5': {left: 465, top: 340, width: 140, height: 70},
 	'6': {left: 270, top: 340, width: 160, height: 90},
 	'7': {left: 70, top: 330, width: 150, height: 90},
