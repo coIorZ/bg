@@ -25,9 +25,15 @@ socket.on('connect', () => {
 	}));
 });
 
+socket.on('disconnect', () => {
+	store.dispatch(notify({
+		message: 'Disconnected from server'
+	}));
+});
+
 socket.on('reconnecting', () => {
 	store.dispatch(notify({
-		message: 'Disconnected from server. Trying to reconnect'
+		message: 'Trying to reconnect...'
 	}));
 });
 

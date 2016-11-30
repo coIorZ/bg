@@ -40,7 +40,7 @@ class POTO extends Component {
 	}
 
 	render() {
-		const { clientHeight, board, user, users, logs } = this.props;
+		const { clientHeight, clientWidth, board, user, users, logs } = this.props;
 		const { table, data } = board;
 		const { deck, alibis, turn, laCarlotta, exit, lock, rooms, roles, investigator, phantom, actions, phase, winner } = data;
 		const isPhantom = phantom.player === user._id;
@@ -56,7 +56,8 @@ class POTO extends Component {
 				<div 
 					className={styles.board}
 					style={{
-						top: (clientHeight - 450) / 2
+						top: (clientHeight - 450) / 2,
+						left: (clientWidth - 800) / 2
 					}}
 				>
 					<img src='./img/phantom_of_the_opera/board.jpg' className={styles.bg} />
@@ -132,7 +133,8 @@ class POTO extends Component {
 				<div 
 					className={styles['roles-holder']}
 					style={{
-						top: (clientHeight - 450) / 2 + 20
+						top: (clientHeight - 450) / 2 + 20,
+						left: (clientWidth - 800) / 2 - 280
 					}}
 				>
 					{roles.map(role => {
@@ -150,7 +152,8 @@ class POTO extends Component {
 				<div 
 					className={styles['actions-holder']}
 					style={{
-						top: (clientHeight - 450) / 2 + 130
+						top: (clientHeight - 450) / 2 + 130,
+						left: (clientWidth - 800) / 2 - 280
 					}}
 				>
 					<Actions 
@@ -196,7 +199,8 @@ class POTO extends Component {
 				<div 
 					className={styles['alibis-holder']}
 					style={{
-						top: (clientHeight - 450) / 2 - 104
+						top: (clientHeight - 450) / 2 - 104,
+						left: (clientWidth - 800) / 2 + 30
 					}}
 				>
 					{opponent.alibis.map((id, i) => {
@@ -210,13 +214,14 @@ class POTO extends Component {
 				<div 
 					className={styles['alibis-holder']}
 					style={{
-						top: (clientHeight + 450) / 2 + 20
+						top: (clientHeight + 450) / 2 + 20,
+						left: (clientWidth - 800) / 2 + 30
 					}}
 				>
 					{myself.alibis.map((id, i) => {
 						return <Card
 									id={id}
-									display={(isPhantom || id === 17) ? 1 : -1}
+									display={(!isPhantom || id === 17) ? 1 : -1}
 									key={i}
 							 	/>
 					})}
@@ -351,6 +356,7 @@ class POTO extends Component {
 function mapStateToProps({ client, board, users, logs }) {
 	return {
 		clientHeight: client.clientHeight,
+		clientWidth: client.clientWidth,
 		user: client.user,
 		board,
 		users,

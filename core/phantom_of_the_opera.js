@@ -336,7 +336,7 @@ function action(board, payload) {
 				room.tokens = room.tokens.concat(rooms[id].tokens);
 				rooms[id].tokens = [];
 			});
-			data.logs.push(`|c:${token}| attracts characters in adjacent rooms.`);
+			data.logs.push(`|c:${token}| attracts characters in all adjacent rooms.`);
 			break;
 		case 6:
 			room = _getRoomByCardId(rooms, cardId);
@@ -361,9 +361,12 @@ function action(board, payload) {
 			data.logs.push(`|c:${token}| swap places with |c:${payload.tokenId}|.`);
 			break;
 		case 8:
+			room = _getRoomByCardId(rooms, cardId);
+			token = _getTokenByCardId(room, cardId);
 			_.pull(rooms[effect.from].tokens, payload.tokenId);
 			rooms[payload.roomId].tokens.push(payload.tokenId);
 			actions.end = true;
+			data.logs.push(`|c:${token}| drops |c:${payload.tokenId}| in |r:${payload.roomId}|.`);
 			break;
 		}
 		break;

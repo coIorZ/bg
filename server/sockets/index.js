@@ -17,8 +17,9 @@ export default function(io, store) {
 			socket.emit('server.table', store.getState().tables);
 		});
 
-		socket.on('client.user.online', userId => {
-			io.emit('server.user.online', userId);
+		socket.on('client.user.online', payload => {
+			store.dispatch({type: 'USER_ONLINE', payload});
+			io.emit('server.user.online', payload);
 		});
 
 		socket.on('client.message.new', payload => {
