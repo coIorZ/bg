@@ -221,7 +221,7 @@ class POTO extends Component {
 					{myself.alibis.map((id, i) => {
 						return <Card
 									id={id}
-									display={(!isPhantom || id === 17) ? 1 : -1}
+									display={1}
 									key={i}
 							 	/>
 					})}
