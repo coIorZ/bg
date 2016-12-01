@@ -28,13 +28,10 @@
 
 .roles-holder {
 	position: absolute;
-	/*left: 20px;*/
 }
 
 .actions-holder {
 	position: absolute;
-	/*left: 20px;*/
-	width: 250px;
 }
 
 .player {
@@ -119,5 +116,4 @@
 
 .alibis-holder {
 	position: absolute;
-	/*left: 330px;*/
 }

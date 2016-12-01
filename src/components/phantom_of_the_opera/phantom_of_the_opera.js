@@ -10,7 +10,7 @@ import Log from './log';
 import CardViewer from '../card_viewer';
 import styles from './phantom_of_the_opera.css';
 
-import socket from '../../sockets';
+import { send } from '../../sockets';
 import poto, { CARDS, TOKENS } from '../../../core/phantom_of_the_opera';
 import { updateBoard, setBoardVisible } from '../../actions';
 
@@ -241,7 +241,7 @@ class POTO extends Component {
 
 	handlePlayRole(card) {
 		const { table, data } = this.props.board;
-		socket.emit(`client.poto.${data.phase}`, {
+		send(`client.poto.${data.phase}`, {
 			tableId: table._id,
 			cardId: card.id
 		});
@@ -260,7 +260,7 @@ class POTO extends Component {
 		const { board } = this.props;
 		switch(board.data.cardId) {
 			case 5:
-				socket.emit(`client.poto.${board.data.phase}`, {
+				send(`client.poto.${board.data.phase}`, {
 					tableId: board.table._id,
 					action: 'effect'
 				});
@@ -283,7 +283,7 @@ class POTO extends Component {
 			tokens: [],
 			corridors: []
 		});
-		socket.emit(`client.poto.${data.phase}`, {
+		send(`client.poto.${data.phase}`, {
 			tableId: table._id,
 			action: 'end'
 		});
@@ -293,14 +293,14 @@ class POTO extends Component {
 		const { table, data } = this.props.board;
 		const { action, rooms } = this.state;
 		if(action === 'move' && rooms.indexOf(roomId) >= 0) {
-			socket.emit(`client.poto.${data.phase}`, {
+			send(`client.poto.${data.phase}`, {
 				tableId: table._id,
 				roomId,
 				action
 			});
 			this.setState({rooms: []});
 		} else if(action === 'effect' && rooms.indexOf(roomId) >= 0) {
-			socket.emit(`client.poto.${data.phase}`, {
+			send(`client.poto.${data.phase}`, {
 				tableId: table._id,
 				roomId,
 				tokenId: this._tokenId,
@@ -321,7 +321,7 @@ class POTO extends Component {
 				this.setState(poto.effect(this.props.board, 'room'));
 				break;
 			default:
-				socket.emit(`client.poto.${data.phase}`, {
+				send(`client.poto.${data.phase}`, {
 					tableId: table._id,
 					tokenId,
 					action
@@ -335,7 +335,7 @@ class POTO extends Component {
 		const { table, data } = this.props.board;
 		const { action, corridors } = this.state;
 		if(corridors.indexOf(corridorId) >= 0) {
-			socket.emit(`client.poto.${data.phase}`, {
+			send(`client.poto.${data.phase}`, {
 				tableId: table._id,
 				corridorId,
 				action
@@ -346,7 +346,7 @@ class POTO extends Component {
 
 	handleConfirmGame() {
 		const { table, data } = this.props.board;
-		socket.emit(`client.poto.${data.phase}`, {
+		send(`client.poto.${data.phase}`, {
 			tableId: table._id
 		});
 		this.props.setBoardVisible(false);
@@ -357,6 +357,7 @@ function mapStateToProps({ client, board, users, logs }) {
 	return {
 		clientHeight: client.clientHeight,
 		clientWidth: client.clientWidth,
+		response: client.response,
 		user: client.user,
 		board,
 		users,

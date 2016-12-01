@@ -4,10 +4,8 @@ import store from '../store';
 
 import table from './table';
 import user from './user';
-import loveLetter from './love_letter';
-import poto from './phantom_of_the_opera';
 
-import { fetchGames, fetchMessages, newMessage, notify, dismissNotification } from '../actions';
+import { fetchMessages, newMessage, notify, setResponse, updateBoard, updateLogs } from '../actions';
 
 const socket = io();
 
@@ -47,7 +45,32 @@ socket.on('server.message.new', payload => {
 
 user(socket, store);
 table(socket, store);
-loveLetter(socket, store);
-poto(socket, store);
+
+// ---------- love letter ----------
+register('server.loveletter.play.card');
+register('server.loveletter.choose.player');
+register('server.loveletter.effect');
+register('server.loveletter.round');
+register('server.loveletter.game');
+
+// ---------- phantom of the opera ----------
+register('server.poto.play.card');
+register('server.poto.choose.action');
+register('server.poto.game');
 
 export default socket;
+
+export function send(event, payload) {
+	if(store.getState().client.response) {
+		store.dispatch(setResponse(false));
+		socket.emit(event, payload);
+	}
+};
+
+function register(event) {
+	socket.on(event, payload => {
+		store.dispatch(updateBoard(payload));
+		store.dispatch(updateLogs(payload));
+		store.dispatch(setResponse(true));
+	});
+};

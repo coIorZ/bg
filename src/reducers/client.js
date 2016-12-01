@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 import {
 	SET_CLIENTHEIGHT, SET_CLIENTWIDTH, SET_GAMEINFO_FOLDED, SET_GAMEINFO_GAME, SET_LOGIN_VISIBLE, SET_BOARD_VISIBLE, SET_CARD
-	, SET_HEADER_PAGE, SET_TABLEID, LOGIN, LOGOUT, USER_AUTH, NOTIFY, DISMISS_NOTIFICATION
+	, SET_HEADER_PAGE, SET_TABLEID, SET_RESPONSE, LOGIN, LOGOUT, USER_AUTH, NOTIFY, DISMISS_NOTIFICATION
 } from '../actions';
 
 const notifyType = {
@@ -25,7 +25,8 @@ const initialState = {
 	loginVisible: false,
 	boardVisible: false,
 	user: null,
-	notifications: []
+	notifications: [],
+	response: true
 };
 
 export default function(state = initialState, { type, payload }) {
@@ -71,6 +72,9 @@ export default function(state = initialState, { type, payload }) {
 
 	case SET_HEADER_PAGE:
 		return {...state, page: payload};
+
+	case SET_RESPONSE:
+		return {...state, response: payload};
 
 	case LOGIN:
 		return {...state, user: payload};

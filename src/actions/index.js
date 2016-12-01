@@ -59,6 +59,11 @@ export function dismissNotification(payload) {
 	return {type: DISMISS_NOTIFICATION, payload};
 };
 
+export const SET_RESPONSE = 'SET_RESPONSE';
+export function setResponse(payload) {
+	return {type: SET_RESPONSE, payload};
+};
+
 export const LOGOUT = 'LOGOUT';
 export function logout(id) {
 	axios.post('api/user/logout', { id });
@@ -103,9 +108,6 @@ export function userAuth() {
 
 // ---------- games ----------
 export const FETCH_GAMES = 'FETCH_GAMES';
-// export function fetchGames(payload) {
-// 	return {type: FETCH_GAMES, payload};
-// };
 export function fetchGames() {
 	const request = axios.get('api/games');
 	return (dispatch) => {

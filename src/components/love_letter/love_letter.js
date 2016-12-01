@@ -10,7 +10,7 @@ import Log from './log';
 import CardViewer from '../card_viewer';
 import styles from './love_letter.css';
 
-import socket from '../../sockets';
+import { send } from '../../sockets';
 import { CARDS } from '../../../core/love_letter';
 
 import { setBoardVisible, notify } from '../../actions';
@@ -130,7 +130,7 @@ class LoveLetter extends Component {
 			this.props.notify({message: 'you must play Countess'});
 			return;
 		}
-		socket.emit(`client.loveletter.${data.phase}`, {
+		send(`client.loveletter.${data.phase}`, {
 			tableId: table._id,
 			cardId: card.id
 		});
@@ -138,7 +138,7 @@ class LoveLetter extends Component {
 
 	choosePlayer(player) {
 		const { table, data } = this.props.board;
-		socket.emit(`client.loveletter.${data.phase}`, {
+		send(`client.loveletter.${data.phase}`, {
 			tableId: table._id,
 			playerId: player.id
 		});
@@ -147,7 +147,7 @@ class LoveLetter extends Component {
 	chooseNonGuardCard(card) {
 		const { table, data } = this.props.board;
 		this.setState({cardListVisible: false});
-		socket.emit(`client.loveletter.${data.phase}`, {
+		send(`client.loveletter.${data.phase}`, {
 			tableId: table._id,
 			cardId: card.id
 		});
@@ -155,14 +155,14 @@ class LoveLetter extends Component {
 
 	handleRevealHandsConfirm() {
 		const { table, data } = this.props.board;
-		socket.emit(`client.loveletter.${data.phase}`, {
+		send(`client.loveletter.${data.phase}`, {
 			tableId: table._id
 		});
 	}
 
 	handleConfirmScore() {
 		const { table, data } = this.props.board;
-		socket.emit(`client.loveletter.${data.phase}`, {
+		send(`client.loveletter.${data.phase}`, {
 			tableId: table._id
 		});
 		if(data.phase === 'game') {
