@@ -40,7 +40,7 @@ class POTO extends Component {
 	}
 
 	render() {
-		const { clientHeight, clientWidth, board, user, users, logs } = this.props;
+		const { clientHeight, clientWidth, board, user, users, logs, language } = this.props;
 		const { table, data } = board;
 		const { deck, alibis, turn, laCarlotta, exit, lock, rooms, roles, investigator, phantom, actions, phase, winner } = data;
 		const isPhantom = phantom.player === user._id;
@@ -48,6 +48,8 @@ class POTO extends Component {
 		const opponent = isPhantom ? investigator : phantom;
 		const myTurn = (isPhantom && !turn) || (!isPhantom && turn);
 		const watch = phantom.player !== user._id && investigator.player !== user._id;
+		const phantomLabel = language === 'ch' ? '魅影' : 'Phantom';
+		const investigatorLabel = language === 'ch' ? '调查员' : 'The Investigator';
 		return (
 			<div 
 				className={styles.container}
@@ -170,7 +172,7 @@ class POTO extends Component {
 					[styles.active]: !myTurn
 				})}>
 					<div className={styles.name}>{users[opponent.player].name}</div>
-					<div className={styles.identity}>{!isPhantom ? 'Phantom' : 'The Investigator'}</div>
+					<div className={styles.identity}>{!isPhantom ? phantomLabel : investigatorLabel}</div>
 					{!isPhantom ? 
 						<div className={styles['phantom-holder']}>
 							<div className={styles.label}>Phantom</div>
@@ -185,7 +187,7 @@ class POTO extends Component {
 					[styles.active]: myTurn
 				})}>
 					<div className={styles.name}>{users[myself.player].name}</div>
-					<div className={styles.identity}>{isPhantom ? 'Phantom' : 'The Investigator'}</div>
+					<div className={styles.identity}>{isPhantom ? phantomLabel : investigatorLabel}</div>
 					{isPhantom ? 
 						<div className={styles['phantom-holder']}>
 							<Card 
@@ -234,7 +236,7 @@ class POTO extends Component {
 					onConfirm={this.handleConfirmGame}
 				/>
 				<CardViewer />
-				<Log logs={logs} users={users} height={clientHeight - 445} />
+				<Log logs={logs} users={users} language={language} height={clientHeight - 445} />
 			</div>
 		);
 	}
@@ -358,6 +360,7 @@ function mapStateToProps({ client, board, users, logs }) {
 		clientHeight: client.clientHeight,
 		clientWidth: client.clientWidth,
 		response: client.response,
+		language: client.language,
 		user: client.user,
 		board,
 		users,

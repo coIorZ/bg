@@ -1,22 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import cx from 'classnames';
+import _ from 'lodash';
 
 import Message from './message';
 import styles from './index_page.css';
 
 import socket from '../sockets';
-import { setLoginVisible, logout } from '../actions';
+import { setLoginVisible, logout, setLanguage } from '../actions';
 
 class IndexPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			message: ''
+			message: '',
+			language: 'ch'
 		};
 		this.handleLogin = this.handleLogin.bind(this);
 		this.handleLogout = this.handleLogout.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleSwitchLanguage = this.handleSwitchLanguage.bind(this);
 	}
 
 	componentDidMount() {
@@ -28,7 +31,7 @@ class IndexPage extends Component {
 	}
 
 	render() {
-		const { clientHeight, user, users, messages } = this.props;
+		const { clientHeight, user, users, messages, language } = this.props;
 		return (
 			<div 
 				className={styles.container}
@@ -38,15 +41,28 @@ class IndexPage extends Component {
 				}}
 			>
 				<div className={styles.corner}>
+					<select 
+						className={styles.language}
+						value={this.state.language}
+						onChange={this.handleSwitchLanguage}
+					>
+						<option value='ch'>ch</option>
+						<option value='en'>en</option>
+					</select>
 					{user ?
 						<span>
-							{user.name}, <span className={styles.logout} onMouseDown={this.handleLogout}>Log out</span>
+							{user.name}, <span 
+											className={styles.logout} 
+											onMouseDown={this.handleLogout}
+										>
+											{language === 'ch' ? '注销' : 'Log out'}
+										</span>
 						</span>
 						: <button
 							className={styles.btn}
 							onMouseDown={this.handleLogin}
 						>
-							Log in
+							{language === 'ch' ? '登陆' : 'Log in'}
 						</button>
 					}
 				</div>
@@ -67,7 +83,7 @@ class IndexPage extends Component {
 							</div>
 							<form className={styles.input} onSubmit={this.handleSubmit}>
 								<input value={this.state.message} onChange={(e) => this.setState({message: e.target.value})} />
-								<button type='submit' className={styles.btn}> Enter</button>
+								<button type='submit' className={styles.btn}>{language === 'ch' ? '发送' : 'Enter'}</button>
 							</form>
 						</div>
 					</div>
@@ -99,15 +115,29 @@ class IndexPage extends Component {
 		});
 		this.setState({message: ''});
 	}
+
+	handleSwitchLanguage(e) {
+		const { setLanguage, language } = this.props;
+		this.setState({
+			language: e.target.value
+		});
+		this.props.setLanguage(e.target.value);
+	}
 };
 
 function mapStateToProps({ client, messages, users }) {
 	return {
 		clientHeight: client.clientHeight,
 		user: client.user,
+		language: client.language,
 		users,
 		messages
 	};
 }
 
-export default connect(mapStateToProps, { setLoginVisible, logout })(IndexPage);
+export default connect(mapStateToProps, { setLoginVisible, logout, setLanguage })(IndexPage);
+
+const LANGUAGE = {
+	en: {en: 'English', ch: 'Chinese'},
+	ch: {en: '英文', ch: '中文'}
+};

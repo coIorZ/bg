@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 import { 
 	fetchTables, newTable, joinTable, leaveTable, removeTable, startTable, 
-	setBoardVisible, updateBoard, clearLogs, updateLogs, setTableId
+	setBoardVisible, updateBoard, clearLogs, updateLogs, setTableId, setResponse
 } from '../actions';
 
 export default function(socket, store) {
@@ -30,6 +30,7 @@ export default function(socket, store) {
 			store.dispatch(updateLogs(payload));
 			store.dispatch(setBoardVisible(payload.table.game));
 			store.dispatch(setTableId(payload.table._id));
+			store.dispatch(setResponse(true));
 		}
 	});
 };

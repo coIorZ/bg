@@ -26,7 +26,7 @@ class LoveLetter extends Component {
 	}
 
 	render() {
-		const { clientHeight, board, users, user, logs } = this.props;
+		const { clientHeight, board, users, user, logs, language } = this.props;
 		const { table, data } = board;
 		const { deck, players, activePlayer, vp, removedFaceDown, removedFaceUp, phase, cardId, effect } = data;
 		const myTurn = players[activePlayer].id === user._id;
@@ -118,7 +118,7 @@ class LoveLetter extends Component {
 					onConfirm={this.handleConfirmScore} 
 				/>
 				<CardViewer />
-				<Log logs={logs} users={users} height={clientHeight - 445} />
+				<Log logs={logs} users={users} language={language} height={clientHeight - 445} />
 			</div>
 		);
 	}
@@ -175,6 +175,7 @@ function mapStateToProps({ client, board, users, logs }) {
 	return {
 		clientHeight: client.clientHeight,
 		user: client.user,
+		language: client.language,
 		users,
 		board,
 		logs

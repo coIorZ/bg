@@ -23,7 +23,7 @@ class Login extends Component {
 
 	render() {
 		const { username, password, isRemember } = this.state;
-		const { visible } = this.props;
+		const { visible, language } = this.props;
 		return (
 			<div 
 				className={cx({
@@ -51,7 +51,7 @@ class Login extends Component {
 							type='checkbox' 
 							checked={isRemember} 
 							onChange={this.handleRemember}
-						/> Remember me
+						/> {language === 'ch' ? '记住我' : 'Remember me'}
 						<br />
 						<div style={{position: 'relative'}}>
 							<span
@@ -59,24 +59,27 @@ class Login extends Component {
 								onMouseOver={() => this.setState({tip: true})}
 								onMouseLeave={() => this.setState({tip: false})}
 							>
-								No account?
+								{language === 'ch' ? '没有帐号' : 'No account'}?
 							</span>
 							{this.state.tip ?
 								<div className={styles.tip}>
-									Sign up is not permitted for now. Please contact the author to get an account.
+									{language === 'ch' ?
+										'暂不开放注册。请联系作者获取帐号。'
+										: 'Sign up is not permitted for now. Please contact the author to get an account.'
+									}
 								</div>
 								: null
 							}
 						</div>
 					</div>
 					<div>
-						<button className={styles.btn} type='submit'>log in</button>
+						<button className={styles.btn} type='submit'>{language === 'ch' ? '登陆' : 'log in'}</button>
 						<button 
 							className={styles.btn} 
 							style={{marginLeft: 20}}
 							onMouseDown={this.handleCancel}
 						>
-							cancel
+							{language === 'ch' ? '取消' : 'cancel'}
 						</button>
 					</div>
 				</form>
@@ -101,4 +104,10 @@ class Login extends Component {
 	}
 }
 
-export default connect(null, { login, setLoginVisible })(Login);
+function mapStateToProps({ client }) {
+	return {
+		language: client.language
+	};
+}
+
+export default connect(mapStateToProps, { login, setLoginVisible })(Login);

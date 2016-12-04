@@ -11,7 +11,7 @@ export default class Log extends Component {
 	}
 
 	render() {
-		const { logs, users, height } = this.props;
+		const { logs, users, height, language } = this.props;
 		return (
 			<div 
 				className={styles.container}
@@ -19,7 +19,7 @@ export default class Log extends Component {
 				ref='container'
 			>
 				{logs.map((log, i) => {
-					log = log.replace(/\|p:(\w+)\|/g, (s, id) => {
+					log = log[language].replace(/\|p:(\w+)\|/g, (s, id) => {
 						return users[id].name;
 					});
 					let pieces = log.split('|');

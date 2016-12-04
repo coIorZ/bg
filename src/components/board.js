@@ -18,7 +18,7 @@ class Board extends Component {
 	}
 
 	render() {
-		const { boardVisible, clientHeight } = this.props;
+		const { boardVisible, clientHeight, language } = this.props;
 		if(!boardVisible) {
 			return null
 		}
@@ -52,24 +52,25 @@ class Board extends Component {
 					className={styles.btn}
 					onMouseDown={this.handleback}
 				>
-					back
+					{language === 'ch' ? '返回' : 'back'}
 				</button>
 			</div>
 		);
 	}
 
 	handleback() {
-		const { board, setBoardVisible } = this.props;
+		const { tableId, setBoardVisible } = this.props;
 		setBoardVisible(false);
-		socket.emit('client.board.leave', board.table._id);
+		socket.emit('client.board.leave', tableId);
 	}
 }
 
-function mapStateToProps({ client, board }) {
+function mapStateToProps({ client }) {
 	return {
 		boardVisible: client.boardVisible,
 		clientHeight: client.clientHeight,
-		board
+		tableId: client.tableId,
+		language: client.language
 	};
 }
 

@@ -19,19 +19,28 @@ socket.on('connect', () => {
 		socket.emit('client.user.online', user._id);
 	}
 	store.dispatch(notify({
-		message: 'Connected to server'
+		message: {
+			en: 'Connected to server',
+			ch: '已连接'
+		}
 	}));
 });
 
 socket.on('disconnect', () => {
 	store.dispatch(notify({
-		message: 'Disconnected from server'
+		message: {
+			en: 'Disconnected from server',
+			ch: '断开连接'
+		}
 	}));
 });
 
 socket.on('reconnecting', () => {
 	store.dispatch(notify({
-		message: 'Trying to reconnect...'
+		message: {
+			en: 'Trying to reconnect...',
+			ch: '尝试重连中...'
+		}
 	}));
 });
 

@@ -11,6 +11,10 @@
 	color: white;
 }
 
+.language {
+	margin-right: 10px;
+}
+
 .btn {
 	display: inline-block;
 	padding: 5px 20px;

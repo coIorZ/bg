@@ -16,7 +16,7 @@ class Header extends Component {
 	}
 
 	render() {
-		const { page } = this.props;
+		const { page, language } = this.props;
 		return (
 			<div className={styles.container}>
 				<ul className={styles.list}>
@@ -34,7 +34,7 @@ class Header extends Component {
 							[styles.active]: page === 'play'
 						})}
 					>
-						<Link to='play' onMouseDown={this.handlePlay}> Play </Link>
+						<Link to='play' onMouseDown={this.handlePlay}> {language === 'ch' ? '游戏' : 'Play'} </Link>
 					</li>
 					<li 
 						className={cx({
@@ -42,7 +42,7 @@ class Header extends Component {
 							[styles.active]: page === 'about'
 						})}
 					>
-						<Link to='about' onMouseDown={this.handleAbout}> About </Link>
+						<Link to='about' onMouseDown={this.handleAbout}> {language === 'ch' ? '关于' : 'About'} </Link>
 					</li>
 				</ul>
 			</div>
@@ -64,7 +64,8 @@ class Header extends Component {
 
 function mapStateToProps({ client }) {
 	return {
-		page: client.page
+		page: client.page,
+		language: client.language
 	};
 }
 

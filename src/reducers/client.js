@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 import {
 	SET_CLIENTHEIGHT, SET_CLIENTWIDTH, SET_GAMEINFO_FOLDED, SET_GAMEINFO_GAME, SET_LOGIN_VISIBLE, SET_BOARD_VISIBLE, SET_CARD
-	, SET_HEADER_PAGE, SET_TABLEID, SET_RESPONSE, LOGIN, LOGOUT, USER_AUTH, NOTIFY, DISMISS_NOTIFICATION
+	, SET_HEADER_PAGE, SET_TABLEID, SET_RESPONSE, SET_LANGUAGE, LOGIN, LOGOUT, USER_AUTH, NOTIFY, DISMISS_NOTIFICATION
 } from '../actions';
 
 const notifyType = {
@@ -26,7 +26,8 @@ const initialState = {
 	boardVisible: false,
 	user: null,
 	notifications: [],
-	response: true
+	response: true,
+	language: 'ch'
 };
 
 export default function(state = initialState, { type, payload }) {
@@ -76,6 +77,9 @@ export default function(state = initialState, { type, payload }) {
 	case SET_RESPONSE:
 		return {...state, response: payload};
 
+	case SET_LANGUAGE:
+		return {...state, language: payload};
+
 	case LOGIN:
 		return {...state, user: payload};
 
@@ -92,6 +96,7 @@ export default function(state = initialState, { type, payload }) {
 				...state.notifications, 
 				{
 					...payload,
+					message: payload.message[state.language],
 					key: payload.key || Date.now(),
 					activeBarStyle: {zIndex: 1000},
 					barStyle: {zIndex: 1000},

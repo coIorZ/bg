@@ -64,6 +64,11 @@ export function setResponse(payload) {
 	return {type: SET_RESPONSE, payload};
 };
 
+export const SET_LANGUAGE = 'SET_LANGUAGE';
+export function setLanguage(payload) {
+	return {type: SET_LANGUAGE, payload};
+};
+
 export const LOGOUT = 'LOGOUT';
 export function logout(id) {
 	axios.post('api/user/logout', { id });
@@ -82,7 +87,6 @@ export function login(username, password, isRemember) {
 			if(data.user) {
 				dispatch({type: LOGIN, payload: data.user});
 				dispatch({type: SET_LOGIN_VISIBLE, payload: false});
-				// dispatch({type: SET_GAMEINFO_FOLDED, payload: 2});
 				socket.emit('client.user.login', data.user._id);
 				window.localStorage.setItem('username', data.user.username);
 			} else {

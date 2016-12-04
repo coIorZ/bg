@@ -18,7 +18,7 @@ class GameInfo extends Component {
 	}
 
 	render() {
-		const { clientWidth, clientHeight, game, folded, user, tables } = this.props;
+		const { clientWidth, clientHeight, game, folded, user, tables, language } = this.props;
 		const { name, min_players, max_players, length, weight, rule_url } = game;
 		const x = folded === 0 ?
 					clientWidth : folded === 1 ?
@@ -56,20 +56,20 @@ class GameInfo extends Component {
 							<h3 className={styles.section}>
 								<span className={styles.value}>
 									{min_players === max_players ? min_players : `${min_players} - ${max_players}`}
-								</span> PLAYERS
+								</span> {language === 'ch' ? '人数' : 'PLAYERS'}
 							</h3>
 							<h3 className={styles.section}>
-								<span className={styles.value}>{length}</span> MINUTES
+								<span className={styles.value}>{length}</span> {language === 'ch' ? '分钟' : 'MINUTES'}
 							</h3>
 							<h3 className={styles.section}>
-								<span className={styles.value}>{weight}</span> / 5 WEIGHT
+								<span className={styles.value}>{weight}</span> / 5 {language === 'ch' ? '重度' : 'WEIGHT'}
 							</h3>
 							<div className={styles.m30}>
 								<span className={styles['btn-long']} onMouseDown={this.handlePlay}>
-									<strong>PLAY</strong>
+									<strong>{language === 'ch' ? '开始' : 'PLAY'}</strong>
 								</span>
 								<br />
-								<a href={rule_url} target='_blank'>How to play</a>
+								<a href={rule_url} target='_blank'>{language === 'ch' ? '游戏规则' : 'How to play'}</a>
 							</div>
 						</div>
 						<div className={styles.entrance}>
@@ -79,7 +79,7 @@ class GameInfo extends Component {
 										className={styles.btn}
 										onMouseDown={this.handleNewGame}
 									>
-										NEW GAME
+										{language === 'ch' ? '新建游戏' : 'NEW GAME'}
 									</span>
 								</div>
 								<div>
@@ -107,7 +107,11 @@ class GameInfo extends Component {
 
 	handleNewGame() {
 		const { user, game } = this.props;
-		socket.emit('client.table.new', { userId: user._id, gameId: game.id });
+		if(!user) {
+			setLoginVisible(true);
+		} else {
+			socket.emit('client.table.new', { userId: user._id, gameId: game.id });
+		}
 	}
 }
 
@@ -117,6 +121,7 @@ function mapStateToProps({ client, tables }) {
 		clientHeight: client.clientHeight,
 		folded: client.gameInfo.folded,
 		game: client.gameInfo.game,
+		language: client.language,
 		user: client.user,
 		tables
 	};

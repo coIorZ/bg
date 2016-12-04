@@ -18,7 +18,7 @@ class Table extends Component {
 	}
 
 	render() {
-		const { table, users, user, games, game } = this.props;
+		const { table, users, user, games, game, language } = this.props;
 		const { host, players, started } = table;
 		const { min_players, max_players } = game;
 
@@ -28,15 +28,15 @@ class Table extends Component {
 		const playable = tableSize >= min_players;
 		let joinBtn = null, leaveBtn = null, startBtn = null, watchBtn = null, rejoinBtn = null;
 		joinBtn = !onTable && !started && joinable
-				&& <span className={cx(styles.btn, styles.green)} key={0} onMouseDown={this.joinTable}>JOIN</span>;
+				&& <span className={cx(styles.btn, styles.green)} key={0} onMouseDown={this.joinTable}>{language === 'ch' ? '加入' : 'JOIN'}</span>;
 		leaveBtn = onTable && !started
-				&& <span className={cx(styles.btn, styles.red)} key={1} onMouseDown={this.leaveTable}>LEAVE</span>;
+				&& <span className={cx(styles.btn, styles.red)} key={1} onMouseDown={this.leaveTable}>{language === 'ch' ? '退出' : 'LEAVE'}</span>;
 		startBtn = onTable && !started && playable && (host === user._id)
-				&& <span className={cx(styles.btn, styles.blue)} key={2} onMouseDown={this.startTable}>START</span>;
+				&& <span className={cx(styles.btn, styles.blue)} key={2} onMouseDown={this.startTable}>{language === 'ch' ? '开始' : 'START'}</span>;
 		watchBtn = !onTable && started
-				&& <span className={cx(styles.btn, styles.orange)} key={3} onMouseDown={this.rejoinTable}>WATCH</span>;
+				&& <span className={cx(styles.btn, styles.orange)} key={3} onMouseDown={this.rejoinTable}>{language === 'ch' ? '观战' : 'WATCH'}</span>;
 		rejoinBtn = onTable && started
-				&& <span className={cx(styles.btn, styles.blue)} key={4} onMouseDown={this.rejoinTable}>REJOIN</span>;
+				&& <span className={cx(styles.btn, styles.blue)} key={4} onMouseDown={this.rejoinTable}>{language === 'ch' ? '重连' : 'REJOIN'}</span>;
 
 		return (
 			<div className={styles.container}>
@@ -95,7 +95,10 @@ class Table extends Component {
 	startTable() {
 		const { table, notify } = this.props;
 		if(table.game !== '1' && table.game !== '2') {
-			notify({message: 'this game is still in progress'});
+			notify({message: {
+				en: 'this game is still in progress',
+				ch: '该游戏还在开发中'
+			}});
 			return;
 		}
 		socket.emit('client.table.start', table);
@@ -110,6 +113,7 @@ class Table extends Component {
 function mapStateToPros({ client, users, games }) {
 	return {
 		user: client.user,
+		language: client.language,
 		users,
 		games
 	};

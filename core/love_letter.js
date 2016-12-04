@@ -62,7 +62,10 @@ function setup(people) {
 		};
 	});
 	players[0].hands.push(deck.shift());
-	const logs = [`|p:${players[0].id}| draws a card.`];
+	const logs = [{
+		en: `|p:${players[0].id}| draws a card.`,
+		ch: `|p:${players[0].id}|抽了一张牌。`
+	}];
 	
 	return { deck, players, vp, removedFaceUp, removedFaceDown, activePlayer, cardId, phase, effect, winner, logs };
 }
@@ -75,7 +78,10 @@ function drawCard(data, player) {
 			player.hands.push(data.removedFaceDown);
 			data.removedFaceDown = 0;
 		}
-		data.logs.push(`|p:${player.id}| draws a card.`);
+		data.logs.push({
+			en: `|p:${player.id}| draws a card.`,
+			ch: `|p:${player.id}|抽了一张牌。`
+		});
 	}
 }
 
@@ -86,7 +92,10 @@ function discardCard(data, player, cardId) {
 		player.out = true;
 	}
 	if(player.out) {
-		data.logs.push(`|p:${player.id}| is knocked out.`);
+		data.logs.push({
+			en: `|p:${player.id}| is knocked out.`,
+			ch: `|p:${player.id}|被踢出局。`
+		});
 	}
 }
 
@@ -107,12 +116,18 @@ function playCard(board, cardId) {
 		break;
 	case 4:
 	case 7:
-		data.logs.push(`|p:${player.id}| plays |c:${cardId}|.`);
+		data.logs.push({
+			en: `|p:${player.id}| plays |c:${cardId}|.`,
+			ch: `|p:${player.id}|打出了|c:${cardId}|。`
+		});
 		discardCard(data, player, cardId);
 		nextTurn(data);
 		break;
 	case 8:
-		data.logs.push(`|p:${player.id}| plays |c:${cardId}|.`);
+		data.logs.push({
+			en: `|p:${player.id}| plays |c:${cardId}|.`,
+			ch: `|p:${player.id}|打出了|c:${cardId}|。`
+		});
 		discardCard(data, player, cardId);
 		nextTurn(data);
 		break;
@@ -134,13 +149,22 @@ function choosePlayer(board, playerId) {
 			data.phase = 'effect';
 			data.effect = playerId;
 		} else {
-			data.logs.push(`|p:${currentPlayer.id}| plays |c:${cardId}| against |p:${targetPlayer.id}|.`);
-			data.logs.push('blocked by |c:4|.');
+			data.logs.push({
+				en: `|p:${currentPlayer.id}| plays |c:${cardId}| against |p:${targetPlayer.id}|.`,
+				ch: `|p:${currentPlayer.id}|对|p:${targetPlayer.id}|打出了|c:${cardId}|。`
+			});
+			data.logs.push({
+				en: 'blocked by |c:4|.',
+				ch: '被|c:4|抵挡。'
+			});
 			nextTurn(data);
 		}
 		break;
 	case 3:
-		data.logs.push(`|p:${currentPlayer.id}| plays |c:${cardId}| against |p:${targetPlayer.id}|.`);
+		data.logs.push({
+			en: `|p:${currentPlayer.id}| plays |c:${cardId}| against |p:${targetPlayer.id}|.`,
+			ch: `|p:${currentPlayer.id}|对|p:${targetPlayer.id}|打出了|c:${cardId}|。`
+		});
 		if(targetPlayer.lastPlayed !== 4) {
 			const targetCard = targetPlayer.hands[0];
 			const currentCard = currentPlayer.hands[0];
@@ -152,30 +176,48 @@ function choosePlayer(board, playerId) {
 				discardCard(data, targetPlayer, targetCard);
 			}
 		} else {
-			data.logs.push('blocked by |c:4|.');
+			data.logs.push({
+				en: 'blocked by |c:4|.',
+				ch: '被|c:4|抵挡。'
+			});
 		}
 		nextTurn(data);
 		break;
 	case 5:
-		data.logs.push(`|p:${currentPlayer.id}| plays |c:${cardId}| against |p:${targetPlayer.id}|.`);
+		data.logs.push({
+			en: `|p:${currentPlayer.id}| plays |c:${cardId}| against |p:${targetPlayer.id}|.`,
+			ch: `|p:${currentPlayer.id}|对|p:${targetPlayer.id}|打出了|c:${cardId}|。`
+		});
 		if(targetPlayer.lastPlayed !== 4 || targetPlayer.id === currentPlayer.id) {
-			data.logs.push(`|p:${targetPlayer.id}| discards |c:${targetPlayer.hands[0]}|.`);
+			data.logs.push({
+				en: `|p:${targetPlayer.id}| discards |c:${targetPlayer.hands[0]}|.`,
+				ch: `|p:${targetPlayer.id}|丢弃了|c:${targetPlayer.hands[0]}|。`
+			});
 			discardCard(data, targetPlayer, targetPlayer.hands[0]);
 			drawCard(data, targetPlayer);
 		} else {
-			data.logs.push('blocked by |c:4|.');
+			data.logs.push({
+				en: 'blocked by |c:4|.',
+				ch: '被|c:4|抵挡。'
+			});
 		}
 		nextTurn(data);
 		break;
 	case 6:
-		data.logs.push(`|p:${currentPlayer.id}| plays |c:${cardId}| against |p:${targetPlayer.id}|.`);
+		data.logs.push({
+			en: `|p:${currentPlayer.id}| plays |c:${cardId}| against |p:${targetPlayer.id}|.`,
+			ch: `|p:${currentPlayer.id}|对|p:${targetPlayer.id}|打出了|c:${cardId}|。`
+		});
 		if(targetPlayer.lastPlayed !== 4) {
 			const targetCard = targetPlayer.hands[0];
 			const currentCard = currentPlayer.hands[0];
 			currentPlayer.hands = [targetCard];
 			targetPlayer.hands = [currentCard];
 		} else {
-			data.logs.push('blocked by |c:4|.');
+			data.logs.push({
+				en: 'blocked by |c:4|.',
+				ch: '被|c:4|抵挡。'
+			});
 		}
 		nextTurn(data);
 		break;
@@ -190,7 +232,10 @@ function effect(board, payload) {
 	data.logs = [];
 	switch(data.cardId) {
 	case 1:
-		data.logs.push(`|p:${players[activePlayer].id}| plays |c:${cardId}| against |p:${player.id}| on |c:${payload.cardId}|.`);
+		data.logs.push({
+			en: `|p:${players[activePlayer].id}| plays |c:${cardId}| against |p:${player.id}| on |c:${payload.cardId}|.`,
+			ch: `|p:${players[activePlayer].id}|对|p:${player.id}|打出了|c:${cardId}|，猜其为|c:${payload.cardId}|。`
+		});
 		if(player.hands[0] === payload.cardId) {
 			player.out = true;
 			discardCard(data, player, payload.cardId);
@@ -198,7 +243,10 @@ function effect(board, payload) {
 		nextTurn(data);
 		break;
 	case 2:
-		data.logs.push(`|p:${players[activePlayer].id}| plays |c:${cardId}| against |p:${player.id}|.`);
+		data.logs.push({
+			en: `|p:${players[activePlayer].id}| plays |c:${cardId}| against |p:${player.id}|.`,
+			ch: `|p:${players[activePlayer].id}|对|p:${player.id}|打出了|c:${cardId}|。`
+		});
 		nextTurn(data);
 		break;
 	}
@@ -207,7 +255,7 @@ function effect(board, payload) {
 
 function nextTurn(data) {
 	let deck = data.deck;
-	data.logs.push(`|hr:|`);
+	data.logs.push({en: `|hr:|`, ch: `|hr:|`});
 	const remainingPlayers = _.filter(data.players, player => !player.out);
 	if(remainingPlayers.length === 1) {
 		lastManStanding(data, remainingPlayers[0].id);
@@ -287,14 +335,23 @@ function round(board) {
 		player.out = false;
 	});
 	players[winner].hands.push(data.deck.shift());
-	data.logs = ['a new round starts.'];
-	data.logs.push(`|p:${players[winner].id}| draws a card.`);
+	data.logs = [{
+		en: 'a new round starts.',
+		ch: '新回合开始。'
+	}];
+	data.logs.push({
+		en: `|p:${players[winner].id}| draws a card.`,
+		ch: `|p:${players[winner].id}|抽了一张牌。`
+	});
 	return board;
 }
 
 function gameOver(data) {
 	data.phase = 'game';
-	data.logs.push(`|p:${data.players[data.winner].id}| is the winner!`);
+	data.logs.push({
+		en: `|p:${data.players[data.winner].id}| is the winner!`,
+		ch: `|p:${data.players[data.winner].id}|获胜！`
+	});
 }
 
 export default {

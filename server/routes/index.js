@@ -16,7 +16,10 @@ export default function(router, store) {
 				const index = users.indexOf(user._id.toString());
 				if(index >= 0) {
 					req.session.user = null;
-					res.json({ user: null, message: 'This account is alreay logged in' });
+					res.json({ user: null, message: {
+						en: 'This account is alreay logged in',
+						ch: '该账户已登陆'
+					}});
 				} else {
 					if(req.body.isRemember) {
 						req.session.user = user;
@@ -30,7 +33,10 @@ export default function(router, store) {
 				}
 			} else {
 				req.session.user = null;
-				res.json({ user, message: 'Wrong username or password' });
+				res.json({ user, message: {
+					en: 'Wrong username or password',
+					ch: '错误的用户名或密码'
+				}});
 			}
 		});
 	});

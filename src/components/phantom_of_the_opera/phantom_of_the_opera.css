@@ -5,7 +5,6 @@
 
 .board {
 	position: absolute;
-	left: 300px;
 	width: 800px;
 	height: 450px;
 	box-shadow: 0 0 20px rgba(0, 0, 0, .6);

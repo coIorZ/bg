@@ -136,9 +136,15 @@ function setup(players) {
 	roles.push({id: deck.shift(), available: true});
 	roles.push({id: deck.shift(), available: true});
 	roles.push({id: deck.shift(), available: true});
-	logs.push(`|p:${players[0]}| plays phantom.`);
-	logs.push(`|p:${players[1]}| plays investigator.`);
-	logs.push(`|hr:|`);
+	logs.push({
+		en: `|p:${players[0]}| plays phantom.`,
+		ch: `|p:${players[0]}|是魅影。`
+	});
+	logs.push({
+		en: `|p:${players[1]}| plays investigator.`,
+		ch: `|p:${players[1]}|是调查员。`
+	});
+	logs.push({en: `|hr:|`, ch: `|hr:|`});
 
 	return { deck, alibis, turn, laCarlotta, exit, lock, rooms, roles, investigator, phantom, phase, cardId, suspect, actions, logs };
 }
@@ -155,7 +161,10 @@ function getCorridorByRooms(id1, id2) {
 function playCard(board, cardId) {
 	let data = board.data;
 	let { actions, turn, roles, investigator, phantom } = data;
-	data.logs = [`|p:${turn ? investigator.player : phantom.player}| plays |c:${cardId}|.`];
+	data.logs = [{
+		en: `|p:${turn ? investigator.player : phantom.player}| plays |c:${cardId}|.`,
+		ch: `|p:${turn ? investigator.player : phantom.player}|选择了|c:${cardId}|。`
+	}];
 	data.cardId = cardId;
 	data.phase = 'choose.action';
 	_.find(roles, r => r.id === cardId).available = false;
@@ -248,7 +257,10 @@ function action(board, payload) {
 		token = _pullTokenByCardId(room, cardId);
 		rooms[payload.roomId].tokens.push(token);
 		actions.move = false;
-		data.logs.push(`|p:${turn ? investigator.player : phantom.player}| moves |c:${token}| from |r:${room.id}| to |r:${payload.roomId}|.`);
+		data.logs.push({
+			en: `|p:${turn ? investigator.player : phantom.player}| moves |c:${token}| from |r:${room.id}| to |r:${payload.roomId}|.`,
+			ch: `|p:${turn ? investigator.player : phantom.player}|将|c:${token}|从|r:${room.id}|移动至|r:${payload.roomId}|。`
+		});
 		switch(cardId) {
 		case 1:
 			let alibi = alibis.shift();
@@ -265,7 +277,10 @@ function action(board, payload) {
 					}
 				});
 			}
-			data.logs.push(`|p:${turn ? investigator.player : phantom.player}| draws an alibi card.`);
+			data.logs.push({
+				en: `|p:${turn ? investigator.player : phantom.player}| draws an alibi card.`,
+				ch: `|p:${turn ? investigator.player : phantom.player}|抽取了一张不在场证明卡。`
+			});
 			actions.end = true;
 			break;
 		case 2:
@@ -317,7 +332,10 @@ function action(board, payload) {
 			room = _getRoomByCardId(rooms, cardId);
 			token = _getTokenByCardId(room, cardId);
 			data.lock = payload.corridorId;
-			data.logs.push(`|c:${token}| moves the padlock.`);
+			data.logs.push({
+				en: `|c:${token}| moves the padlock.`,
+				ch: `|c:${token}|移动了锁。`
+			});
 			actions.end = !actions.move;
 			break;
 		case 4:
@@ -326,7 +344,10 @@ function action(board, payload) {
 			rooms[payload.roomId].lit = false;
 			room = _getRoomByCardId(rooms, cardId);
 			token = _getTokenByCardId(room, cardId);
-			data.logs.push(`|c:${token}| fails power of |r:${payload.roomId}|.`);
+			data.logs.push({
+				en: `|c:${token}| fails power of |r:${payload.roomId}|.`,
+				ch: `|c:${token}|熄灭了|r:${payload.roomId}|的灯。`
+			});
 			actions.end = !actions.move;
 			break;
 		case 5:
@@ -336,7 +357,10 @@ function action(board, payload) {
 				room.tokens = room.tokens.concat(rooms[id].tokens);
 				rooms[id].tokens = [];
 			});
-			data.logs.push(`|c:${token}| attracts characters in all adjacent rooms.`);
+			data.logs.push({
+				en: `|c:${token}| attracts characters in all adjacent rooms.`,
+				ch: `|c:${token}|吸引了相邻房间的角色。`
+			});
 			break;
 		case 6:
 			room = _getRoomByCardId(rooms, cardId);
@@ -347,7 +371,10 @@ function action(board, payload) {
 			if(!effect.tokens.length) {
 				actions.end = true;
 			}
-			data.logs.push(`|c:${token}| causes |c:${payload.tokenId}| to flee to |r:${payload.roomId}|.`);
+			data.logs.push({
+				en: `|c:${token}| causes |c:${payload.tokenId}| to flee to |r:${payload.roomId}|.`,
+				ch: `|c:${token}|将|c:${payload.tokenId}|驱赶至|r:${payload.roomId}|。`
+			});
 			break;
 		case 7:
 			room = _getRoomByCardId(rooms, cardId);
@@ -358,7 +385,10 @@ function action(board, payload) {
 			targetRoom.tokens.push(token);
 			actions.move = false;
 			actions.end = true;
-			data.logs.push(`|c:${token}| swap places with |c:${payload.tokenId}|.`);
+			data.logs.push({
+				en: `|c:${token}| swap places with |c:${payload.tokenId}|.`,
+				ch: `|c:${token}|与|c:${payload.tokenId}|交换了位置。`
+			});
 			break;
 		case 8:
 			room = _getRoomByCardId(rooms, cardId);
@@ -366,7 +396,10 @@ function action(board, payload) {
 			_.pull(rooms[effect.from].tokens, payload.tokenId);
 			rooms[payload.roomId].tokens.push(payload.tokenId);
 			actions.end = true;
-			data.logs.push(`|c:${token}| drops |c:${payload.tokenId}| in |r:${payload.roomId}|.`);
+			data.logs.push({
+				en: `|c:${token}| drops |c:${payload.tokenId}| in |r:${payload.roomId}|.`,
+				ch: `|c:${token}|将|c:${payload.tokenId}|放至|r:${payload.roomId}|。`
+			});
 			break;
 		}
 		break;
@@ -374,7 +407,7 @@ function action(board, payload) {
 	case 'end':
 		const n = _.filter(roles, role => role.available).length;
 		data.phase = 'play.card';
-		data.logs.push(`|hr:|`);
+		data.logs.push({en: `|hr:|`, ch: `|hr:|`});
 		if(n !== 2) {
 			data.turn = !turn;
 		} 
@@ -398,9 +431,15 @@ function endRound(data) {
 			}
 		});
 	});
-	data.logs.push(`Round ends. Phantom ${appear ? 'appears' : 'can not appear'}.`);
-	data.logs.push(`${data.suspect} remaining suspects.`);
-	data.logs.push(`|hr:|`);
+	data.logs.push({
+		en: `Round ends. Phantom ${appear ? 'appears' : 'can not appear'}.`,
+		ch: `回合结束。魅影${appear ? '出现了' : '没有出现'}。`
+	});
+	data.logs.push({
+		en: `${data.suspect} remaining suspects.`,
+		ch: `还剩${data.suspect}个嫌犯。`
+	});
+	data.logs.push({en: `|hr:|`, ch: `|hr:|`});
 	if(data.suspect <= 1) {
 		investigatorWin(data);
 	} else {
@@ -428,13 +467,19 @@ function endRound(data) {
 function investigatorWin(data) {
 	data.phase = 'game';
 	data.winner = data.investigator;
-	data.logs.push(`|p:${data.winner.player}| wins the game!`);
+	data.logs.push({
+		en: `|p:${data.winner.player}| wins the game!`,
+		ch: `|p:${data.winner.player}|获胜！`
+	});
 }
 
 function phantomWin(data) {
 	data.phase = 'game';
 	data.winner = data.phantom;
-	data.logs.push(`|p:${data.winner.player}| wins the game!`);
+	data.logs.push({
+		en: `|p:${data.winner.player}| wins the game!`,
+		ch: `|p:${data.winner.player}|获胜！`
+	});
 }
 
 function effect(board, which) {
