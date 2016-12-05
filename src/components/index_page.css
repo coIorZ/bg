@@ -78,3 +78,24 @@
 	border-radius: 8px;
 }
 
+.language-holder {
+	position: absolute;
+	bottom: 5px;
+	right: 10px;
+}
+
+.language-holder .icon {
+	display: inline-block;
+	margin: 0 5px;
+	cursor: pointer;
+	opacity: .5;
+}
+
+.language-holder .active {
+	opacity: 1;
+}
+
+.language-holder img {
+	width: 30px;
+	height: 30px;
+}

@@ -19,7 +19,6 @@ class IndexPage extends Component {
 		this.handleLogin = this.handleLogin.bind(this);
 		this.handleLogout = this.handleLogout.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
-		this.handleSwitchLanguage = this.handleSwitchLanguage.bind(this);
 	}
 
 	componentDidMount() {
@@ -31,7 +30,7 @@ class IndexPage extends Component {
 	}
 
 	render() {
-		const { clientHeight, user, users, messages, language } = this.props;
+		const { clientHeight, user, users, messages, language, setLanguage } = this.props;
 		return (
 			<div 
 				className={styles.container}
@@ -41,14 +40,6 @@ class IndexPage extends Component {
 				}}
 			>
 				<div className={styles.corner}>
-					<select 
-						className={styles.language}
-						value={this.state.language}
-						onChange={this.handleSwitchLanguage}
-					>
-						<option value='ch'>ch</option>
-						<option value='en'>en</option>
-					</select>
 					{user ?
 						<span>
 							{user.name}, <span 
@@ -65,6 +56,26 @@ class IndexPage extends Component {
 							{language === 'ch' ? '登陆' : 'Log in'}
 						</button>
 					}
+				</div>
+				<div className={styles['language-holder']}>
+					<div className={cx({
+						[styles.icon]: true,
+						[styles.active]: language === 'ch'
+					})}>
+						<img 
+							src='./img/china_icon.png'
+							onMouseDown={() => {setLanguage('ch')}}
+						/>
+					</div>
+					<div className={cx({
+						[styles.icon]: true,
+						[styles.active]: language === 'en'
+					})}>
+						<img 
+							src='./img/united_states_icon.png'
+							onMouseDown={() => {setLanguage('en')}}
+						/>
+					</div>
 				</div>
 				<div className={styles.wrapper}>
 					<div className={styles.body}>
@@ -115,14 +126,6 @@ class IndexPage extends Component {
 		});
 		this.setState({message: ''});
 	}
-
-	handleSwitchLanguage(e) {
-		const { setLanguage, language } = this.props;
-		this.setState({
-			language: e.target.value
-		});
-		this.props.setLanguage(e.target.value);
-	}
 };
 
 function mapStateToProps({ client, messages, users }) {
@@ -136,8 +139,3 @@ function mapStateToProps({ client, messages, users }) {
 }
 
 export default connect(mapStateToProps, { setLoginVisible, logout, setLanguage })(IndexPage);
-
-const LANGUAGE = {
-	en: {en: 'English', ch: 'Chinese'},
-	ch: {en: '英文', ch: '中文'}
-};

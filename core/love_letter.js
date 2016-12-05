@@ -94,7 +94,7 @@ function discardCard(data, player, cardId) {
 	if(player.out) {
 		data.logs.push({
 			en: `|p:${player.id}| is knocked out.`,
-			ch: `|p:${player.id}|被踢出局。`
+			ch: `|p:${player.id}|被踢出局了。`
 		});
 	}
 }
@@ -155,7 +155,7 @@ function choosePlayer(board, playerId) {
 			});
 			data.logs.push({
 				en: 'blocked by |c:4|.',
-				ch: '被|c:4|抵挡。'
+				ch: '被|c:4|抵挡了。'
 			});
 			nextTurn(data);
 		}
@@ -178,7 +178,7 @@ function choosePlayer(board, playerId) {
 		} else {
 			data.logs.push({
 				en: 'blocked by |c:4|.',
-				ch: '被|c:4|抵挡。'
+				ch: '被|c:4|抵挡了。'
 			});
 		}
 		nextTurn(data);
@@ -198,7 +198,7 @@ function choosePlayer(board, playerId) {
 		} else {
 			data.logs.push({
 				en: 'blocked by |c:4|.',
-				ch: '被|c:4|抵挡。'
+				ch: '被|c:4|抵挡了。'
 			});
 		}
 		nextTurn(data);
@@ -216,7 +216,7 @@ function choosePlayer(board, playerId) {
 		} else {
 			data.logs.push({
 				en: 'blocked by |c:4|.',
-				ch: '被|c:4|抵挡。'
+				ch: '被|c:4|抵挡了。'
 			});
 		}
 		nextTurn(data);
