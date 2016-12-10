@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 import User from '../models/users';
-import games from '../games';
+import { games } from '../../core';
 
 let users = [];
 
