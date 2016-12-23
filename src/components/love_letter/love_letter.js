@@ -127,7 +127,10 @@ class LoveLetter extends Component {
 		const { table, data } = this.props.board;
 		const hands = data.players[data.activePlayer].hands;
 		if(_.includes(hands, 7) && (card.id === 5 || card.id === 6)) {
-			this.props.notify({message: 'you must play Countess'});
+			this.props.notify({message: {
+				en: 'you have to play Countess',
+				ch: '你只能打出Countess'
+			}});
 			return;
 		}
 		send(`client.loveletter.${data.phase}`, {
