@@ -3,20 +3,19 @@ import React, { Component } from 'react';
 import Card from './card';
 import styles from './log.css';
 
-import { CARDS } from '../../../core/love_letter';
-
 export default class Log extends Component {
 	componentDidUpdate() {
 		this.refs.container.scrollTop = this.refs.container.scrollHeight;
 	}
 
 	render() {
-		const { logs, users, height, language } = this.props;
+		const { logs, users, language } = this.props;
 		return (
 			<div 
 				className={styles.container}
-				style={{ height }}
 				ref='container'
+				onMouseEnter={this.handleMouseEnter}
+				onMouseLeave={this.handleMouseLeave}
 			>
 				{logs.map((log, i) => {
 					log = log[language].replace(/\|p:(\w+)\|/g, (s, id) => {
@@ -28,7 +27,7 @@ export default class Log extends Component {
 									let str = null;
 									if(str = piece.match(/^c:(\w+)/)) {
 										let id = str[1];
-										return <Card card={CARDS[id]} display={2} key={j} />;
+										return <Card id={id} display={-1} key={j} />;
 									} else if(piece.match(/^hr:/)) {
 										return <div className={styles.seperator} key={j}></div>;
 									} else {

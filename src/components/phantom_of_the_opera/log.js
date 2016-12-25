@@ -3,8 +3,6 @@ import React, { Component } from 'react';
 import Card from './card';
 import styles from './log.css';
 
-import { CARDS } from '../../../core/phantom_of_the_opera';
-
 export default class Log extends Component {
 	componentDidUpdate() {
 		this.refs.container.scrollTop = this.refs.container.scrollHeight;

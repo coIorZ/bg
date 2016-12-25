@@ -20,7 +20,7 @@ const initialState = {
 		game: {}
 	},
 	tableId: null,
-	card: null,
+	cardView: null,
 	page: 'cosmos',
 	loginVisible: false,
 	boardVisible: false,
@@ -69,7 +69,7 @@ export default function(state = initialState, { type, payload }) {
 		return {...state, boardVisible: payload};
 
 	case SET_CARD:
-		return {...state, card: payload};
+		return {...state, cardView: payload};
 
 	case SET_HEADER_PAGE:
 		return {...state, page: payload};

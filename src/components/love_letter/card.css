@@ -1,35 +1,45 @@
-.card {
+.container {
 	display: inline-block;
 	position: relative;
-	width: 60px;
-	height: 84px;
+	width: 94px;
+	height: 130px;
 	border-radius: 8px;
-	overflow: hidden;
+	border: 2px solid transparent;
+	/*overflow: hidden;*/
 }
 
-.card.playable {
-	/*box-shadow: 0 0 10px rgb(60, 179, 113);*/
+.container.small {
+	width: 54px;
+	height: 74px;
+	border-radius: 4px;
+}
+
+.container.playable {
 	cursor: pointer;
+	border: 2px solid #00ff00;
 }
 
-.card.forward {
-	transform: translate3d(0, -10px, 0);
-	transition: transform .2s;
-}
-
-.card .bg {
+.bg {
 	position: absolute;
 	left: 0;
 	top: 0;
-	width: 60px;
-	height: 84px;
+	width: 90px;
+	height: 126px;
 	border-radius: 8px;
 }
 
-.card .small {
-	font-size: 10px;
+.small .bg {
+	width: 50px;
+	height: 70px;
+	border-radius: 4px;
 }
 
-.text {
-	font-weight: bold;
+.label {
+	position: absolute;
+	top: 0;
+	left: 5px;
+	font-size: 14px;
+	color: white;
+	background-color: rgba(0, 0, 0, .6);
+	/*z-index: 5;*/
 }

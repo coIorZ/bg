@@ -1,32 +1,37 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Motion, spring } from 'react-motion';
 import cx from 'classnames';
 
 import Card from './card';
 import Player from './player';
-import CardList from './card_list';
 import Score from './score';
 import Log from './log';
 import CardViewer from '../card_viewer';
 import styles from './love_letter.css';
 
 import { send } from '../../sockets';
-import { CARDS } from '../../../core/love_letter';
 
 import { setBoardVisible, notify } from '../../actions';
 
 class LoveLetter extends Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			logX: props.clientWidth - 10,
+			scoreVisible: true
+		};
 		this.playCard = this.playCard.bind(this);
 		this.choosePlayer = this.choosePlayer.bind(this);
 		this.chooseNonGuardCard = this.chooseNonGuardCard.bind(this);
-		this.handleRevealHandsConfirm = this.handleRevealHandsConfirm.bind(this);
 		this.handleConfirmScore = this.handleConfirmScore.bind(this);
+		this.handleShowLog = this.handleShowLog.bind(this);
+		this.handleHideLog = this.handleHideLog.bind(this);
+		this.handleConfirmReveal = this.handleConfirmReveal.bind(this);
 	}
 
 	render() {
-		const { clientHeight, board, users, user, logs, language } = this.props;
+		const { clientHeight, clientWidth, board, users, user, logs, language } = this.props;
 		const { table, data } = board;
 		const { deck, players, activePlayer, vp, removedFaceDown, removedFaceUp, phase, cardId, effect } = data;
 		const myTurn = players[activePlayer].id === user._id;
@@ -37,96 +42,128 @@ class LoveLetter extends Component {
 				className={styles.container}
 				style={{height: clientHeight}}
 			>
-				<div className={styles['deck-holder']}>
-					<div className={styles.holder} style={{marginRight: 40}}>
-						<div className={styles.label}>Deck({deck.length})</div>
-						<Card display={0} />
+				<div className={styles['players-area']}>
+					<div>
+						{players.map((player, i) => {
+							const selected = phase === 'effect' && effect === player.id;
+							return (
+								<Player 
+									player={player} 
+									data={data}
+									user={user}
+									users={users} 
+									key={player.id}
+									onMouseDown={this.choosePlayer} 
+								/> 
+							);
+						})}
 					</div>
-					<div className={styles.holder}>
-						<div className={styles.label}>Removed</div>
+				</div>
+				<div 
+					className={styles['main-area']}
+					style={{
+						width: clientWidth - 320,
+						height: clientHeight - (myself ? 130 : 0)
+					}}
+				>
+					<div 
+						className={styles['cards-section']}
+						style={{
+							top: clientHeight / 2 - 130
+						}}
+					>
+						<Card display={0} mr={40} label={`Deck(${deck.length})`} />
 						{removedFaceDown ?
-							<Card display={0} />
+							<Card display={0} mr={4} label='Removed' />
 							: null
 						}
 						{removedFaceUp.length ? 
-							_.map(removedFaceUp, (id, i) => <Card card={CARDS[id]} display={1} key={i} />) 
+							_.map(removedFaceUp, (id, i) => <Card id={id} display={1} mr={4} key={i} />) 
 							: null
 						}
 					</div>
-				</div>
-				<div className={styles['others-holder']}>
-					{players.map((player, i) => {
-						if(player.id === user._id) return null;
-						const selected = phase === 'effect' && effect === player.id;
-						return (
-							<Player 
-								player={player} 
-								user={user} 
-								users={users} 
-								active={activePlayer === i} 
-								selectable={phase === 'choose.player' && myTurn}
-								selected={selected}
-								revealHands={(selected && cardId === 2) || phase === 'round' || !myself}
-								confirmBtn={selected && cardId === 2 && myself}
-								out={player.out}
-								onConfirm={this.handleRevealHandsConfirm}
-								key={player.id}
-								onMouseDown={this.choosePlayer} 
-							/> 
-						);
-					})}
+					{phase === 'effect' && cardId === 2 && myTurn ?
+						<div className={styles['reveal-section']}>
+							<Card id={_.find(players, player => player.id === effect).hands[0]} display={1} />
+							<div style={{marginTop: 10, marginBottom: 10}}>
+								<span 
+									className={styles.btn}
+									onMouseDown={this.handleConfirmReveal}
+								>
+									OK
+								</span>
+							</div>
+						</div>
+						: null
+					}
+					{phase === 'effect' && cardId === 1 && myTurn ?
+						<div className={styles['action-section']}>
+							<div style={{display: 'inline-block', marginRight: 20}}>Choose a non-guard card: </div>
+							{[2,3,4,5,6,7,8].map(id => 
+								<Card id={id} display={1} playable={1} mr={4} key={id} small={true}
+									onMouseDown={this.chooseNonGuardCard} 
+								/>
+							)}
+						</div>
+						: null
+					}
 				</div>
 				{myself ? 
-					<div className={styles['me-holder']} >
-						<Player 
-							player={myself} 
-							user={user} 
-							users={users} 
-							active={myTurn}
-							selectable={phase === 'choose.player' && cardId === 5 && myTurn}
-							selected={phase === 'effect' && effect === user._id}
-							out={myself.out}
-							onMouseDown={this.choosePlayer}
-						/> 
-					</div> 
-					: null
-				}
-				{myself ? 
-					<div className={styles['hands-holder']}>
+					<div 
+						className={styles['hands-area']}
+						style={{
+							width: clientWidth - 320
+						}}
+					>
 						{myself.hands.map((id, i) => {
 							const playable = myTurn && phase === 'play.card';
 							return <Card 
-										card={CARDS[id]} 
+										id={id} 
 										display={1} 
+										mr={4}
 										playable={playable} 
 										key={i}
 										onMouseDown={this.playCard} 
 									/>
 						})}
-					</div> 
+					</div>
 					: null
 				}
-				<CardList 
-					visible={phase === 'effect' && cardId === 1 && myTurn}
-					onMouseDown={this.chooseNonGuardCard} 
-				/>
-				<Score 
-					board={board} 
-					users={users} 
-					phase={phase} 
-					watch={!myself}
-					onConfirm={this.handleConfirmScore} 
-				/>
+				{(phase === 'round' || phase === 'game') && this.state.scoreVisible ?
+					<div className={styles['score-area']}>
+						<Score 
+							data={data} 
+							users={users} 
+							watch={!myself}
+							onConfirm={this.handleConfirmScore} 
+						/>
+					</div>
+					: null
+				}
+				<Motion style={{x: spring(this.state.logX)}}>
+					{({ x }) =>
+						<div 
+							className={styles['log-area']}
+							style={{
+								transform: `translateX(${x}px)`,
+								WebkitTransform: `translateX(${x}px)`
+							}}
+							onMouseEnter={this.handleShowLog}
+							onMouseLeave={this.handleHideLog}
+						>
+							<Log logs={logs} users={users} language={language} />
+						</div>
+					}
+				</Motion>
 				<CardViewer />
-				<Log logs={logs} users={users} language={language} height={clientHeight - 445} />
 			</div>
 		);
 	}
 
-	playCard(card) {
+	playCard(id) {
 		const { table, data } = this.props.board;
 		const hands = data.players[data.activePlayer].hands;
-		if(_.includes(hands, 7) && (card.id === 5 || card.id === 6)) {
+		if(_.includes(hands, 7) && (id === 5 || id === 6)) {
 			this.props.notify({message: {
 				en: 'you have to play Countess',
 				ch: '你只能打出Countess'
@@ -135,7 +172,7 @@ class LoveLetter extends Component {
 		}
 		send(`client.loveletter.${data.phase}`, {
 			tableId: table._id,
-			cardId: card.id
+			cardId: id
 		});
 	}
 
@@ -147,16 +184,16 @@ class LoveLetter extends Component {
 		});
 	}
 
-	chooseNonGuardCard(card) {
+	chooseNonGuardCard(id) {
 		const { table, data } = this.props.board;
 		this.setState({cardListVisible: false});
 		send(`client.loveletter.${data.phase}`, {
 			tableId: table._id,
-			cardId: card.id
+			cardId: id
 		});
 	}
 
-	handleRevealHandsConfirm() {
+	handleConfirmReveal() {
 		const { table, data } = this.props.board;
 		send(`client.loveletter.${data.phase}`, {
 			tableId: table._id
@@ -169,14 +206,23 @@ class LoveLetter extends Component {
 			tableId: table._id
 		});
 		if(data.phase === 'game') {
-			this.props.setBoardVisible(false);
+			this.setState({scoreVisible: false});
 		}
+	}
+
+	handleShowLog() {
+		this.setState({logX: this.props.clientWidth - 500});
+	}
+
+	handleHideLog() {
+		this.setState({logX: this.props.clientWidth - 10});
 	}
 }
 
 function mapStateToProps({ client, board, users, logs }) {
 	return {
 		clientHeight: client.clientHeight,
+		clientWidth: client.clientWidth,
 		user: client.user,
 		language: client.language,
 		users,

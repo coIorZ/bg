@@ -35,8 +35,17 @@ export function setBoardVisible(payload) {
 };
 
 export const SET_CARD = 'SET_CARD';
-export function setCard(payload) {
-	return {type: SET_CARD, payload};
+export function setCard(card, x, y) {
+	if(!card) return {type: SET_CARD, payload: null};
+	x -= 350;
+	if(x < 0) x += 450;
+	y -= 200;
+	if(y < 25) y = 25;
+	if(y > document.documentElement.clientHeight - 350) y = document.documentElement.clientHeight - 375;
+	return {
+		type: SET_CARD, 
+		payload: { card, x, y }
+	};
 };
 
 export const SET_HEADER_PAGE = 'SET_HEADER_PAGE';

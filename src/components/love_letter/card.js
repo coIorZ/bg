@@ -4,61 +4,63 @@ import cx from 'classnames';
 
 import styles from './card.css';
 
+import { CARDS } from '../../../core/love_letter';
 import { setCard } from '../../actions';
 
 class Card extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			forward: false
-		};
 		this.handleMouseEnter = this.handleMouseEnter.bind(this);
 		this.handleMouseLeave = this.handleMouseLeave.bind(this);
 		this.handleMouseDown = this.handleMouseDown.bind(this);
 	}
 
 	render() {
-		switch(this.props.display) {
+		const { display, id, playable, mr, label, small } = this.props;
+		switch(display) {
 		case 0:
 			return (
 				<div 
-					className={styles.card}
-					style={{marginRight: this.props.mr || 4}}
+					className={cx({
+						[styles.container]: true,
+						[styles.small]: small
+					})}
+					style={{marginRight: mr}}
 				>
-					<span className={styles.small}>Back</span>
 					<img src={'./img/love_letter/back.jpg'} className={styles.bg} />
+					<span className={styles.label}>{label}</span>
 				</div>
 			);
 
 		case 1:
-			const { card, display, playable } = this.props;
-			const { name, value, text, img } = card;
 			return (
 				<div 
 					className={cx({
-						[styles.card]: true,
-						[styles.playable]: playable,
-						[styles.forward]: this.state.forward
+						[styles.container]: true,
+						[styles.small]: small,
+						[styles.playable]: playable
 					})}
-					style={{marginRight: this.props.mr || 4}}
+					style={{marginRight: mr}}
 					onMouseEnter={this.handleMouseEnter}
 					onMouseLeave={this.handleMouseLeave}
 					onMouseDown={this.handleMouseDown}
 				>
-					<span className={styles.small}>{name}</span>
-					<img src={img} className={styles.bg} />
+					<img src={CARDS[id].img} className={styles.bg} />
+					<span className={styles.label}>{label}</span>
 				</div>
 			);
 
-		case 2:
+		case -1:
 			return (
 				<span 
-					className={styles.text}
-					style={{color: this.props.card.color}}
+					style={{
+						color: CARDS[id].color,
+						fontWeight: 'bold'
+					}}
 					onMouseEnter={this.handleMouseEnter}
 					onMouseLeave={this.handleMouseLeave}
 				>
-					{this.props.card.name}
+					{CARDS[id].name}
 				</span>
 			);
 
@@ -67,21 +69,19 @@ class Card extends Component {
 		}
 	}
 
-	handleMouseEnter() {
-		const { card, setCard, playable } = this.props;
-		setCard(card);
-		if(playable) this.setState({forward: true});
+	handleMouseEnter(e) {
+		const { id, setCard } = this.props;
+		setCard(CARDS[id], e.pageX, e.pageY);
 	}
 
 	handleMouseLeave() {
-		const { card, setCard, playable } = this.props;
+		const { id, setCard } = this.props;
 		setCard(null);
-		if(playable) this.setState({forward: false});
 	}
 
 	handleMouseDown() {
-		const { onMouseDown, card, playable } = this.props;
-		if(playable && onMouseDown) onMouseDown(card);
+		const { onMouseDown, id, playable } = this.props;
+		if(playable && onMouseDown) onMouseDown(id);
 	}
 };
 

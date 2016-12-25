@@ -6,11 +6,18 @@ import styles from './card_viewer.css';
 
 class CardViewer extends Component {
 	render() {
-		const { card } = this.props;
-		if(!card) return null;
+		const { cardView } = this.props;
+		if(!cardView) return null;
+		const { card, x, y } = cardView;
 		const { name, value, text, img } = card;
 		return (
-			<div className={styles.container}>
+			<div 
+				className={styles.container}
+				style={{
+					left: x,
+					top: y
+				}}
+			>
 				{name ? <div>{name}</div> : null}
 				{value ? <div>{value}</div> : null}
 				{text ? <div>{text}</div> : null}
@@ -22,7 +29,7 @@ class CardViewer extends Component {
 
 function mapStateToProps({ client }) {
 	return {
-		card: client.card
+		cardView: client.cardView
 	};
 }
 
