@@ -36,7 +36,7 @@ export default class Player extends Component {
 				</div>
 				<div>
 					{player.discarded.map((id, i) => {
-						return <Card id={id} display={1} small={true} mr={mr} key={i} />
+						return <Card id={id} small={true} mr={mr} key={i} />
 					})}
 				</div>
 				{phase === 'round' ? 
@@ -45,7 +45,7 @@ export default class Player extends Component {
 						style={{right: -54 * player.hands.length - 10}}
 					>
 						{player.hands.map((id, i) => {
-							return <Card id={id} display={1} small={true} key={i} />;
+							return <Card id={id} small={true} key={i} />;
 						})}
 					</div> 
 					: null

@@ -2,14 +2,15 @@ import _ from 'lodash';
 
 // ---------- cards & deck ----------
 let CARDS = {}, DECK = [];
-function registerCard(id, name, value, text, img, quantity = 1, color = '#ffa500') {
-	CARDS[id] = { id, name, value, text, img, quantity, color };
-	while(quantity) {
+function registerCard(id, name, value, text, img, quantity = 1, color = '#ffa500', width = 50, height = 70) {
+	CARDS[id] = { id, name, value, text, img, quantity, color, width, height };
+	while(quantity && id > 0) {
 		DECK.push(id);
 		quantity--;
 	}
 }
 
+registerCard(-1, '', -1, 'Back', './img/love_letter/back.jpg');
 registerCard(1, 'Guard', 1, '', './img/love_letter/guard.jpg', 5);
 registerCard(2, 'Priest', 2, '', './img/love_letter/priest.jpg', 2);
 registerCard(3, 'Baron', 3, '', './img/love_letter/baron.jpg', 2);

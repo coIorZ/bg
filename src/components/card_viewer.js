@@ -4,7 +4,14 @@ import cx from 'classnames';
 
 import styles from './card_viewer.css';
 
+import { setCard } from '../actions';
+
 class CardViewer extends Component {
+	constructor(props) {
+		super(props);
+		this.handleMouseEnter = this.handleMouseEnter.bind(this);
+	}
+
 	render() {
 		const { cardView } = this.props;
 		if(!cardView) return null;
@@ -17,6 +24,7 @@ class CardViewer extends Component {
 					left: x,
 					top: y
 				}}
+				onMouseEnter={this.handleMouseEnter}
 			>
 				{name ? <div>{name}</div> : null}
 				{value ? <div>{value}</div> : null}
@@ -24,6 +32,10 @@ class CardViewer extends Component {
 				<img src={img} className={styles.bg} />
 			</div>
 		);
+	}
+
+	handleMouseEnter() {
+		this.props.setCard(null);
 	}
 };
 
@@ -33,4 +45,4 @@ function mapStateToProps({ client }) {
 	};
 }
 
-export default connect(mapStateToProps, null)(CardViewer);
+export default connect(mapStateToProps, { setCard })(CardViewer);

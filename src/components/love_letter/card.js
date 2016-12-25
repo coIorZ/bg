@@ -17,66 +17,60 @@ class Card extends Component {
 
 	render() {
 		const { display, id, playable, mr, label, small } = this.props;
+		const card = CARDS[id];
 		switch(display) {
-		case 0:
-			return (
-				<div 
-					className={cx({
-						[styles.container]: true,
-						[styles.small]: small
-					})}
-					style={{marginRight: mr}}
-				>
-					<img src={'./img/love_letter/back.jpg'} className={styles.bg} />
-					<span className={styles.label}>{label}</span>
-				</div>
-			);
-
-		case 1:
-			return (
-				<div 
-					className={cx({
-						[styles.container]: true,
-						[styles.small]: small,
-						[styles.playable]: playable
-					})}
-					style={{marginRight: mr}}
-					onMouseEnter={this.handleMouseEnter}
-					onMouseLeave={this.handleMouseLeave}
-					onMouseDown={this.handleMouseDown}
-				>
-					<img src={CARDS[id].img} className={styles.bg} />
-					<span className={styles.label}>{label}</span>
-				</div>
-			);
-
 		case -1:
 			return (
 				<span 
 					style={{
-						color: CARDS[id].color,
+						color: card.color,
 						fontWeight: 'bold'
 					}}
 					onMouseEnter={this.handleMouseEnter}
 					onMouseLeave={this.handleMouseLeave}
 				>
-					{CARDS[id].name}
+					{card.name}
 				</span>
 			);
 
 		default:
-			return null;
+			return (
+				<div 
+					className={cx({
+						[styles.container]: true,
+						[styles.playable]: playable
+					})}
+					style={{
+						width: small ? card.width : card.width * 1.8,
+						height: small ? card.height : card.height * 1.8,
+						marginRight: mr
+					}}
+					onMouseEnter={this.handleMouseEnter}
+					onMouseLeave={this.handleMouseLeave}
+					onMouseDown={this.handleMouseDown}
+				>
+					<img 
+						src={card.img} 
+						className={styles.bg} 
+						style={{
+							width: small ? card.width : card.width * 1.8,
+							height: small ? card.height : card.height * 1.8
+						}}
+					/>
+					<span className={styles.label}>{label}</span>
+				</div>
+			);
 		}
 	}
 
 	handleMouseEnter(e) {
 		const { id, setCard } = this.props;
-		setCard(CARDS[id], e.pageX, e.pageY);
+		if(id > 0) setCard(CARDS[id], e.pageX, e.pageY);
 	}
 
 	handleMouseLeave() {
 		const { id, setCard } = this.props;
-		setCard(null);
+		if(id > 0) setCard(null);
 	}
 
 	handleMouseDown() {

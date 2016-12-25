@@ -72,19 +72,19 @@ class LoveLetter extends Component {
 							top: clientHeight / 2 - 130
 						}}
 					>
-						<Card display={0} mr={40} label={`Deck(${deck.length})`} />
+						<Card id={-1} mr={40} label={`Deck(${deck.length})`} />
 						{removedFaceDown ?
-							<Card display={0} mr={4} label='Removed' />
+							<Card id={-1} mr={4} label='Removed' />
 							: null
 						}
 						{removedFaceUp.length ? 
-							_.map(removedFaceUp, (id, i) => <Card id={id} display={1} mr={4} key={i} />) 
+							_.map(removedFaceUp, (id, i) => <Card id={id} mr={4} key={i} />) 
 							: null
 						}
 					</div>
 					{phase === 'effect' && cardId === 2 && myTurn ?
 						<div className={styles['reveal-section']}>
-							<Card id={_.find(players, player => player.id === effect).hands[0]} display={1} />
+							<Card id={_.find(players, player => player.id === effect).hands[0]} />
 							<div style={{marginTop: 10, marginBottom: 10}}>
 								<span 
 									className={styles.btn}
@@ -100,7 +100,7 @@ class LoveLetter extends Component {
 						<div className={styles['action-section']}>
 							<div style={{display: 'inline-block', marginRight: 20}}>Choose a non-guard card: </div>
 							{[2,3,4,5,6,7,8].map(id => 
-								<Card id={id} display={1} playable={1} mr={4} key={id} small={true}
+								<Card id={id} playable={1} mr={4} key={id} small={true}
 									onMouseDown={this.chooseNonGuardCard} 
 								/>
 							)}
@@ -119,7 +119,6 @@ class LoveLetter extends Component {
 							const playable = myTurn && phase === 'play.card';
 							return <Card 
 										id={id} 
-										display={1} 
 										mr={4}
 										playable={playable} 
 										key={i}
