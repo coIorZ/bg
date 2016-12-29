@@ -44,7 +44,7 @@ export default function(state = initialState, { type, payload }) {
 			...state,
 			[payload._id]: {
 				...state[payload._id],
-				started: true
+				status: 1
 			}
 		};
 

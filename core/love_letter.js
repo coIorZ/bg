@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 // ---------- cards & deck ----------
 let CARDS = {}, DECK = [];
-function registerCard(id, name, value, text, img, quantity = 1, color = '#ffa500', width = 50, height = 70) {
+function registerCard(id, name, value, text, img, quantity = 1, color = '#ffa500', width = 90, height = 126) {
 	CARDS[id] = { id, name, value, text, img, quantity, color, width, height };
 	while(quantity && id > 0) {
 		DECK.push(id);

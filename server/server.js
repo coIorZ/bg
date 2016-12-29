@@ -73,11 +73,13 @@ http.listen(port, () =>
 
 function init() {
 	User.find((err, users) => {
-		if(err) throw err;
-		store.dispatch({type: 'INIT_USERS', payload: users});
+		if(!err) {
+			store.dispatch({type: 'INIT_USERS', payload: users});
+		}
 	});
-	Board.find((err, boards) => {
-		if(err) throw err;
-		store.dispatch({type: 'INIT_TABLES', payload: boards});
+	Board.find({'table.status': 1}, (err, boards) => {
+		if(!err) {
+			store.dispatch({type: 'INIT_TABLES', payload: boards});
+		}
 	});
 }

@@ -2,10 +2,12 @@ import _ from 'lodash';
 
 // ---------- cards ----------
 let CARDS = {};
-function registerCard(id, name, value, text, img, color = '#ffa500') {
-	CARDS[id] = { id, name, value, text, img, color };
+function registerCard(id, name, value, text, img, color = '#ffa500', width = 90, height = 126) {
+	CARDS[id] = { id, name, value, text, img, color, width, height };
 }
 
+registerCard(-1, '', -1, 'Role Back', './img/phantom_of_the_opera/role_back.jpg');
+registerCard(-2, '', -2, 'Alibi Back', './img/phantom_of_the_opera/alibi_back.jpg');
 registerCard(1, 'Raoul De Chagny', 1, '', './img/phantom_of_the_opera/raoul.jpg');
 registerCard(2, 'Meg Giry', 2, '', './img/phantom_of_the_opera/meg.jpg');
 registerCard(3, 'Madame Giry', 3, '', './img/phantom_of_the_opera/madame.jpg');
@@ -29,8 +31,8 @@ export { CARDS };
 
 // ---------- tokens ----------
 let TOKENS = {};
-function registerToken(id, value, img) {
-	TOKENS[id] = { id, value, img };
+function registerToken(id, value, img, width = 50, height = 50) {
+	TOKENS[id] = { id, value, img, width, height };
 }
 
 registerToken(1, 1, './img/phantom_of_the_opera/raoul_t.png');
@@ -107,11 +109,11 @@ function setup(players) {
 	let roles = [];
 	let logs = [];
 	const investigator = {
-		player: players[1],
+		id: players[1],
 		alibis: []
 	};
 	let phantom = {
-		player: players[0],
+		id: players[0],
 		alibis: []
 	};
 	for(let i = 0; i < 11; i++) {
@@ -162,8 +164,8 @@ function playCard(board, cardId) {
 	let data = board.data;
 	let { actions, turn, roles, investigator, phantom } = data;
 	data.logs = [{
-		en: `|p:${turn ? investigator.player : phantom.player}| plays |c:${cardId}|.`,
-		ch: `|p:${turn ? investigator.player : phantom.player}|选择了|c:${cardId}|。`
+		en: `|p:${turn ? investigator.id : phantom.id}| plays |c:${cardId}|.`,
+		ch: `|p:${turn ? investigator.id : phantom.id}|选择了|c:${cardId}|。`
 	}];
 	data.cardId = cardId;
 	data.phase = 'choose.action';
@@ -258,8 +260,8 @@ function action(board, payload) {
 		rooms[payload.roomId].tokens.push(token);
 		actions.move = false;
 		data.logs.push({
-			en: `|p:${turn ? investigator.player : phantom.player}| moves |c:${token}| from |r:${room.id}| to |r:${payload.roomId}|.`,
-			ch: `|p:${turn ? investigator.player : phantom.player}|将|c:${token}|从|r:${room.id}|移动至|r:${payload.roomId}|。`
+			en: `|p:${turn ? investigator.id : phantom.id}| moves |c:${token}| from |r:${room.id}| to |r:${payload.roomId}|.`,
+			ch: `|p:${turn ? investigator.id : phantom.id}|将|c:${token}|从|r:${room.id}|移动至|r:${payload.roomId}|。`
 		});
 		switch(cardId) {
 		case 1:
@@ -278,8 +280,8 @@ function action(board, payload) {
 				});
 			}
 			data.logs.push({
-				en: `|p:${turn ? investigator.player : phantom.player}| draws an alibi card.`,
-				ch: `|p:${turn ? investigator.player : phantom.player}|抽取了一张不在场证明卡。`
+				en: `|p:${turn ? investigator.id : phantom.id}| draws an alibi card.`,
+				ch: `|p:${turn ? investigator.id : phantom.id}|抽取了一张不在场证明卡。`
 			});
 			actions.end = true;
 			break;
@@ -468,8 +470,8 @@ function investigatorWin(data) {
 	data.phase = 'game';
 	data.winner = data.investigator;
 	data.logs.push({
-		en: `|p:${data.winner.player}| wins the game!`,
-		ch: `|p:${data.winner.player}|获胜！`
+		en: `|p:${data.winner.id}| wins the game!`,
+		ch: `|p:${data.winner.id}|获胜！`
 	});
 }
 
@@ -477,8 +479,8 @@ function phantomWin(data) {
 	data.phase = 'game';
 	data.winner = data.phantom;
 	data.logs.push({
-		en: `|p:${data.winner.player}| wins the game!`,
-		ch: `|p:${data.winner.player}|获胜！`
+		en: `|p:${data.winner.id}| wins the game!`,
+		ch: `|p:${data.winner.id}|获胜！`
 	});
 }
 

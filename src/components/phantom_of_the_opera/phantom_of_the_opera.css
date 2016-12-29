@@ -3,87 +3,133 @@
 	color: white;
 }
 
-.board {
+.players-area {
 	position: absolute;
-	width: 800px;
-	height: 450px;
-	box-shadow: 0 0 20px rgba(0, 0, 0, .6);
+	left: 0;
+	top: 0;
+	width: 320px;
+	height: 100%;
+	background-color: rgba(68, 42, 29, 0.3);
+	box-shadow: 3px 0 10px 3px rgba(0, 0, 0, .7);
+	overflow: auto;
 }
 
-.bg {
-	width: 800px;
-	height: 450px;
-}
-
-.label {
+.main-area {
 	position: absolute;
 	top: 0;
-	left: 2px;
-	color: white;
-	font-size: 12px;
-	background-color: rgba(0, 0, 0, .6);
-	z-index: 5;
+	left: 320px;
+	height: 100%;
+	overflow: auto;
 }
 
-.roles-holder {
+.hands-area {
 	position: absolute;
-}
-
-.actions-holder {
-	position: absolute;
-}
-
-.player {
-	position: absolute;
-	margin: 10px;
-	padding: 5px;
-	width: 200px;
-	height: 90px;
-	box-shadow: 0 0 10px rgba(0,0,0,0.9), inset 0 0 0 2px rgba(255,255,255,0.1);
-	border-radius: 5px;
-	background-color: rgba(80, 80, 80, .2);
-}
-
-.player.active {
-	border: 2px solid #ffa500;
-}
-
-.player.opponent {
-	top: 0;
-	left: 0;
-}
-
-.player.myself {
-	left: 0;
+	left: 320px;
 	bottom: 0;
+	height: 130px;
+	text-align: center;
+	background-color: rgba(68, 42, 29, 0.3);
+	box-shadow: 5px -3px 10px 3px rgba(0,0,0,.7);
 }
 
-.player .name {
-	font-weight: bold;
+.log-area {
+	height: 100%;
+	width: 500px;
+	background-color: rgba(68, 42, 29, 0.5);
+	box-shadow: -3px 0 10px 1px rgba(0,0,0,.7);
+	z-index: 100;
 }
 
-.player .identity {
-	font-size: .8em;
-}
-
-.player .phantom-holder {
+.score-area {
 	position: absolute;
-	right: 0;
-	top: 2px;
+	left: 40%;
+	top: 30%;
+	z-index: 99;
+}
+
+.menu-section {
+	margin: 10px 0;
+}
+
+.menu-section .icon {
+	display: inline-block;
+	position: relative;
+	width: 40px;
+	height: 40px;
+	margin: 0 5px;
+	cursor: pointer;
+}
+
+.menu-section .icon img {
+	width: 40px;
+	height: 40px;
+}
+
+.menu-section .icon .active {
+	display: none;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+
+.menu-section .icon:hover .active {
+	display: block;
+}
+
+.main-section {
+	position: relative;
+	width: 1150px;
+	margin: 0 auto;
+	padding: 0 20px;
+}
+
+.board-holder {
+	display: inline-block;
+	position: relative;
+	margin-right: 10px;
+}
+
+.board-holder .board-img {
+	width: 1000px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, .6);
+}
+
+.board-holder .la {
+	position: absolute;
+	left: 15px;
+	bottom: 15px;
+}
+
+.la .la-img {
+	width: 40px;
+	height: 90px;
+}
+
+.deck-holder {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.action-section {
+	position: fixed;
+	left: 320px;
+	bottom: 130px;
+	text-align: center;
+	background-color: rgba(0,0,0,.6);
+	z-index: 10;
 }
 
 .room {
 	position: absolute;
-    top: 30%;
+    top: 40%;
     left: 45%;
     width: 25px;
     line-height: 25px;
-    font-size: 10px;
+    font-size: 13px;
     background-color: red;
     border: 1px solid white;
     border-radius: 8px;
     text-align: center;
-    z-index: 1;
 }
 
 .room.dark {
@@ -97,8 +143,9 @@
 
 .corridor {
 	position: absolute;
-	width: 32px;
-	height: 32px;
+	width: 40px;
+	height: 40px;
+	border: 2px solid transparent;
 	border-radius: 50%;
 }
 
@@ -108,11 +155,7 @@
 }
 
 .tool {
-	widows: 30px;
-	height: 30px;
+	widows: 40px;
+	height: 40px;
 	border-radius: 50%;
-}
-
-.alibis-holder {
-	position: absolute;
 }

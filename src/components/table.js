@@ -19,9 +19,9 @@ class Table extends Component {
 
 	render() {
 		const { table, users, user, games, game, language } = this.props;
-		const { host, players, started } = table;
+		const { host, players, status } = table;
 		const { min_players, max_players } = game;
-
+		const started = status === 1;
 		const onTable = _.includes(players, user._id);
 		const tableSize = _.size(players);
 		const joinable = tableSize < max_players;
@@ -106,7 +106,7 @@ class Table extends Component {
 
 	rejoinTable() {
 		const { table } = this.props;
-		socket.emit('client.table.board', table._id);
+		socket.emit('client.board.reconnect', table._id);
 	}
 }
 

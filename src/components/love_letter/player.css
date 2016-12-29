@@ -3,21 +3,21 @@
 	margin: 5px 5px 30px 0px;
 	padding: 0 5px 5px 10px;
 	min-height: 120px;
-	border-left: 8px solid transparent;
+	border-left: 10px solid transparent;
 	box-shadow: 0 2px 10px rgba(0,0,0,.9);
 }
 
 .container.active {	
-	border-left: 8px solid #ffa500;
+	border-left: 10px solid #ffa500;
 }
 
 .container.selectable {
-	border-left: 8px solid #00ff00;
+	border-left: 10px solid #00ff00;
 	cursor: pointer;
 }
 
 .container.selected {
-	border-left: 8px solid #00bfff;
+	border-left: 10px solid #00bfff;
 }
 
 .container.out {
@@ -28,21 +28,4 @@
 .hands {
 	position: absolute;
 	bottom: 5px;
-}
-
-.btn {
-	position: absolute;
-	right: -60px;
-	bottom: 0;
-	padding: 2px 15px;
-	background-color: transparent;
-	border: 1px solid white;
-	border-radius: 10px;
-	cursor: pointer;
-	color: white;
-	transition: background-color .3s;
-}
-
-.btn:hover {
-	background-color: rgba(200,200,200, .6);
 }

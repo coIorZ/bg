@@ -12,7 +12,7 @@ import styles from './love_letter.css';
 
 import { send } from '../../sockets';
 
-import { setBoardVisible, notify } from '../../actions';
+import { setBoardVisible, notify, setTable } from '../../actions';
 
 class LoveLetter extends Component {
 	constructor(props) {
@@ -28,6 +28,8 @@ class LoveLetter extends Component {
 		this.handleShowLog = this.handleShowLog.bind(this);
 		this.handleHideLog = this.handleHideLog.bind(this);
 		this.handleConfirmReveal = this.handleConfirmReveal.bind(this);
+		this.handleExit = this.handleExit.bind(this);
+		this.handleRule = this.handleRule.bind(this);
 	}
 
 	render() {
@@ -43,21 +45,35 @@ class LoveLetter extends Component {
 				style={{height: clientHeight}}
 			>
 				<div className={styles['players-area']}>
-					<div>
-						{players.map((player, i) => {
-							const selected = phase === 'effect' && effect === player.id;
-							return (
-								<Player 
-									player={player} 
-									data={data}
-									user={user}
-									users={users} 
-									key={player.id}
-									onMouseDown={this.choosePlayer} 
-								/> 
-							);
-						})}
+					<div className={styles['menu-section']}>
+						<div 
+							className={styles.icon}
+							onMouseDown={this.handleExit}
+						>
+							<img src='./img/exit.png' />
+							<img src='./img/exit_active.png' className={styles.active} />
+						</div>
+						<div 
+							className={styles.icon}
+							onMouseDown={this.handleRule}
+						>
+							<img src='./img/idea.png' />
+							<img src='./img/idea_active.png' className={styles.active} />
+						</div>
 					</div>
+					{players.map((player, i) => {
+						const selected = phase === 'effect' && effect === player.id;
+						return (
+							<Player 
+								player={player} 
+								data={data}
+								user={user}
+								users={users} 
+								key={player.id}
+								onMouseDown={this.choosePlayer} 
+							/> 
+						);
+					})}
 				</div>
 				<div 
 					className={styles['main-area']}
@@ -69,7 +85,7 @@ class LoveLetter extends Component {
 					<div 
 						className={styles['cards-section']}
 						style={{
-							top: clientHeight / 2 - 130
+							top: clientHeight / 2 - (myself ? 130 : 65)
 						}}
 					>
 						<Card id={-1} mr={40} label={`Deck(${deck.length})`} />
@@ -97,7 +113,12 @@ class LoveLetter extends Component {
 						: null
 					}
 					{phase === 'effect' && cardId === 1 && myTurn ?
-						<div className={styles['action-section']}>
+						<div 
+							className={styles['action-section']}
+							style={{
+								width: clientWidth - 320
+							}}
+						>
 							<div style={{display: 'inline-block', marginRight: 20}}>Choose a non-guard card: </div>
 							{[2,3,4,5,6,7,8].map(id => 
 								<Card id={id} playable={1} mr={4} key={id} small={true}
@@ -157,6 +178,16 @@ class LoveLetter extends Component {
 				<CardViewer />
 			</div>
 		);
+	}
+
+	handleExit() {
+		const { table, setTable } = this.props;
+		send('client.board.leave', table._id);
+		setTable(null);
+	}
+
+	handleRule() {
+
 	}
 
 	playCard(id) {
@@ -224,10 +255,11 @@ function mapStateToProps({ client, board, users, logs }) {
 		clientWidth: client.clientWidth,
 		user: client.user,
 		language: client.language,
+		table: client.table,
 		users,
 		board,
 		logs
 	};
 }
 
-export default connect(mapStateToProps, { setBoardVisible, notify })(LoveLetter);
+export default connect(mapStateToProps, { setBoardVisible, notify, setTable })(LoveLetter);

@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
 
 import { getCore } from '../../core';
-import Board from '../models/boards';
+import Board, { updateBoard } from '../models/boards';
+import Log, { updateLog } from '../models/logs';
 
 export const NEW_TABLE = 'NEW_TABLE';
 export const JOIN_TABLE = 'JOIN_TABLE';
@@ -17,7 +18,7 @@ export default function(socket, io, store) {
 			host: payload.userId,
 			players: [payload.userId],
 			game: payload.gameId,
-			started: false
+			status: 0
 		};
 		const action = {
 			type: NEW_TABLE,
@@ -61,17 +62,26 @@ export default function(socket, io, store) {
 		};
 		store.dispatch(action);
 		let board = new Board(getCore(payload.game).create({...payload}));
-		board.table.started = true;
-		board.save((err) => {
-			if(err) throw 'database error: create board';
-			io.emit('server.table.start', payload);
+		board.table.status = 1;
+		updateBoard(board, () => io.emit('server.table.start', payload));
+		let log = new Log({
+			tableId: board.table._id,
+			data: board.data.logs
+		});
+		updateLog(log);
+	});
+
+	socket.on('client.board.init', tableId => {
+		socket.join(tableId);
+		Board.findOne({'table._id': tableId}, (err, payload) => {
+			socket.emit('server.board.init', payload);
 		});
 	});
 
-	socket.on('client.table.board', tableId => {
+	socket.on('client.board.reconnect', tableId => {
 		socket.join(tableId);
 		Board.findOne({'table._id': tableId}, (err, payload) => {
-			socket.emit('server.table.board', payload);
+			socket.emit('server.board.reconnect', payload);
 		});
 	});
 

@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Motion, spring } from 'react-motion';
 import cx from 'classnames';
 import _ from 'lodash';
 
 import Card from './card';
+import Player from './player';
 import Actions from './actions';
 import Score from './score';
 import Log from './log';
@@ -12,7 +14,7 @@ import styles from './phantom_of_the_opera.css';
 
 import { send } from '../../sockets';
 import poto, { CARDS, TOKENS } from '../../../core/phantom_of_the_opera';
-import { updateBoard, setBoardVisible } from '../../actions';
+import { setTable } from '../../actions';
 
 class POTO extends Component {
 	constructor(props) {
@@ -22,7 +24,13 @@ class POTO extends Component {
 		this.handleEffect = this.handleEffect.bind(this);
 		this.handleEnd = this.handleEnd.bind(this);
 		this.handleConfirmGame = this.handleConfirmGame.bind(this);
+		this.handleClickToken = this.handleClickToken.bind(this);
+		this.handleShowLog = this.handleShowLog.bind(this);
+		this.handleHideLog = this.handleHideLog.bind(this);
+		this.handleExit = this.handleExit.bind(this);
+		this.handleRule = this.handleRule.bind(this);
 		this.state = {
+			logX: props.clientWidth - 10,
 			action: '',
 			rooms: [],
 			tokens: [],
@@ -43,209 +51,207 @@ class POTO extends Component {
 		const { clientHeight, clientWidth, board, user, users, logs, language } = this.props;
 		const { table, data } = board;
 		const { deck, alibis, turn, laCarlotta, exit, lock, rooms, roles, investigator, phantom, actions, phase, winner } = data;
-		const isPhantom = phantom.player === user._id;
-		const myself = isPhantom ? phantom : investigator;
-		const opponent = isPhantom ? investigator : phantom;
-		const myTurn = (isPhantom && !turn) || (!isPhantom && turn);
-		const watch = phantom.player !== user._id && investigator.player !== user._id;
-		const phantomLabel = language === 'ch' ? '魅影' : 'Phantom';
-		const investigatorLabel = language === 'ch' ? '调查员' : 'The Investigator';
+		const isPhantom = phantom.id === user._id;
+		const myself = user._id === phantom.id ? phantom
+						: user._id === investigator.id ? investigator
+							: null;
+		const myTurn = (myself === phantom && !turn) || (myself === investigator && turn);
 		return (
 			<div 
 				className={styles.container}
 				style={{height: clientHeight}}
 			>
-				<div 
-					className={styles.board}
-					style={{
-						top: (clientHeight - 450) / 2,
-						left: (clientWidth - 800) / 2
-					}}
-				>
-					<img src='./img/phantom_of_the_opera/board.jpg' className={styles.bg} />
-					<div style={{position: 'absolute', left: 30, top: 20}}>
-						<div className={styles.label}>Deck({deck.length})</div>
-						<Card display={0} />
-					</div>
-					<div style={{position: 'absolute', left: 110, top: 20}}>
-						<div className={styles.label}>Alibis({alibis.length})</div>
-						<Card display={-1} />
-					</div>
-					<div style={{position: 'absolute', right: 140, bottom: 15, color: 'red'}}>
-						La Carlotta: {laCarlotta}
-					</div>
-					<div style={{position: 'absolute', right: 40, bottom: 15}}>
-						Exit: {exit}
-					</div>
-					{_.map(rooms, room => {
-						return <div 
-									style={{
-										position: 'absolute',
-										left: roomUI[room.id].left,
-										top: roomUI[room.id].top,
-										width: roomUI[room.id].width,
-										height: roomUI[room.id].height
-									}}
-									key={room.id}
-								>
-									<div 
-										className={cx({
-											[styles.room]: true,
-											[styles.dark]: !room.lit,
-											[styles.playable]: !watch && this.state.rooms.indexOf(room.id) >= 0
-										})}
-										onMouseDown={this.handleClickRoom.bind(this, room.id)}
-									>
-										{room.id}
-									</div>
-									{room.tokens.map(token => {
-										return <Card 
-													id={token} 
-													display={3} 
-													playable={!watch && this.state.tokens.indexOf(token) >= 0}
-													onMouseDown={this.handleClickToken.bind(this, token)}
-													key={token} 
-												/>
-									})}
-									{room.lit ? null
-										: <img src='./img/phantom_of_the_opera/power_failure.png' className={styles.tool} />
-									}
-								</div>
-					})}
-					{_.map(corridorUI, corridor => {
-						return <div
-									className={cx({
-										[styles.corridor]: true,
-										[styles.playable]: !watch && this.state.corridors.indexOf(corridor.id) >= 0
-									})}
-									style={{
-										left: corridor.left,
-										top: corridor.top
-									}}
-									key={corridor.id}
-									onMouseDown={this.handleClickCorridor.bind(this, corridor.id)}
-								>
-									{lock === corridor.id ?
-										<img src='./img/phantom_of_the_opera/pad_lock.png' className={styles.tool} />
-										: null
-									}
-								</div>
-					})}
-				</div>
-				<div 
-					className={styles['roles-holder']}
-					style={{
-						top: (clientHeight - 450) / 2 + 20,
-						left: (clientWidth - 800) / 2 - 280
-					}}
-				>
-					{roles.map(role => {
-						return <Card 
-									id={role.id} 
-									display={1} 
-									playable={!watch && phase === 'play.card' && myTurn && role.available}
-									used={!role.available}
-									myTurn={myTurn}
-									key={role.id}
-									onMouseDown={this.handlePlayRole}
-								/>
-					})}
-				</div>
-				<div 
-					className={styles['actions-holder']}
-					style={{
-						top: (clientHeight - 450) / 2 + 130,
-						left: (clientWidth - 800) / 2 - 280
-					}}
-				>
-					<Actions 
-						visible={!watch && myTurn && phase === 'choose.action'}
-						actions={actions} 
-						onClickMove={this.handleMove}
-						onClickEffect={this.handleEffect}
-						onClickEnd={this.handleEnd}
-					/>
-				</div>
-				<div className={cx({
-					[styles.opponent]: true,
-					[styles.player]: true,
-					[styles.active]: !myTurn
-				})}>
-					<div className={styles.name}>{users[opponent.player].name}</div>
-					<div className={styles.identity}>{!isPhantom ? phantomLabel : investigatorLabel}</div>
-					{!isPhantom ? 
-						<div className={styles['phantom-holder']}>
-							<div className={styles.label}>Phantom</div>
-							<Card display={-1} />
+				<div className={styles['players-area']}>
+					<div className={styles['menu-section']}>
+						<div 
+							className={styles.icon}
+							onMouseDown={this.handleExit}
+						>
+							<img src='./img/exit.png' />
+							<img src='./img/exit_active.png' className={styles.active} />
 						</div>
-						: null
-					}
+						<div 
+							className={styles.icon}
+							onMouseDown={this.handleRule}
+						>
+							<img src='./img/idea.png' />
+							<img src='./img/idea_active.png' className={styles.active} />
+						</div>
+					</div>
+					<Player player={investigator} users={users} user={user} data={data} language={language} />
+					<Player player={phantom} users={users} user={user} data={data} language={language} />
 				</div>
-				<div className={cx({
-					[styles.myself]: true,
-					[styles.player]: true,
-					[styles.active]: myTurn
-				})}>
-					<div className={styles.name}>{users[myself.player].name}</div>
-					<div className={styles.identity}>{isPhantom ? phantomLabel : investigatorLabel}</div>
-					{isPhantom ? 
-						<div className={styles['phantom-holder']}>
-							<Card 
-								id={myself.phantom} 
-								display={1} 
+				<div 
+					className={styles['main-area']}
+					style={{
+						width: clientWidth - 320,
+						height: clientHeight - 130
+					}}
+				>
+					<div 
+						className={styles['main-section']}
+						style={{
+							top: (clientHeight / 2 - 401) < 0 ? 0 : clientHeight / 2 - 401
+						}}
+					>
+						<div className={styles['board-holder']}>
+							<img src='./img/phantom_of_the_opera/board.jpg' className={styles['board-img']} />
+							{_.map(rooms, room => {
+								return <div 
+											style={{
+												position: 'absolute',
+												left: roomUI[room.id].left,
+												top: roomUI[room.id].top,
+												width: roomUI[room.id].width,
+												height: roomUI[room.id].height
+											}}
+											key={room.id}
+										>
+											<div 
+												className={cx({
+													[styles.room]: true,
+													[styles.dark]: !room.lit,
+													[styles.playable]: myTurn && this.state.rooms.indexOf(room.id) >= 0
+												})}
+												onMouseDown={this.handleClickRoom.bind(this, room.id)}
+											>
+												{room.id}
+											</div>
+											{room.tokens.map(token => {
+												return <Card 
+															id={token} 
+															display={1} 
+															playable={myTurn && this.state.tokens.indexOf(token) >= 0}
+															onMouseDown={this.handleClickToken.bind(this)}
+															key={token} 
+														/>
+											})}
+											{room.lit ? null
+												: <img src='./img/phantom_of_the_opera/power_failure.png' className={styles.tool} />
+											}
+										</div>
+							})}
+							{_.map(corridorUI, corridor => {
+								return <div
+											className={cx({
+												[styles.corridor]: true,
+												[styles.playable]: myTurn && this.state.corridors.indexOf(corridor.id) >= 0
+											})}
+											style={{
+												left: corridor.left,
+												top: corridor.top
+											}}
+											key={corridor.id}
+											onMouseDown={this.handleClickCorridor.bind(this, corridor.id)}
+										>
+											{lock === corridor.id ?
+												<img src='./img/phantom_of_the_opera/pad_lock.png' className={styles.tool} />
+												: null
+											}
+										</div>
+							})}
+							<div 
+								className={styles.la}
+								style={{
+									left: 44.2 * (laCarlotta - 1) + 15
+								}}
+							>
+								<img src='./img/phantom_of_the_opera/la.jpg' className={styles['la-img']} />
+							</div>
+						</div>
+						<div className={styles['deck-holder']}>
+							<div>
+								<Card id={-1} label={`Deck(${deck.length})`} />
+							</div>
+							<div>
+								<Card id={-2} label={`Alibis(${alibis.length})`} />
+							</div>
+						</div>
+					</div>
+					{myTurn && phase === 'choose.action' ?
+						<div 
+							className={styles['action-section']}
+							style={{
+								width: clientWidth - 320
+							}}
+						>
+							<Actions 
+								actions={actions} 
+								onClickMove={this.handleMove}
+								onClickEffect={this.handleEffect}
+								onClickEnd={this.handleEnd}
 							/>
 						</div>
 						: null
 					}
 				</div>
 				<div 
-					className={styles['alibis-holder']}
+					className={styles['hands-area']}
 					style={{
-						top: (clientHeight - 450) / 2 - 104,
-						left: (clientWidth - 800) / 2 + 30
+						width: clientWidth - 320
 					}}
 				>
-					{opponent.alibis.map((id, i) => {
-						return <Card
-									id={id}
-									display={(isPhantom || id === 17) ? 1 : -1}
-									key={i}
-							 	/>
+					{roles.map(role => {
+						return <Card 
+									id={role.id} 
+									playable={myTurn && phase === 'play.card' && role.available}
+									unavailable={!role.available}
+									mr={4}
+									key={role.id}
+									onMouseDown={this.handlePlayRole}
+								/>
 					})}
 				</div>
-				<div 
-					className={styles['alibis-holder']}
-					style={{
-						top: (clientHeight + 450) / 2 + 20,
-						left: (clientWidth - 800) / 2 + 30
-					}}
-				>
-					{myself.alibis.map((id, i) => {
-						return <Card
-									id={id}
-									display={1}
-									key={i}
-							 	/>
-					})}
-				</div>
+				<Motion style={{x: spring(this.state.logX)}}>
+					{({ x }) =>
+						<div 
+							className={styles['log-area']}
+							style={{
+								transform: `translateX(${x}px)`,
+								WebkitTransform: `translateX(${x}px)`
+							}}
+							onMouseEnter={this.handleShowLog}
+							onMouseLeave={this.handleHideLog}
+						>
+							<Log logs={logs} users={users} language={language} />
+						</div>
+					}
+				</Motion>
+				<CardViewer />
 				<Score
 					visible={phase === 'game'}
 					winner={winner}
 					users={users}
-					watch={watch}
+					watch={!myself}
 					onConfirm={this.handleConfirmGame}
 				/>
-				<CardViewer />
-				<Log logs={logs} users={users} language={language} height={clientHeight - 445} />
 			</div>
 		);
 	}
 
-	handlePlayRole(card) {
+	handleExit() {
+		const { table, setTable } = this.props;
+		send('client.board.leave', table._id);
+		setTable(null);
+	}
+
+	handleRule() {
+
+	}
+
+	handleShowLog() {
+		this.setState({logX: this.props.clientWidth - 500});
+	}
+
+	handleHideLog() {
+		this.setState({logX: this.props.clientWidth - 10});
+	}
+
+	handlePlayRole(id) {
 		const { table, data } = this.props.board;
 		send(`client.poto.${data.phase}`, {
 			tableId: table._id,
-			cardId: card.id
+			cardId: id
 		});
 	}
 
@@ -359,7 +365,7 @@ function mapStateToProps({ client, board, users, logs }) {
 	return {
 		clientHeight: client.clientHeight,
 		clientWidth: client.clientWidth,
-		response: client.response,
+		table: client.table,
 		language: client.language,
 		user: client.user,
 		board,
@@ -368,31 +374,31 @@ function mapStateToProps({ client, board, users, logs }) {
 	};
 }
 
-export default connect(mapStateToProps, { setBoardVisible })(POTO);
+export default connect(mapStateToProps, { setTable })(POTO);
 
 const roomUI = {
-	'1': {left: 250, top: 100, width: 170, height: 70},
-	'2': {left: 470, top: 100, width: 160, height: 90},
-	'3': {left: 650, top: 220, width: 135, height: 90},
-	'4': {left: 630, top: 330, width: 135, height: 80},
-	'5': {left: 465, top: 340, width: 140, height: 70},
-	'6': {left: 270, top: 340, width: 160, height: 90},
-	'7': {left: 70, top: 330, width: 150, height: 90},
-	'8': {left: 60, top: 200, width: 150, height: 80},
-	'9': {left: 250, top: 220, width: 170, height: 90},
-	'10': {left: 470, top: 230, width: 140, height: 80}
+	'1': {left: 310, top: 115, width: 216, height: 100},
+	'2': {left: 580, top: 90, width: 170, height: 162},
+	'3': {left: 800, top: 280, width: 162, height: 100},
+	'4': {left: 780, top: 410, width: 162, height: 80},
+	'5': {left: 580, top: 420, width: 162, height: 70},
+	'6': {left: 360, top: 430, width: 162, height: 90},
+	'7': {left: 110, top: 420, width: 162, height: 90},
+	'8': {left: 100, top: 250, width: 162, height: 80},
+	'9': {left: 320, top: 270, width: 216, height: 90},
+	'10': {left: 590, top: 290, width: 162, height: 80}
 };
 
 const corridorUI = {
-	'1': {id: 1, left: 430, top: 150},
-	'2': {id: 2, left: 615, top: 190},
-	'3': {id: 3, left: 740, top: 310},
-	'4': {id: 4, left: 610, top: 280},
-	'5': {id: 5, left: 600, top: 375},
-	'6': {id: 6, left: 430, top: 378},
-	'7': {id: 7, left: 220, top: 384},
-	'8': {id: 8, left: 180, top: 295},
-	'9': {id: 9, left: 215, top: 180},
-	'10': {id: 10, left: 215, top: 250},
-	'11': {id: 11, left: 430, top: 290}
+	'1': {id: 1, left: 535, top: 175},
+	'2': {id: 2, left: 760, top: 230},
+	'3': {id: 3, left: 910, top: 375},
+	'4': {id: 4, left: 755, top: 345},
+	'5': {id: 5, left: 740, top: 460},
+	'6': {id: 6, left: 535, top: 470},
+	'7': {id: 7, left: 285, top: 470},
+	'8': {id: 8, left: 240, top: 365},
+	'9': {id: 9, left: 265, top: 210},
+	'10': {id: 10, left: 275, top: 305},
+	'11': {id: 11, left: 540, top: 360}
 };

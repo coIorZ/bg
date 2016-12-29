@@ -1,19 +1,25 @@
 import _ from 'lodash';
 import { createStore } from 'redux';
 
+import { fetchLog } from '../models/logs';
+
 import table from './table';
 import loveLetter from './love_letter';
 import POTO from './phantom_of_the_opera';
-// import avalon from './avalon';
 
 export default function(io, store) {
 	io.on('connection', (socket) => {
 		console.log('---------- a socket connected ----------');
 
-		socket.emit('server.user', store.getState().users);
-		socket.emit('server.message', store.getState().messages);
+		socket.on('disconnect', () => {
 
-		socket.on('client.user.login', payload => {
+		});
+
+
+		// ---------- users ----------
+		socket.emit('server.user', store.getState().users);
+
+		socket.on('client.user.login', () => {
 			socket.emit('server.table', store.getState().tables);
 		});
 
@@ -22,23 +28,30 @@ export default function(io, store) {
 			io.emit('server.user.online', payload);
 		});
 
-		socket.on('client.message.new', payload => {
-			const message = {
-				user: payload.user,
-				message: payload.message,
+
+		// ---------- chatroom ----------
+		socket.emit('server.message', store.getState().messages);
+
+		socket.on('client.message.new', ({ user, message }) => {
+			const payload = {
+				user,
+				message,
 				date: Date.now()
 			};
-			store.dispatch({type: 'NEW_MESSAGE', payload: message});
-			io.emit('server.message.new', message);
+			store.dispatch({type: 'NEW_MESSAGE', payload});
+			io.emit('server.message.new', payload);
 		});
+		
 
-		socket.on('disconnect', () => {
-
+		// ---------- logs ----------
+		socket.on('client.log', tableId => {
+			fetchLog(tableId, ({ data }) => {
+				socket.emit('server.log', data);
+			});
 		});
 
 		table(socket, io, store);
 		loveLetter(socket, io, store);
 		POTO(socket, io, store);
-		// avalon(socket, io, store);
 	});
 };

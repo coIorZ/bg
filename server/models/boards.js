@@ -11,22 +11,26 @@ export default Board;
 
 export function fetchBoard(tableId, callback = noop) {
 	Board.findOne({'table._id': tableId}, (err, board) => {
-		if(err) throw 'database error: fetch board';
-		if(board) callback(board);
+		if(!err) {
+			callback(board);
+		}
 	});
 };	
 
 export function updateBoard(board, callback = noop) {
 	board.markModified('data');
 	board.save((err) => {
-		if(err) throw 'database error: update board';
-		callback();
+		if(!err) {
+			callback(board);
+		}
 	});
 };
 
 export function deleteBoard(tableId , callback = noop) {
 	Board.remove({'table._id': tableId}, err => {
-		callback();
+		if(!err) {
+			callback(tableId);
+		}
 	});
 };
 

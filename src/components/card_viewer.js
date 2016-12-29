@@ -29,7 +29,14 @@ class CardViewer extends Component {
 				{name ? <div>{name}</div> : null}
 				{value ? <div>{value}</div> : null}
 				{text ? <div>{text}</div> : null}
-				<img src={img} className={styles.bg} />
+				<img 
+					src={img} 
+					className={styles.bg} 
+					style={{
+						width: card.width * 2.8,
+						height: card.height * 2.8
+					}}
+				/>
 			</div>
 		);
 	}

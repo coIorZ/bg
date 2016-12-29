@@ -16,12 +16,10 @@ export default class Actions extends Component {
 
 	render() {
 		const { move, effect, end } = this.props.actions;
-		if(!this.props.visible) {
-			return null;
-		}
 		return (
 			<div className={styles.container}>
-				<div 
+				<span style={{marginRight: 20}}>Choose an action: </span>
+				<span 
 					className={cx({
 						[styles.item]: true,
 						[styles.unavailable]: !move,
@@ -30,8 +28,8 @@ export default class Actions extends Component {
 					onMouseDown={this.handleClickMove}
 				>
 					Move
-				</div>
-				<div 
+				</span>
+				<span 
 					className={cx({
 						[styles.item]: true,
 						[styles.unavailable]: !effect,
@@ -40,8 +38,8 @@ export default class Actions extends Component {
 					onMouseDown={this.handleClickEffect}
 				>
 					Ability
-				</div>
-				<div 
+				</span>
+				<span 
 					className={cx({
 						[styles.item]: true,
 						[styles.unavailable]: !end,
@@ -50,7 +48,7 @@ export default class Actions extends Component {
 					onMouseDown={this.handleClickEnd}
 				>
 					End turn
-				</div>
+				</span>
 			</div>
 		);
 	}

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { NEW_TABLE, JOIN_TABLE, FETCH_TABLES, LEAVE_TABLE, REMOVE_TABLE, START_TABLE } from '../sockets/table';
+import { NEW_TABLE, JOIN_TABLE, LEAVE_TABLE, REMOVE_TABLE, START_TABLE } from '../sockets/table';
 
 const initialState = {};
 
@@ -12,9 +12,6 @@ export default function(state = initialState, { type, payload }) {
 			tables[board.table._id] = board.table;
 		});
 		return tables;
-
-	case FETCH_TABLES:
-		return payload;
 
 	case NEW_TABLE:
 		return {...state, [payload._id]: payload};
@@ -51,7 +48,7 @@ export default function(state = initialState, { type, payload }) {
 			...state,
 			[payload._id]: {
 				...state[payload._id],
-				started: true
+				status: 1
 			}
 		};
 

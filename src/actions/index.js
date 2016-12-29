@@ -1,7 +1,9 @@
 import axios from 'axios';
+// import localforage from 'localforage';
 
 import socket from '../sockets';
 
+// localforage.config();
 
 // ---------- client ----------
 export const SET_CLIENTHEIGHT = 'SET_CLIENTHEIGHT';
@@ -29,11 +31,6 @@ export function setLoginVisible(payload) {
 	return {type: SET_LOGIN_VISIBLE, payload};
 };
 
-export const SET_BOARD_VISIBLE = 'SET_BOARD_VISIBLE';
-export function setBoardVisible(payload) {
-	return {type: SET_BOARD_VISIBLE, payload};
-};
-
 export const SET_CARD = 'SET_CARD';
 export function setCard(card, x, y) {
 	if(!card) return {type: SET_CARD, payload: null};
@@ -53,9 +50,9 @@ export function setHeaderPage(payload) {
 	return {type: SET_HEADER_PAGE, payload};
 };
 
-export const SET_TABLEID = 'SET_TABLEID';
-export function setTableId(payload) {
-	return {type: SET_TABLEID, payload};
+export const SET_TABLE = 'SET_TABLE';
+export function setTable(payload) {
+	return {type: SET_TABLE, payload};
 };
 
 export const NOTIFY = 'NOTIFY';
@@ -75,6 +72,7 @@ export function setResponse(payload) {
 
 export const SET_LANGUAGE = 'SET_LANGUAGE';
 export function setLanguage(payload) {
+	window.localStorage.setItem('language', payload);
 	return {type: SET_LANGUAGE, payload};
 };
 
@@ -206,6 +204,11 @@ export function updateBoard(payload) {
 export const CLEAR_LOGS = 'CLEAR_LOGS';
 export function clearLogs(payload) {
 	return {type: CLEAR_LOGS, payload};
+};
+
+export const FETCH_LOGS = 'FETCH_LOGS';
+export function fetchLogs(payload) {
+	return {type: FETCH_LOGS, payload};
 };
 
 export const UPDATE_LOGS = 'UPDATE_LOGS';

@@ -1,8 +1,8 @@
 import _ from 'lodash';
 
 import {
-	SET_CLIENTHEIGHT, SET_CLIENTWIDTH, SET_GAMEINFO_FOLDED, SET_GAMEINFO_GAME, SET_LOGIN_VISIBLE, SET_BOARD_VISIBLE, SET_CARD
-	, SET_HEADER_PAGE, SET_TABLEID, SET_RESPONSE, SET_LANGUAGE, LOGIN, LOGOUT, USER_AUTH, NOTIFY, DISMISS_NOTIFICATION
+	SET_CLIENTHEIGHT, SET_CLIENTWIDTH, SET_GAMEINFO_FOLDED, SET_GAMEINFO_GAME, SET_LOGIN_VISIBLE, SET_CARD
+	, SET_HEADER_PAGE, SET_TABLE, SET_RESPONSE, SET_LANGUAGE, LOGIN, LOGOUT, USER_AUTH, NOTIFY, DISMISS_NOTIFICATION
 } from '../actions';
 
 const notifyType = {
@@ -19,15 +19,14 @@ const initialState = {
 		folded: 1,  // 0-folded  1-half  2-full
 		game: {}
 	},
-	tableId: null,
+	table: null,
 	cardView: null,
 	page: 'cosmos',
 	loginVisible: false,
-	boardVisible: false,
 	user: null,
 	notifications: [],
 	response: true,
-	language: 'ch'
+	language: window.localStorage.getItem('language') || 'ch'
 };
 
 export default function(state = initialState, { type, payload }) {
@@ -56,17 +55,14 @@ export default function(state = initialState, { type, payload }) {
 			}
 		};
 
-	case SET_TABLEID:
+	case SET_TABLE:
 		return {
 			...state,
-			tableId: payload
+			table: payload
 		};
 
 	case SET_LOGIN_VISIBLE:
 		return {...state, loginVisible: payload};
-
-	case SET_BOARD_VISIBLE:
-		return {...state, boardVisible: payload};
 
 	case SET_CARD:
 		return {...state, cardView: payload};

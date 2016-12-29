@@ -24,6 +24,15 @@ export default function(state = initialState, { type, payload }) {
 			}
 		};
 
+	case 'USER_OFFLINE':
+		return {
+			...state,
+			[payload]: {
+				...state[payload],
+				online: false
+			}
+		};
+
 	default:
 		return state;
 	}

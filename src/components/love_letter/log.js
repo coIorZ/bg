@@ -14,8 +14,6 @@ export default class Log extends Component {
 			<div 
 				className={styles.container}
 				ref='container'
-				onMouseEnter={this.handleMouseEnter}
-				onMouseLeave={this.handleMouseLeave}
 			>
 				{logs.map((log, i) => {
 					log = log[language].replace(/\|p:(\w+)\|/g, (s, id) => {
@@ -24,9 +22,9 @@ export default class Log extends Component {
 					let pieces = log.split('|');
 					return <div className={styles.line} key={i}>
 								{pieces.map((piece, j) => {
-									let str = null;
+									let str, id;
 									if(str = piece.match(/^c:(\w+)/)) {
-										let id = str[1];
+										id = str[1];
 										return <Card id={id} display={-1} key={j} />;
 									} else if(piece.match(/^hr:/)) {
 										return <div className={styles.seperator} key={j}></div>;

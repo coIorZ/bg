@@ -10,106 +10,103 @@ import { setCard } from '../../actions';
 class Card extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			forward: false
-		};
 		this.handleMouseEnter = this.handleMouseEnter.bind(this);
 		this.handleMouseLeave = this.handleMouseLeave.bind(this);
 		this.handleMouseDown = this.handleMouseDown.bind(this);
 	}
 
 	render() {
-		const { display, id, playable, used, myTurn, mr } = this.props;
+		const { display, id, playable, mr, label, small, unavailable } = this.props;
+		const card = CARDS[id];
+		const token = TOKENS[id];
 		switch(display) {
 		case -1:
 			return (
-				<div 
-					className={styles.card}
-					style={{marginRight: mr || 4}}
-				>
-					<span className={styles.small}>Alibi Back</span>
-					<img src={'./img/phantom_of_the_opera/alibi_back.jpg'} className={styles.bg} />
-				</div>
-			);
-
-		case 0:
-			return (
-				<div 
-					className={styles.card}
-					style={{marginRight: mr || 4}}
-				>
-					<span className={styles.small}>Role Back</span>
-					<img src={'./img/phantom_of_the_opera/role_back.jpg'} className={styles.bg} />
-				</div>
-			);
-
-		case 1:
-			const { name, value, text, img } = CARDS[id];
-			return (
-				<div 
-					className={cx({
-						[styles.card]: true,
-						[styles.playable]: playable,
-						[styles.forward]: this.state.forward && !used && myTurn,
-						[styles.used]: used
-					})}
-					style={{marginRight: mr || 4}}
-					onMouseEnter={this.handleMouseEnter}
-					onMouseLeave={this.handleMouseLeave}
-					onMouseDown={this.handleMouseDown}
-				>
-					<span className={styles.small}>{CARDS[id].name}</span>
-					<img src={CARDS[id].img} className={styles.bg} />
-				</div>
-			);
-
-		case 2:
-			return (
 				<span 
-					className={styles.text}
-					style={{color: CARDS[id].color}}
+					style={{
+						color: card.color,
+						fontWeight: 'bold'
+					}}
 					onMouseEnter={this.handleMouseEnter}
 					onMouseLeave={this.handleMouseLeave}
 				>
-					{CARDS[id].name}
+					{card.name}
 				</span>
 			);
 
-		case 3:
+		case 1:
 			return (
-				<div
+				<div 
 					className={cx({
+						[styles.container]: true,
 						[styles.token]: true,
 						[styles.playable]: playable
 					})}
+					style={{
+						width: small ? token.width / 1.8 : token.width,
+						height: small ? token.height / 1.8 : token.height,
+						marginRight: mr
+					}}
 					onMouseEnter={this.handleMouseEnter}
 					onMouseLeave={this.handleMouseLeave}
 					onMouseDown={this.handleMouseDown}
 				>
-					<img src={TOKENS[id].img} className={styles['token-img']} />
+					<img 
+						src={token.img} 
+						className={styles.bg} 
+						style={{
+							width: small ? token.width / 1.8 : token.width,
+							height: small ? token.height / 1.8 : token.height
+						}}
+					/>
+					<span className={styles.label}>{label}</span>
 				</div>
 			);
 
 		default:
-			return null;
+			return (
+				<div 
+					className={cx({
+						[styles.container]: true,
+						[styles.playable]: playable,
+						[styles.unavailable]: unavailable
+					})}
+					style={{
+						width: small ? card.width / 1.8 : card.width,
+						height: small ? card.height / 1.8 : card.height,
+						marginRight: mr
+					}}
+					onMouseEnter={this.handleMouseEnter}
+					onMouseLeave={this.handleMouseLeave}
+					onMouseDown={this.handleMouseDown}
+				>
+					<img 
+						src={card.img} 
+						className={styles.bg} 
+						style={{
+							width: small ? card.width / 1.8 : card.width,
+							height: small ? card.height / 1.8 : card.height
+						}}
+					/>
+					<span className={styles.label}>{label}</span>
+				</div>
+			);
 		}
 	}
 
-	handleMouseEnter() {
-		const { id, setCard, playable } = this.props;
-		setCard(CARDS[id]);
-		if(playable) this.setState({forward: true});
+	handleMouseEnter(e) {
+		const { id, setCard } = this.props;
+		if(id > 0) setCard(CARDS[id], e.pageX, e.pageY);
 	}
 
 	handleMouseLeave() {
-		const { id, setCard, playable } = this.props;
-		setCard(null);
-		if(playable) this.setState({forward: false});
+		const { id, setCard } = this.props;
+		if(id > 0) setCard(null);
 	}
 
 	handleMouseDown() {
 		const { onMouseDown, id, playable } = this.props;
-		if(playable && onMouseDown) onMouseDown(CARDS[id]);
+		if(playable && onMouseDown) onMouseDown(id);
 	}
 };
 

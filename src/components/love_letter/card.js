@@ -41,8 +41,8 @@ class Card extends Component {
 						[styles.playable]: playable
 					})}
 					style={{
-						width: small ? card.width : card.width * 1.8,
-						height: small ? card.height : card.height * 1.8,
+						width: small ? card.width / 1.8 : card.width,
+						height: small ? card.height / 1.8 : card.height,
 						marginRight: mr
 					}}
 					onMouseEnter={this.handleMouseEnter}
@@ -53,8 +53,8 @@ class Card extends Component {
 						src={card.img} 
 						className={styles.bg} 
 						style={{
-							width: small ? card.width : card.width * 1.8,
-							height: small ? card.height : card.height * 1.8
+							width: small ? card.width / 1.8 : card.width,
+							height: small ? card.height / 1.8 : card.height
 						}}
 					/>
 					<span className={styles.label}>{label}</span>

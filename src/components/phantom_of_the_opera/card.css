@@ -1,61 +1,49 @@
-.card {
+.container {
 	display: inline-block;
 	position: relative;
-	width: 60px;
-	height: 84px;
+	box-sizing: content-box;
 	border-radius: 8px;
-	overflow: hidden;
-}
-
-.card.playable {
-	/*box-shadow: 0 0 10px rgb(60, 179, 113);*/
-	cursor: pointer;
-}
-
-.card.forward {
-	transform: translate3d(0, -10px, 0);
-	transition: transform .2s;
-}
-
-.card.used {
-	opacity: .2;
-}
-
-.card .bg {
-	position: absolute;
-	left: 0;
-	top: 0;
-	width: 60px;
-	height: 84px;
-	border-radius: 8px;
-}
-
-.card .small {
-	font-size: 10px;
-}
-
-.text {
-	font-weight: bold;
-}
-
-.token {
-	position: relative;
-	float: left;
-	width: 44px;
-	height: 44px;
 	border: 2px solid transparent;
+}
+
+.container.token {
 	border-radius: 50%;
 }
 
-.token.playable {
-	border: 2px solid #00ee00;
-	cursor: pointer;
+.container.small {
+	border-radius: 4px;
 }
 
-.token .token-img {
+.container.playable {
+	cursor: pointer;
+	border: 2px solid #00ff00;
+}
+
+.container.unavailable {
+	opacity: .3;
+}
+
+.bg {
 	position: absolute;
 	left: 0;
 	top: 0;
-	width: 40px;
-	height: 40px;
+	border-radius: 8px;
+}
+
+.small .bg {
+	border-radius: 4px;
+}
+
+.label {
+	position: absolute;
+	top: 0;
+	left: 5px;
+	font-size: 14px;
+	color: white;
+	background-color: rgba(0, 0, 0, .6);
+}
+
+.small .label {
+	left: 1px;
+	font-size: 10px;
 }

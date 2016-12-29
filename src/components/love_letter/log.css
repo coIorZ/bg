@@ -1,7 +1,6 @@
 .container {
 	height: 100%;
 	padding: 10px;
-	/*font-size: .8em;*/
 	color: white;
 	overflow: auto;
 	background-color: rgba(80, 80, 80, .2);

@@ -1,6 +1,7 @@
 import POTO from '../../core/phantom_of_the_opera';
 import { REMOVE_TABLE } from './table';
-import Board, { fetchBoard, updateBoard, deleteBoard } from '../models/boards';
+import { fetchBoard, updateBoard } from '../models/boards';
+import { fetchLog, updateLog } from '../models/logs';
 
 export default function(socket, io, store) {
 	socket.on('client.poto.play.card', ({ tableId, cardId }) => {
@@ -18,9 +19,12 @@ export default function(socket, io, store) {
 	});
 
 	socket.on('client.poto.game', ({ tableId }) => {
-		deleteBoard(tableId, () => {
-			store.dispatch({type: REMOVE_TABLE, payload: tableId});
-			io.emit('server.table.remove', tableId);
+		fetchBoard(tableId, (board) => {
+			board.table.status = 2;
+			updateBoard(board, () => {
+				store.dispatch({type: REMOVE_TABLE, payload: tableId});
+				io.emit('server.table.remove', tableId);
+			});
 		});
 	});
 };
@@ -29,10 +33,10 @@ function updateAndEmitAll(board, tableId, io) {
 	updateBoard(board, () => {
 		io.sockets.in(tableId).emit(`server.poto.${board.data.phase}`, board);
 	});
-}
-
-function updateAndEmit(board, tableId, socket) {
-	updateBoard(board, () => {
-		socket.emit(`server.poto.${board.data.phase}`, board);
-	});
+	if(board.data.logs.length) {
+		fetchLog(tableId, (log) => {
+			log.data = log.data.concat(board.data.logs);
+			updateLog(log);
+		});
+	}
 }

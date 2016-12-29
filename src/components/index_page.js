@@ -13,8 +13,7 @@ class IndexPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			message: '',
-			language: 'ch'
+			message: ''
 		};
 		this.handleLogin = this.handleLogin.bind(this);
 		this.handleLogout = this.handleLogout.bind(this);

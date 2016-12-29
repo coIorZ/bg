@@ -13,7 +13,6 @@ export default class Log extends Component {
 		return (
 			<div 
 				className={styles.container}
-				style={{ height }}
 				ref='container'
 			>
 				{logs.map((log, i) => {
@@ -26,7 +25,7 @@ export default class Log extends Component {
 									let str, id;
 									if(str = piece.match(/^c:(\w+)/)) {
 										id = str[1];
-										return <Card id={id} display={2} key={j} />;
+										return <Card id={id} display={-1} key={j} />;
 									} else if(piece.match(/^hr:/)) {
 										return <div className={styles.seperator} key={j}></div>;
 									} else if(str = piece.match(/^r:(\w+)/)) {
