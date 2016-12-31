@@ -3,10 +3,9 @@ import POTO from './phantom_of_the_opera';
 
 export const GAME_LOVE_LETTER = '1';
 export const GAME_PHANTOM_OF_THE_OPERA = '2';
-export const GAME_The_RESISTANCE_AVALON = '3';
-export const GAME_COUP = '4';
-export const GAME_BLOODY_INN = '5';
-export const GAME_INNOVATION = '6';
+export const GAME_CHAMPIONS_OF_MIDGARD = '3';
+export const GAME_BLOODY_INN = '4';
+export const GAME_INNOVATION = '5';
 
 export function getCore(gameId) {
 	switch(gameId) {
@@ -43,27 +42,17 @@ export const games = [{
     min_players : 2, 
     max_players : 2
 }, {
-    id : GAME_The_RESISTANCE_AVALON, 
-    name : 'The Resistance: Avalon', 
-    length : 30, 
-    designer : 'Don Eskridge', 
-    img_url : './img/avalon/avalon.jpg', 
-    rule_url: 'files/avalon.pdf',
-    weight : 1.78, 
-    min_players : 5, 
-    max_players : 10
+    id : GAME_CHAMPIONS_OF_MIDGARD, 
+    name : 'Champions of the Midgard', 
+    length : 75, 
+    designer : 'Ole Steiness', 
+    img_url : './img/champions_of_the_midgard/champions_of_the_midgard.jpg', 
+    rule_url: 'files/champions_of_the_midgard.pdf',
+    weight : 2.54, 
+    min_players : 2,
+    max_players : 4
 }, {
-    id : GAME_COUP, 
-    name : 'Coup', 
-    length : 15, 
-    designer : 'Rikki Tahta', 
-    img_url : './img/coup.jpg', 
-    rule_url: 'files/coup.jpg',
-    weight : 1.44, 
-    min_players : 2, 
-    max_players : 6
-}, {
-    id : '5', 
+    id : GAME_BLOODY_INN, 
     name : 'Bloody Inn', 
     length : 45, 
     designer : 'Nicolas Robert', 

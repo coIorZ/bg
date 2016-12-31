@@ -15,10 +15,11 @@ export default class Actions extends Component {
 	}
 
 	render() {
-		const { move, effect, end } = this.props.actions;
+		const { actions, language } = this.props;
+		const { move, effect, end } = actions;
 		return (
 			<div className={styles.container}>
-				<span style={{marginRight: 20}}>Choose an action: </span>
+				<span style={{marginRight: 20}}>{language === 'en' ? 'Choose an action: ' : '选择一个行动: '}</span>
 				<span 
 					className={cx({
 						[styles.item]: true,
@@ -27,7 +28,7 @@ export default class Actions extends Component {
 					})}
 					onMouseDown={this.handleClickMove}
 				>
-					Move
+					{language === 'en' ? 'Move' : '移动'}
 				</span>
 				<span 
 					className={cx({
@@ -37,7 +38,7 @@ export default class Actions extends Component {
 					})}
 					onMouseDown={this.handleClickEffect}
 				>
-					Ability
+					{language === 'en' ? 'Ability' : '技能'}
 				</span>
 				<span 
 					className={cx({
@@ -47,7 +48,7 @@ export default class Actions extends Component {
 					})}
 					onMouseDown={this.handleClickEnd}
 				>
-					End turn
+					{language === 'en' ? 'End Turn' : '结束回合'}
 				</span>
 			</div>
 		);

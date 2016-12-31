@@ -76,58 +76,60 @@ class LoveLetter extends Component {
 					})}
 				</div>
 				<div 
-					className={styles['main-area']}
+					className={styles['main-area-outter']}
 					style={{
 						width: clientWidth - 320,
 						height: clientHeight - (myself ? 130 : 0)
 					}}
 				>
-					<div 
-						className={styles['cards-section']}
-						style={{
-							top: clientHeight / 2 - (myself ? 130 : 65)
-						}}
-					>
-						<Card id={-1} mr={40} label={`Deck(${deck.length})`} />
-						{removedFaceDown ?
-							<Card id={-1} mr={4} label='Removed' />
+					<div className={styles['main-area-inner']}>
+						<div 
+							className={styles['cards-section']}
+							style={{
+								top: clientHeight / 2 - (myself ? 130 : 65)
+							}}
+						>
+							<Card id={-1} mr={40} label={`Deck(${deck.length})`} />
+							{removedFaceDown ?
+								<Card id={-1} mr={4} label='Removed' />
+								: null
+							}
+							{removedFaceUp.length ? 
+								_.map(removedFaceUp, (id, i) => <Card id={id} mr={4} key={i} />) 
+								: null
+							}
+						</div>
+						{phase === 'effect' && cardId === 2 && myTurn ?
+							<div className={styles['reveal-section']}>
+								<Card id={_.find(players, player => player.id === effect).hands[0]} />
+								<div style={{marginTop: 10, marginBottom: 10}}>
+									<span 
+										className={styles.btn}
+										onMouseDown={this.handleConfirmReveal}
+									>
+										OK
+									</span>
+								</div>
+							</div>
 							: null
 						}
-						{removedFaceUp.length ? 
-							_.map(removedFaceUp, (id, i) => <Card id={id} mr={4} key={i} />) 
+						{phase === 'effect' && cardId === 1 && myTurn ?
+							<div 
+								className={styles['action-section']}
+								style={{
+									width: clientWidth - 320
+								}}
+							>
+								<div style={{display: 'inline-block', marginRight: 20}}>Choose a non-guard card: </div>
+								{[2,3,4,5,6,7,8].map(id => 
+									<Card id={id} playable={1} mr={4} key={id} small={true}
+										onMouseDown={this.chooseNonGuardCard} 
+									/>
+								)}
+							</div>
 							: null
 						}
 					</div>
-					{phase === 'effect' && cardId === 2 && myTurn ?
-						<div className={styles['reveal-section']}>
-							<Card id={_.find(players, player => player.id === effect).hands[0]} />
-							<div style={{marginTop: 10, marginBottom: 10}}>
-								<span 
-									className={styles.btn}
-									onMouseDown={this.handleConfirmReveal}
-								>
-									OK
-								</span>
-							</div>
-						</div>
-						: null
-					}
-					{phase === 'effect' && cardId === 1 && myTurn ?
-						<div 
-							className={styles['action-section']}
-							style={{
-								width: clientWidth - 320
-							}}
-						>
-							<div style={{display: 'inline-block', marginRight: 20}}>Choose a non-guard card: </div>
-							{[2,3,4,5,6,7,8].map(id => 
-								<Card id={id} playable={1} mr={4} key={id} small={true}
-									onMouseDown={this.chooseNonGuardCard} 
-								/>
-							)}
-						</div>
-						: null
-					}
 				</div>
 				{myself ? 
 					<div 

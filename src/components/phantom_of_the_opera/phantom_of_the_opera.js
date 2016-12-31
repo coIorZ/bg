@@ -82,108 +82,111 @@ class POTO extends Component {
 					<Player player={phantom} users={users} user={user} data={data} language={language} />
 				</div>
 				<div 
-					className={styles['main-area']}
+					className={styles['main-area-outter']}
 					style={{
 						width: clientWidth - 320,
 						height: clientHeight - 130
 					}}
 				>
-					<div 
-						className={styles['main-section']}
-						style={{
-							top: (clientHeight / 2 - 401) < 0 ? 0 : clientHeight / 2 - 401
-						}}
-					>
-						<div className={styles['board-holder']}>
-							<img src='./img/phantom_of_the_opera/board.jpg' className={styles['board-img']} />
-							{_.map(rooms, room => {
-								return <div 
-											style={{
-												position: 'absolute',
-												left: roomUI[room.id].left,
-												top: roomUI[room.id].top,
-												width: roomUI[room.id].width,
-												height: roomUI[room.id].height
-											}}
-											key={room.id}
-										>
-											<div 
-												className={cx({
-													[styles.room]: true,
-													[styles.dark]: !room.lit,
-													[styles.playable]: myTurn && this.state.rooms.indexOf(room.id) >= 0
-												})}
-												onMouseDown={this.handleClickRoom.bind(this, room.id)}
-											>
-												{room.id}
-											</div>
-											{room.tokens.map(token => {
-												return <Card 
-															id={token} 
-															display={1} 
-															playable={myTurn && this.state.tokens.indexOf(token) >= 0}
-															onMouseDown={this.handleClickToken.bind(this)}
-															key={token} 
-														/>
-											})}
-											{room.lit ? null
-												: <img src='./img/phantom_of_the_opera/power_failure.png' className={styles.tool} />
-											}
-										</div>
-							})}
-							{_.map(corridorUI, corridor => {
-								return <div
-											className={cx({
-												[styles.corridor]: true,
-												[styles.playable]: myTurn && this.state.corridors.indexOf(corridor.id) >= 0
-											})}
-											style={{
-												left: corridor.left,
-												top: corridor.top
-											}}
-											key={corridor.id}
-											onMouseDown={this.handleClickCorridor.bind(this, corridor.id)}
-										>
-											{lock === corridor.id ?
-												<img src='./img/phantom_of_the_opera/pad_lock.png' className={styles.tool} />
-												: null
-											}
-										</div>
-							})}
-							<div 
-								className={styles.la}
-								style={{
-									left: 44.2 * (laCarlotta - 1) + 15
-								}}
-							>
-								<img src='./img/phantom_of_the_opera/la.jpg' className={styles['la-img']} />
-							</div>
-						</div>
-						<div className={styles['deck-holder']}>
-							<div>
-								<Card id={-1} label={`Deck(${deck.length})`} />
-							</div>
-							<div>
-								<Card id={-2} label={`Alibis(${alibis.length})`} />
-							</div>
-						</div>
-					</div>
-					{myTurn && phase === 'choose.action' ?
+					<div className={styles['main-area-inner']}>
 						<div 
-							className={styles['action-section']}
+							className={styles['main-section']}
 							style={{
-								width: clientWidth - 320
+								top: (clientHeight / 2 - 401) < 0 ? 0 : clientHeight / 2 - 401
 							}}
 						>
-							<Actions 
-								actions={actions} 
-								onClickMove={this.handleMove}
-								onClickEffect={this.handleEffect}
-								onClickEnd={this.handleEnd}
-							/>
+							<div className={styles['board-holder']}>
+								<img src='./img/phantom_of_the_opera/board.jpg' className={styles['board-img']} />
+								{_.map(rooms, room => {
+									return <div 
+												style={{
+													position: 'absolute',
+													left: roomUI[room.id].left,
+													top: roomUI[room.id].top,
+													width: roomUI[room.id].width,
+													height: roomUI[room.id].height
+												}}
+												key={room.id}
+											>
+												<div 
+													className={cx({
+														[styles.room]: true,
+														[styles.dark]: !room.lit,
+														[styles.playable]: myTurn && this.state.rooms.indexOf(room.id) >= 0
+													})}
+													onMouseDown={this.handleClickRoom.bind(this, room.id)}
+												>
+													{room.id}
+												</div>
+												{room.tokens.map(token => {
+													return <Card 
+																id={token} 
+																display={1} 
+																playable={myTurn && this.state.tokens.indexOf(token) >= 0}
+																onMouseDown={this.handleClickToken.bind(this)}
+																key={token} 
+															/>
+												})}
+												{room.lit ? null
+													: <img src='./img/phantom_of_the_opera/power_failure.png' className={styles.tool} />
+												}
+											</div>
+								})}
+								{_.map(corridorUI, corridor => {
+									return <div
+												className={cx({
+													[styles.corridor]: true,
+													[styles.playable]: myTurn && this.state.corridors.indexOf(corridor.id) >= 0
+												})}
+												style={{
+													left: corridor.left,
+													top: corridor.top
+												}}
+												key={corridor.id}
+												onMouseDown={this.handleClickCorridor.bind(this, corridor.id)}
+											>
+												{lock === corridor.id ?
+													<img src='./img/phantom_of_the_opera/pad_lock.png' className={styles.tool} />
+													: null
+												}
+											</div>
+								})}
+								<div 
+									className={styles.la}
+									style={{
+										left: 44.2 * (laCarlotta - 1) + 15
+									}}
+								>
+									<img src='./img/phantom_of_the_opera/la.jpg' className={styles['la-img']} />
+								</div>
+							</div>
+							<div className={styles['deck-holder']}>
+								<div>
+									<Card id={-1} label={`Deck(${deck.length})`} />
+								</div>
+								<div>
+									<Card id={-2} label={`Alibis(${alibis.length})`} />
+								</div>
+							</div>
 						</div>
-						: null
-					}
+						{myTurn && phase === 'choose.action' ?
+							<div 
+								className={styles['action-section']}
+								style={{
+									width: clientWidth - 320
+								}}
+							>
+								<Actions 
+									actions={actions} 
+									language={language}
+									onClickMove={this.handleMove}
+									onClickEffect={this.handleEffect}
+									onClickEnd={this.handleEnd}
+								/>
+							</div>
+							: null
+						}
+					</div>
 				</div>
 				<div 
 					className={styles['hands-area']}

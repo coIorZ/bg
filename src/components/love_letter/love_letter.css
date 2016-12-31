@@ -14,12 +14,20 @@
 	overflow: auto;
 }
 
-.main-area {
+.main-area-outter {
 	position: absolute;
 	top: 0;
 	left: 320px;
 	height: 100%;
-	overflow: auto;
+	overflow: hidden;
+}
+
+.main-area-inner {
+	width: 100%;
+	height: 100%;
+	box-sizing: content-box;
+	overflow: scroll;
+	padding: 0 20px 20px 0;
 }
 
 .hands-area {
@@ -33,6 +41,7 @@
 }
 
 .log-area {
+	position: absolute;
 	height: 100%;
 	width: 500px;
 	background-color: rgba(68, 42, 29, 0.5);
