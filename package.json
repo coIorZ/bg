@@ -46,7 +46,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --watch",
     "babel-node": "babel-node --inspect --presets=es2015 --plugins=transform-object-rest-spread --ignore='node_modules'",
-    "start": "nodemon --exec npm run babel-node -- server/server.js"
+    "dev": "nodemon --exec npm run babel-node -- server/server.js",
+    "start": "babel-node --presets=es2015 --plugins=transform-object-rest-spread --ignore='node_modules' -- server/server.js"
   },
   "keywords": [
     "board",
