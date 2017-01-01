@@ -44,7 +44,7 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack",
+    "build": "webpack -p",
     "building": "webpack --watch",
     "babel-node": "babel-node --inspect --presets=es2015 --plugins=transform-object-rest-spread --ignore='node_modules'",
     "dev": "nodemon --exec npm run babel-node -- server/server.js",
