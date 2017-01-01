@@ -104,12 +104,11 @@ export function login(username, password, isRemember) {
 	};
 };
 
-export function signup(username, name, password, repassword) {
+export function signup(username, name, password) {
 	const request = axios.post('api/user/signup', {
-		username,
+		username: username.toLowerCase(),
 		name,
-		password,
-		repassword
+		password
 	});
 	return dispatch => {
 		request.then(({ data }) => {

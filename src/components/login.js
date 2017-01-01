@@ -12,8 +12,10 @@ class Login extends Component {
 		super(props);
 		this.state = {
 			username: window.localStorage.getItem('username') || '',
-			name: '',
 			password: '',
+			rusername: '',
+			rname: '',
+			rpassword: '',
 			repassword: '',
 			isRemember: JSON.parse(window.localStorage.getItem('isRemember')) || false,
 			register: false,
@@ -26,7 +28,7 @@ class Login extends Component {
 	}
 
 	render() {
-		const { username, name, password, repassword, isRemember, register } = this.state;
+		const { username, password, rusername, rname, rpassword, repassword, isRemember, register } = this.state;
 		const { visible, language } = this.props;
 		return (
 			<div 
@@ -40,25 +42,25 @@ class Login extends Component {
 						<div>
 							<input 
 								type='text'
-								value={username}
+								value={rusername}
 								placeholder='username'
-								onChange={e => this.setState({username: e.target.value})} 
+								onChange={e => this.setState({rusername: e.target.value})} 
 							/>
 						</div>
 						<div>
 							<input 
 								type='text'
-								value={name}
+								value={rname}
 								placeholder='nickname'
-								onChange={e => this.setState({name: e.target.value})} 
+								onChange={e => this.setState({rname: e.target.value})} 
 							/>
 						</div>
 						<div>
 							<input 
 								type='password'
-								value={password}
+								value={rpassword}
 								placeholder='password'
-								onChange={e => this.setState({password: e.target.value})} 
+								onChange={e => this.setState({rpassword: e.target.value})} 
 							/>
 						</div>
 						<div>
@@ -74,9 +76,9 @@ class Login extends Component {
 							<button 
 								className={styles.btn} 
 								style={{marginLeft: 20}}
-								onMouseDown={this.handleCancel}
+								onMouseDown={() => this.setState({register: false})}
 							>
-								{language === 'ch' ? '取消' : 'cancel'}
+								{language === 'ch' ? '返回' : 'back'}
 							</button>
 						</div>
 					</form>
@@ -105,7 +107,7 @@ class Login extends Component {
 							<div style={{position: 'relative'}}>
 								<span
 									className={styles.dash}
-									onMouseDown={() => this.setState({register: true, username: '', name: '', password: '', repassword: ''})}
+									onMouseDown={() => this.setState({register: true, rusername: '', rname: '', rpassword: '', repassword: ''})}
 								>
 									{language === 'ch' ? '没有帐号? 立即注册' : 'No account? Sign up now'}
 								</span>
@@ -145,8 +147,8 @@ class Login extends Component {
 
 	handleSignup(e) {
 		e.preventDefault();
-		const { username, name, password, repassword } = this.state;
-		if(!username || !name || !password || !repassword) {
+		const { rusername, rname, rpassword, repassword } = this.state;
+		if(!rusername || !rname || !rpassword || !repassword) {
 			this.props.notify({
 				message: {
 					en: 'illegal values',
@@ -155,7 +157,7 @@ class Login extends Component {
 			});
 			return;
 		}
-		if(password !== repassword) {
+		if(rpassword !== repassword) {
 			this.props.notify({
 				message: {
 					en: 'password not matched',
@@ -164,7 +166,7 @@ class Login extends Component {
 			});
 			return;
 		}
-		this.props.signup(username, name, md5(password), repassword);
+		this.props.signup(rusername, rname, md5(rpassword));
 	}
 
 	handleRemember(e) {
