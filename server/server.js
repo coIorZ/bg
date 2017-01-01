@@ -15,7 +15,7 @@ import Board from './models/boards';
 
 const app = express();
 const router = express.Router();
-const port = 8000;
+const port = process.env.HTTP_PORT || 8000;
 const db_address = 'localhost/cosmos';
 const db = mongoose.connection;
 const http = require('http').Server(app);
