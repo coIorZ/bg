@@ -1,3 +1,7 @@
+var webpack = require('webpack');
+
+var dev = process.env.NODE_ENV !== 'production';
+
 module.exports = {
 	entry: {
 		'./server/public/js/bundle': './src/index.js'
@@ -26,5 +30,11 @@ module.exports = {
 	resolve: {
 		extensions: ['', '.js', '.jsx']
 	},
-	devtool: 'source-map'
+	devtool: dev ? 'source-map' : null,
+	plugins: dev ? [] : [
+		new webpack.optimize.DedupePlugin(),
+  		new webpack.optimize.OccurenceOrderPlugin(),
+  		new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),
+  		new webpack.DefinePlugin({'process.env': {'NODE_ENV': JSON.stringify('production')}})
+	]
 }
