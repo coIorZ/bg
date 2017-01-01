@@ -8,7 +8,7 @@ let users = [];
 export default function(router, store) {
 	router.post('/user/login', (req, res) => {
 		User.findOne({
-			username: req.body.username,
+			username: req.body.username.toLowerCase(),
 			password: req.body.password
 		}, (err, user) => {
 			if(err) res.send(err);
@@ -16,7 +16,7 @@ export default function(router, store) {
 				const index = users.indexOf(user._id.toString());
 				if(index >= 0) {
 					req.session.user = null;
-					res.json({ user: null, message: {
+					res.json({user: null, message: {
 						en: 'This account is alreay logged in',
 						ch: '该账户已登陆'
 					}});
@@ -29,7 +29,10 @@ export default function(router, store) {
 					users.push(user._id.toString());
 					store.dispatch({type: 'USER_ONLINE', payload: user._id});
 					res.io.emit('server.user.online', user._id);
-					res.json({ user });
+					res.json({ user, message: {
+						en: 'logged in successfully',
+						ch: '成功登录'
+					}});
 				}
 			} else {
 				req.session.user = null;
@@ -41,12 +44,46 @@ export default function(router, store) {
 		});
 	});
 
+	router.post('/user/signup', (req, res) => {
+		User.findOne({
+			username: req.body.username.toLowerCase()
+		}, (err, user) => {
+			if(err) res.send(err);
+			if(user) {
+				req.session.user = null;
+				res.json({user: null, message: {
+					en: 'Duplicate user name',
+					ch: '用户名已存在'
+				}});
+			} else {
+				const user = {
+					username: req.body.username.toLowerCase(),
+					password: req.body.password,
+					name: req.body.name
+				};
+				User.create(user, (err, user) => {
+					if(err) res.send(err);
+					delete user.password;
+					req.session.user = user;
+					users.push(user._id.toString());
+					store.dispatch({type: 'USER_NEW', payload: user});
+					res.io.emit('server.user.new', user);
+					res.json({ user, message: {
+						en: 'signed up successfully',
+						ch: '成功注册'
+					}});
+				});
+			}
+		})
+	});
+
 	router.get('/user/auth', (req, res) => {
 		res.json(req.session.user);
 	});
 
 	router.post('/user/logout', (req, res) => {
 		const index = users.indexOf(req.body.id);
+		req.session.user = null;
 		if(index >= 0) {
 			const userId = users.splice(index, 1)[0];
 			store.dispatch({type: 'USER_OFFLINE', payload: userId});

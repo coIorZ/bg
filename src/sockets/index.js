@@ -5,7 +5,7 @@ import store from '../store';
 import { 
 	notify,
 	fetchMessages, newMessage,
-	fetchUsers, userOnline, userOffline,
+	fetchUsers, userOnline, userOffline, userNew,
 	fetchTables, newTable, joinTable, leaveTable, removeTable, startTable, 
 	updateBoard, clearLogs, fetchLogs, updateLogs, setTable, setResponse
 } from '../actions';
@@ -20,7 +20,7 @@ socket.on('connect', () => {
 		socket.emit('client.table.board', table._id);
 	}
 	if(user) {
-		socket.emit('client.user.online', user._id);
+		socket.emit('client.user.login', user._id);
 	}
 	store.dispatch(notify({
 		message: {
@@ -70,6 +70,10 @@ socket.on('server.user.online', payload => {
 
 socket.on('server.user.offline', payload => {
 	store.dispatch(userOffline(payload));
+});
+
+socket.on('server.user.new', payload => {
+	store.dispatch(userNew(payload));
 });
 
 socket.on('server.user.duplication', () => {

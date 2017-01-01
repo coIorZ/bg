@@ -76,23 +76,22 @@ export function setLanguage(payload) {
 	return {type: SET_LANGUAGE, payload};
 };
 
-export const LOGOUT = 'LOGOUT';
+export const SET_USER = 'SET_USER';
 export function logout(id) {
 	axios.post('api/user/logout', { id });
-	return {type: LOGOUT};
+	return {type: SET_USER};
 };
 
-export const LOGIN = 'LOGIN';
 export function login(username, password, isRemember) {
 	const request = axios.post('api/user/login', {
 		username,
 		password,
 		isRemember
 	});
-	return (dispatch) => {
+	return dispatch => {
 		request.then(({ data }) => {
 			if(data.user) {
-				dispatch({type: LOGIN, payload: data.user});
+				dispatch({type: SET_USER, payload: data.user});
 				dispatch({type: SET_LOGIN_VISIBLE, payload: false});
 				socket.emit('client.user.login', data.user._id);
 				window.localStorage.setItem('username', data.user.username);
@@ -105,12 +104,32 @@ export function login(username, password, isRemember) {
 	};
 };
 
-export const USER_AUTH = 'USER_AUTH';
+export function signup(username, name, password, repassword) {
+	const request = axios.post('api/user/signup', {
+		username,
+		name,
+		password,
+		repassword
+	});
+	return dispatch => {
+		request.then(({ data }) => {
+			dispatch({type: SET_USER, payload: data.user});
+			dispatch({type: NOTIFY, payload: {
+				message: data.message
+			}});
+			if(data.user) {
+				dispatch({type: SET_LOGIN_VISIBLE, payload: false});
+				socket.emit('client.user.login', data.user._id);
+			}
+		});
+	};
+};
+
 export function userAuth() {
 	const request = axios.get('api/user/auth');
-	return (dispatch) => {
+	return dispatch => {
 		request.then(({ data }) => {
-			dispatch({type: USER_AUTH, payload: data});
+			dispatch({type: SET_USER, payload: data});
 			if(data) socket.emit('client.user.login', data._id);
 		});
 	};
@@ -121,7 +140,7 @@ export function userAuth() {
 export const FETCH_GAMES = 'FETCH_GAMES';
 export function fetchGames() {
 	const request = axios.get('api/games');
-	return (dispatch) => {
+	return dispatch => {
 		request.then(({ data }) => {
 			dispatch({type: FETCH_GAMES, payload: data});
 			if(data) {
@@ -178,6 +197,11 @@ export function userOnline(payload) {
 export const USER_OFFLINE = 'USER_OFFLINE';
 export function userOffline(payload) {
 	return {type: USER_OFFLINE, payload};
+};
+
+export const USER_NEW = 'USER_NEW';
+export function userNew(payload) {
+	return {type: USER_NEW, payload};
 };
 
 

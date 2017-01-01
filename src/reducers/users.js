@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { FETCH_USERS, USER_ONLINE, USER_OFFLINE } from '../actions';
+import { FETCH_USERS, USER_ONLINE, USER_OFFLINE, USER_NEW } from '../actions';
 
 const initialState = {};
 
@@ -24,6 +24,16 @@ export default function(state = initialState, { type, payload }) {
 			[payload]: {
 				...state[payload],
 				online: false
+			}
+		};
+
+	case USER_NEW:
+		return {
+			...state,
+			[payload._id]: {
+				_id: payload._id,
+				name: payload.name,
+				online: true
 			}
 		};
 

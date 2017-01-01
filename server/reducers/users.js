@@ -33,6 +33,16 @@ export default function(state = initialState, { type, payload }) {
 			}
 		};
 
+	case 'USER_NEW':
+		return {
+			...state,
+			[payload._id]: {
+				_id: payload._id,
+				name: payload.name,
+				online: true
+			}
+		};
+
 	default:
 		return state;
 	}
