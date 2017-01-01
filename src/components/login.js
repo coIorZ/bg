@@ -148,7 +148,7 @@ class Login extends Component {
 	handleSignup(e) {
 		e.preventDefault();
 		const { rusername, rname, rpassword, repassword } = this.state;
-		if(!rusername || !rname || !rpassword || !repassword) {
+		if(!validate(rusername) || !rname || !validate(rpassword) || !validate(repassword)) {
 			this.props.notify({
 				message: {
 					en: 'illegal values',
@@ -177,6 +177,10 @@ class Login extends Component {
 	handleCancel() {
 		this.props.setLoginVisible(false);
 	}
+}
+
+function validate(str) {
+	return /^[0-9a-zA-Z]+$/.test(str);
 }
 
 function mapStateToProps({ client }) {
