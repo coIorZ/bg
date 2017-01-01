@@ -6,7 +6,7 @@ ENV HTTP_PORT 8000
 COPY . /app  
 WORKDIR /app
 
-RUN npm install
+RUN npm install; npm build
 
 EXPOSE 8000
 
