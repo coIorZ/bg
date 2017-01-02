@@ -44,7 +44,7 @@ class App extends Component {
 	}
 
 	handleUnload() {
-		// this.props.logout(this.props.user._id);
+		this.props.logout(this.props.user._id);
 	}
 }
 

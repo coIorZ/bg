@@ -86,8 +86,8 @@ export default function(router, store) {
 		// req.session.user = null;
 		// if(index >= 0) {
 		// 	const userId = users.splice(index, 1)[0];
-		// 	store.dispatch({type: 'USER_OFFLINE', payload: userId});
-		// 	res.io.emit('server.user.offline', userId);
+			store.dispatch({type: 'USER_OFFLINE', payload: req.body.id});
+			res.io.emit('server.user.offline', req.body.id);
 		// }
 	});
 
