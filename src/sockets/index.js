@@ -17,7 +17,7 @@ socket.on('connect', () => {
 	const table = store.getState().client.table;
 	const user = store.getState().client.user;
 	if(table) {
-		socket.emit('client.table.board', table._id);
+		socket.emit('client.board.reconnect', table._id);
 	}
 	if(user) {
 		socket.emit('client.user.login', user._id);
