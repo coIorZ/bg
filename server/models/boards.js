@@ -19,6 +19,7 @@ export function fetchBoard(tableId, callback = noop) {
 
 export function updateBoard(board, callback = noop) {
 	board.markModified('data');
+	board.markModified('table');
 	board.save((err) => {
 		if(!err) {
 			callback(board);

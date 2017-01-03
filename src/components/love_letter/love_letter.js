@@ -12,7 +12,7 @@ import styles from './love_letter.css';
 
 import { send } from '../../sockets';
 
-import { setBoardVisible, notify, setTable } from '../../actions';
+import { setBoardVisible, notify, setTable, setMute } from '../../actions';
 
 class LoveLetter extends Component {
 	constructor(props) {
@@ -24,16 +24,18 @@ class LoveLetter extends Component {
 		this.playCard = this.playCard.bind(this);
 		this.choosePlayer = this.choosePlayer.bind(this);
 		this.chooseNonGuardCard = this.chooseNonGuardCard.bind(this);
-		this.handleConfirmScore = this.handleConfirmScore.bind(this);
 		this.handleShowLog = this.handleShowLog.bind(this);
 		this.handleHideLog = this.handleHideLog.bind(this);
 		this.handleConfirmReveal = this.handleConfirmReveal.bind(this);
+		this.handleConfirmScore = this.handleConfirmScore.bind(this);
 		this.handleExit = this.handleExit.bind(this);
 		this.handleRule = this.handleRule.bind(this);
+		this.handleMute = this.handleMute.bind(this);
+		this.handleScore = this.handleScore.bind(this);
 	}
 
 	render() {
-		const { clientHeight, clientWidth, board, users, user, logs, language } = this.props;
+		const { clientHeight, clientWidth, board, users, user, logs, language, mute } = this.props;
 		const { table, data } = board;
 		const { deck, players, activePlayer, vp, removedFaceDown, removedFaceUp, phase, cardId, effect } = data;
 		const myTurn = players[activePlayer].id === user._id;
@@ -60,6 +62,22 @@ class LoveLetter extends Component {
 							<img src='./img/idea.png' />
 							<img src='./img/idea_active.png' className={styles.active} />
 						</div>
+						<div 
+							className={styles.icon}
+							onMouseDown={this.handleMute}
+						>
+							{mute ? <img src='./img/mute.png' /> : <img src='./img/speaker.png' />}
+							{mute ? <img src='./img/mute_active.png' className={styles.active} /> : <img src='./img/speaker_active.png' className={styles.active} />}
+						</div>
+						{phase === 'game' ?
+							<div 
+								className={styles.icon}
+								onMouseDown={this.handleScore}
+							>
+								<img src={`./img/${this.state.scoreVisible ? 'diploma_active' : 'diploma'}.png`} />
+							</div>
+							: null
+						}
 					</div>
 					{players.map((player, i) => {
 						const selected = phase === 'effect' && effect === player.id;
@@ -183,13 +201,29 @@ class LoveLetter extends Component {
 	}
 
 	handleExit() {
-		const { table, setTable } = this.props;
-		send('client.board.leave', table._id);
+		const { table, board, setTable } = this.props;
 		setTable(null);
+		if(board.data.phase === 'game') {
+			send(`client.loveletter.game`, {
+				tableId: table._id
+			});
+		}
+		send('client.board.leave', table._id);
 	}
 
 	handleRule() {
 
+	}
+
+	handleMute() {
+		const { mute, setMute } = this.props;
+		setMute(!mute);
+	}
+
+	handleScore() {
+		this.setState({
+			scoreVisible: !this.state.scoreVisible
+		});
 	}
 
 	playCard(id) {
@@ -232,22 +266,22 @@ class LoveLetter extends Component {
 		});
 	}
 
-	handleConfirmScore() {
-		const { table, data } = this.props.board;
-		send(`client.loveletter.${data.phase}`, {
-			tableId: table._id
-		});
-		if(data.phase === 'game') {
-			this.setState({scoreVisible: false});
-		}
-	}
-
 	handleShowLog() {
 		this.setState({logX: this.props.clientWidth - 500});
 	}
 
 	handleHideLog() {
 		this.setState({logX: this.props.clientWidth - 10});
+	}
+
+	handleConfirmScore() {
+		const { table, board } = this.props;
+		send(`client.loveletter.${board.data.phase}`, {
+			tableId: table._id
+		});
+		if(board.data.phase === 'game') {
+			this.handleScore();
+		}
 	}
 }
 
@@ -258,10 +292,11 @@ function mapStateToProps({ client, board, users, logs }) {
 		user: client.user,
 		language: client.language,
 		table: client.table,
+		mute: client.mute,
 		users,
 		board,
 		logs
 	};
 }
 
-export default connect(mapStateToProps, { setBoardVisible, notify, setTable })(LoveLetter);
+export default connect(mapStateToProps, { setBoardVisible, notify, setTable, setMute })(LoveLetter);

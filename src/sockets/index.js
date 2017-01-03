@@ -1,6 +1,7 @@
 import io from 'socket.io-client';
 
 import store from '../store';
+import sound from '../sound';
 
 import { 
 	notify,
@@ -154,10 +155,16 @@ export function send(event, payload) {
 	}
 };
 
+let lastPP;
 function register(event) {
 	socket.on(event, payload => {
 		store.dispatch(updateBoard(payload));
 		store.dispatch(updateLogs(payload.data.logs));
 		store.dispatch(setResponse(true));
+		const { user, mute } = store.getState().client;
+		if(!mute && user._id === payload.data.pp && user._id !== lastPP) {
+			sound.play();
+		}
+		lastPP = payload.data.pp;
 	});
 };

@@ -166,6 +166,7 @@ class Login extends Component {
 			});
 			return;
 		}
+		this.setState({register: false});
 		this.props.signup(rusername, rname, md5(rpassword));
 	}
 

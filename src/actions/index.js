@@ -79,7 +79,12 @@ export function setLanguage(payload) {
 export const SET_USER = 'SET_USER';
 export function logout(id) {
 	axios.post('api/user/logout', { id });
-	return {type: SET_USER};
+	return {type: ''};
+};
+
+export const SET_MUTE = 'SET_MUTE';
+export function setMute(payload) {
+	return {type: SET_MUTE, payload};
 };
 
 export function login(username, password, isRemember) {

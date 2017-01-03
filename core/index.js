@@ -43,7 +43,7 @@ export const games = [{
     max_players : 2
 }, {
     id : GAME_CHAMPIONS_OF_MIDGARD, 
-    name : 'Champions of the Midgard', 
+    name : 'Champions of Midgard', 
     length : 75, 
     designer : 'Ole Steiness', 
     img_url : './img/champions_of_the_midgard/champions_of_the_midgard.jpg', 

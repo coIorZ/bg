@@ -147,8 +147,9 @@ function setup(players) {
 		ch: `|p:${players[1]}|是调查员。`
 	});
 	logs.push({en: `|hr:|`, ch: `|hr:|`});
+	const pp = investigator.id;
 
-	return { deck, alibis, turn, laCarlotta, exit, lock, rooms, roles, investigator, phantom, phase, cardId, suspect, actions, logs };
+	return { deck, alibis, turn, laCarlotta, exit, lock, rooms, roles, investigator, phantom, phase, cardId, suspect, actions, pp, logs };
 }
 
 function getCorridorByRooms(id1, id2) {
@@ -412,6 +413,7 @@ function action(board, payload) {
 		data.logs.push({en: `|hr:|`, ch: `|hr:|`});
 		if(n !== 2) {
 			data.turn = !turn;
+			data.pp = data.turn ? investigator.id : phantom.id;
 		} 
 		if(n === 0) {
 			endRound(data);

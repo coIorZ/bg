@@ -23,6 +23,7 @@ export default function(socket, io, store) {
 			board.table.status = 2;
 			updateBoard(board, () => {
 				store.dispatch({type: REMOVE_TABLE, payload: tableId});
+				socket.leave(tableId);
 				io.emit('server.table.remove', tableId);
 			});
 		});

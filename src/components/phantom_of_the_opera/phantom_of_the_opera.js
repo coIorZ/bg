@@ -14,7 +14,7 @@ import styles from './phantom_of_the_opera.css';
 
 import { send } from '../../sockets';
 import poto, { CARDS, TOKENS } from '../../../core/phantom_of_the_opera';
-import { setTable } from '../../actions';
+import { setTable, setMute } from '../../actions';
 
 class POTO extends Component {
 	constructor(props) {
@@ -23,18 +23,20 @@ class POTO extends Component {
 		this.handleMove = this.handleMove.bind(this);
 		this.handleEffect = this.handleEffect.bind(this);
 		this.handleEnd = this.handleEnd.bind(this);
-		this.handleConfirmGame = this.handleConfirmGame.bind(this);
 		this.handleClickToken = this.handleClickToken.bind(this);
 		this.handleShowLog = this.handleShowLog.bind(this);
 		this.handleHideLog = this.handleHideLog.bind(this);
 		this.handleExit = this.handleExit.bind(this);
 		this.handleRule = this.handleRule.bind(this);
+		this.handleMute = this.handleMute.bind(this);
+		this.handleScore = this.handleScore.bind(this);
 		this.state = {
 			logX: props.clientWidth - 10,
 			action: '',
 			rooms: [],
 			tokens: [],
-			corridors: []
+			corridors: [],
+			scoreVisible: true
 		};
 	}
 
@@ -48,7 +50,7 @@ class POTO extends Component {
 	}
 
 	render() {
-		const { clientHeight, clientWidth, board, user, users, logs, language } = this.props;
+		const { clientHeight, clientWidth, board, user, users, logs, language, mute } = this.props;
 		const { table, data } = board;
 		const { deck, alibis, turn, laCarlotta, exit, lock, rooms, roles, investigator, phantom, actions, phase, winner } = data;
 		const isPhantom = phantom.id === user._id;
@@ -77,6 +79,22 @@ class POTO extends Component {
 							<img src='./img/idea.png' />
 							<img src='./img/idea_active.png' className={styles.active} />
 						</div>
+						<div 
+							className={styles.icon}
+							onMouseDown={this.handleMute}
+						>
+							{mute ? <img src='./img/mute.png' /> : <img src='./img/speaker.png' />}
+							{mute ? <img src='./img/mute_active.png' className={styles.active} /> : <img src='./img/speaker_active.png' className={styles.active} />}
+						</div>
+						{phase === 'game' ?
+							<div 
+								className={styles.icon}
+								onMouseDown={this.handleScore}
+							>
+								<img src={`./img/${this.state.scoreVisible ? 'diploma_active' : 'diploma'}.png`} />
+							</div>
+							: null
+						}
 					</div>
 					<Player player={investigator} users={users} user={user} data={data} language={language} />
 					<Player player={phantom} users={users} user={user} data={data} language={language} />
@@ -205,6 +223,17 @@ class POTO extends Component {
 								/>
 					})}
 				</div>
+				{phase === 'game' && this.state.scoreVisible ?
+					<div className={styles['score-area']}>
+						<Score 
+							winner={winner} 
+							users={users} 
+							watch={!myself}
+							onConfirm={this.handleScore}
+						/>
+					</div>
+					: null
+				}
 				<Motion style={{x: spring(this.state.logX)}}>
 					{({ x }) =>
 						<div 
@@ -221,25 +250,34 @@ class POTO extends Component {
 					}
 				</Motion>
 				<CardViewer />
-				<Score
-					visible={phase === 'game'}
-					winner={winner}
-					users={users}
-					watch={!myself}
-					onConfirm={this.handleConfirmGame}
-				/>
 			</div>
 		);
 	}
 
 	handleExit() {
-		const { table, setTable } = this.props;
-		send('client.board.leave', table._id);
+		const { table, board, setTable } = this.props;
 		setTable(null);
+		if(board.data.phase === 'game') {
+			send(`client.poto.game`, {
+				tableId: table._id
+			});
+		}
+		send('client.board.leave', table._id);
 	}
 
 	handleRule() {
 
+	}
+
+	handleMute() {
+		const { mute, setMute } = this.props;
+		setMute(!mute);
+	}
+
+	handleScore() {
+		this.setState({
+			scoreVisible: !this.state.scoreVisible
+		});
 	}
 
 	handleShowLog() {
@@ -354,14 +392,6 @@ class POTO extends Component {
 			this.setState({corridors: []});
 		}
 	}
-
-	handleConfirmGame() {
-		const { table, data } = this.props.board;
-		send(`client.poto.${data.phase}`, {
-			tableId: table._id
-		});
-		this.props.setBoardVisible(false);
-	}
 }
 
 function mapStateToProps({ client, board, users, logs }) {
@@ -371,13 +401,14 @@ function mapStateToProps({ client, board, users, logs }) {
 		table: client.table,
 		language: client.language,
 		user: client.user,
+		mute: client.mute,
 		board,
 		users,
 		logs
 	};
 }
 
-export default connect(mapStateToProps, { setTable })(POTO);
+export default connect(mapStateToProps, { setTable, setMute })(POTO);
 
 const roomUI = {
 	'1': {left: 310, top: 115, width: 216, height: 100},

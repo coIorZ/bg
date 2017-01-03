@@ -9,12 +9,11 @@ export default class Score extends Component {
 	}
 
 	render() {
-		const { visible, winner, users, watch } = this.props;
-		if(!visible) return null;
+		const { winner, users, watch } = this.props;
 		const isPhantom = winner.phantom;
 		return (
 			<div className={styles.container}>
-				<h2>{`${users[winner.player].name} wins the game!`}</h2>
+				<h2>{`${users[winner.id].name} wins the game!`}</h2>
 				<p className={styles.desc}>{isPhantom ? PHANTOM : INVESTIGATOR}</p>
 				{!watch ? 
 					<div className={styles['btn-holder']}>

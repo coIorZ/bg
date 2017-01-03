@@ -63,12 +63,13 @@ function setup(people) {
 		};
 	});
 	players[0].hands.push(deck.shift());
+	const pp = players[0].id;
 	const logs = [{
 		en: `|p:${players[0].id}| draws a card.`,
 		ch: `|p:${players[0].id}|抽了一张牌。`
 	}];
 	
-	return { deck, players, vp, removedFaceUp, removedFaceDown, activePlayer, cardId, phase, effect, winner, logs };
+	return { deck, players, vp, removedFaceUp, removedFaceDown, activePlayer, cardId, phase, effect, winner, pp, logs };
 }
 
 function drawCard(data, player) {
@@ -268,6 +269,7 @@ function nextTurn(data) {
 			activePlayer = (activePlayer + 1) % players.length;
 		} while(players[activePlayer].out)
 		data.activePlayer = activePlayer;
+		data.pp = data.players[activePlayer].id;
 		data.phase = 'play.card';
 		drawCard(data, players[activePlayer]);
 	}

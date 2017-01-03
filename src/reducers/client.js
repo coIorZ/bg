@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 import {
 	SET_CLIENTHEIGHT, SET_CLIENTWIDTH, SET_GAMEINFO_FOLDED, SET_GAMEINFO_GAME, SET_LOGIN_VISIBLE, SET_CARD
-	, SET_HEADER_PAGE, SET_TABLE, SET_RESPONSE, SET_LANGUAGE, SET_USER, NOTIFY, DISMISS_NOTIFICATION
+	, SET_HEADER_PAGE, SET_TABLE, SET_RESPONSE, SET_LANGUAGE, SET_USER, SET_MUTE, NOTIFY, DISMISS_NOTIFICATION
 } from '../actions';
 
 const notifyType = {
@@ -24,6 +24,7 @@ const initialState = {
 	page: 'cosmos',
 	loginVisible: false,
 	user: null,
+	mute: false,
 	notifications: [],
 	response: true,
 	language: window.localStorage.getItem('language') || 'ch'
@@ -78,6 +79,9 @@ export default function(state = initialState, { type, payload }) {
 
 	case SET_USER:
 		return {...state, user: payload};
+
+	case SET_MUTE:
+		return {...state, mute: payload};
 
 	case NOTIFY:
 		return {
