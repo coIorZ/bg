@@ -39,7 +39,7 @@ class Login extends Component {
 			>
 				{register ? 
 					<form onSubmit={this.handleSignup}>
-						<div>
+						<div className={styles.text}>
 							<input 
 								type='text'
 								value={rusername}
@@ -47,7 +47,7 @@ class Login extends Component {
 								onChange={e => this.setState({rusername: e.target.value})} 
 							/>
 						</div>
-						<div>
+						<div className={styles.text}>
 							<input 
 								type='text'
 								value={rname}
@@ -55,7 +55,7 @@ class Login extends Component {
 								onChange={e => this.setState({rname: e.target.value})} 
 							/>
 						</div>
-						<div>
+						<div className={styles.text}>
 							<input 
 								type='password'
 								value={rpassword}
@@ -63,7 +63,7 @@ class Login extends Component {
 								onChange={e => this.setState({rpassword: e.target.value})} 
 							/>
 						</div>
-						<div>
+						<div className={styles.text}>
 							<input 
 								type='password'
 								value={repassword}
@@ -83,14 +83,14 @@ class Login extends Component {
 						</div>
 					</form>
 					: <form onSubmit={this.handleSignin}>
-						<div>
+						<div className={styles.text}>
 							<input 
 								type='text'
 								value={username}
 								onChange={e => this.setState({username: e.target.value})} 
 							/>
 						</div>
-						<div>
+						<div className={styles.text}>
 							<input 
 								type='password'
 								value={password}

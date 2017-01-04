@@ -78,8 +78,12 @@ export function setLanguage(payload) {
 
 export const SET_USER = 'SET_USER';
 export function logout(id) {
-	axios.post('api/user/logout', { id });
-	return {type: ''};
+	const request = axios.post('api/user/logout', { id });
+	return dispatch => {
+		request.then(({ data }) => {
+			dispatch({type: SET_USER, payload: data.user});
+		});
+	};
 };
 
 export const SET_MUTE = 'SET_MUTE';

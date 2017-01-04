@@ -73,6 +73,15 @@
 	margin-right: 10px;
 }
 
+.configuration {
+	padding-top: 20px;
+}
+
+.configuration .text {
+	width: 250px;
+	padding: 5px;
+}
+
 .btn {
 	display: inline-block;
 	padding: 5px 15px;
@@ -85,6 +94,10 @@
 
 .btn:hover {
 	background-color: rgba(173, 255, 47, .5);
+}
+
+.btn.red:hover {
+	background-color: rgba(240, 128, 128, .5);
 }
 
 .btn-long {

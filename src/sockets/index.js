@@ -29,6 +29,7 @@ socket.on('connect', () => {
 			ch: '已连接'
 		}
 	}));
+	store.dispatch(setResponse(true));
 });
 
 socket.on('disconnect', () => {
@@ -90,7 +91,10 @@ socket.on('server.user.duplication', () => {
 // ---------- tables ----------
 socket.on('server.table', payload => store.dispatch(fetchTables(payload)));
 
-socket.on('server.table.new', payload => store.dispatch(newTable(payload)));
+socket.on('server.table.new', payload => {
+	store.dispatch(setResponse(true));
+	store.dispatch(newTable(payload));
+});
 
 socket.on('server.table.join', payload => store.dispatch(joinTable(payload)));
 
@@ -106,21 +110,21 @@ socket.on('server.table.start', payload => {
 });
 
 socket.on('server.board.init', payload => {
+	store.dispatch(setResponse(true));
 	if(payload) {
 		store.dispatch(clearLogs());
 		store.dispatch(updateBoard(payload));
 		store.dispatch(updateLogs(payload.data.logs));
 		store.dispatch(setTable(payload.table));
-		store.dispatch(setResponse(true));
 	}
 });
 
 socket.on('server.board.reconnect', payload => {
+	store.dispatch(setResponse(true));
 	if(payload) {
 		store.dispatch(clearLogs());
 		store.dispatch(updateBoard(payload));
 		store.dispatch(setTable(payload.table));
-		store.dispatch(setResponse(true));
 		socket.emit('client.log', payload.table._id);
 	}
 });
@@ -158,9 +162,9 @@ export function send(event, payload) {
 let lastPP;
 function register(event) {
 	socket.on(event, payload => {
+		store.dispatch(setResponse(true));
 		store.dispatch(updateBoard(payload));
 		store.dispatch(updateLogs(payload.data.logs));
-		store.dispatch(setResponse(true));
 		const { user, mute } = store.getState().client;
 		if(!mute && user._id === payload.data.pp && user._id !== lastPP) {
 			sound.play();

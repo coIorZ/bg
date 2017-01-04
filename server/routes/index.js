@@ -3,8 +3,6 @@ import _ from 'lodash';
 import User from '../models/users';
 import { games } from '../../core';
 
-let users = [];
-
 export default function(router, store) {
 	router.post('/user/login', (req, res) => {
 		User.findOne({
@@ -13,27 +11,17 @@ export default function(router, store) {
 		}, (err, user) => {
 			if(err) res.send(err);
 			if(user) {
-				// const index = users.indexOf(user._id.toString());
-				// if(index >= 0) {
-				// 	req.session.user = null;
-				// 	res.json({user: null, message: {
-				// 		en: 'This account is alreay logged in',
-				// 		ch: '该账户已登陆'
-				// 	}});
-				// } else {
-					if(req.body.isRemember) {
-						req.session.user = user;
-					} else {
-						req.session.user = null;
-					}
-					// users.push(user._id.toString());
-					store.dispatch({type: 'USER_ONLINE', payload: user._id});
-					res.io.emit('server.user.online', user._id);
-					res.json({ user, message: {
-						en: 'logged in successfully',
-						ch: '成功登录'
-					}});
-				// }
+				if(req.body.isRemember) {
+					req.session.user = user;
+				} else {
+					req.session.user = null;
+				}
+				store.dispatch({type: 'USER_ONLINE', payload: user._id});
+				res.io.emit('server.user.online', user._id);
+				res.json({ user, message: {
+					en: 'logged in successfully',
+					ch: '成功登录'
+				}});
 			} else {
 				req.session.user = null;
 				res.json({ user, message: {
@@ -65,7 +53,6 @@ export default function(router, store) {
 					if(err) res.send(err);
 					delete user.password;
 					req.session.user = user;
-					// users.push(user._id.toString());
 					store.dispatch({type: 'USER_NEW', payload: user});
 					res.io.emit('server.user.new', user);
 					res.json({ user, message: {
@@ -82,13 +69,16 @@ export default function(router, store) {
 	});
 
 	router.post('/user/logout', (req, res) => {
-		// const index = users.indexOf(req.body.id);
-		// req.session.user = null;
-		// if(index >= 0) {
-		// 	const userId = users.splice(index, 1)[0];
-			store.dispatch({type: 'USER_OFFLINE', payload: req.body.id});
-			res.io.emit('server.user.offline', req.body.id);
-		// }
+		req.session.user = null;
+		store.dispatch({type: 'USER_OFFLINE', payload: req.body.id});
+		res.io.emit('server.user.offline', req.body.id);
+		res.json({user: null});
+	});
+
+	router.post('/user/unload', (req, res) => {
+		store.dispatch({type: 'USER_OFFLINE', payload: req.body.id});
+		res.io.emit('server.user.offline', req.body.id);
+		res.json({});
 	});
 
 	router.get('/games', (req, res) => {

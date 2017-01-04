@@ -7,14 +7,19 @@ import _ from 'lodash';
 import Table from './table';
 import styles from './game_info.css';
 
-import socket from '../sockets';
-import { setGameInfoFolded, setLoginVisible } from '../actions';
+import { send } from '../sockets';
+import { setGameInfoFolded, setLoginVisible, notify } from '../actions';
 
 class GameInfo extends Component {
 	constructor(props) {
 		super(props);
 		this.handlePlay = this.handlePlay.bind(this);
 		this.handleNewGame = this.handleNewGame.bind(this);
+		this.handleCreateGame = this.handleCreateGame.bind(this);
+		this.state = {
+			new: false,
+			title: ''
+		};
 	}
 
 	render() {
@@ -87,12 +92,47 @@ class GameInfo extends Component {
 								</div>
 							</div>
 							<div className={styles.right}>
-								{rightTables}
+								{this.state.new ?
+									this.buildNew()
+									: rightTables
+								}
 							</div>
 						</div>
 					</div>
 				}
 			</Motion>
+		);
+	}
+
+	buildNew() {
+		const { users, user, language } = this.props;
+		return (
+			<div className={styles.configuration}>
+				<div>
+					<div
+						className={styles.btn}
+						style={{marginRight: 30}}
+						onMouseDown={this.handleCreateGame}
+					>
+						{language === 'en' ? 'Create' : '创建'}
+					</div>
+					<div
+						className={cx(styles.btn, styles.red)}
+						onMouseDown={() => this.setState({new: false})}
+					>
+						{language === 'en' ? 'Cancel': '取消'}
+					</div>
+				</div>
+				<div style={{marginTop: 20, marginBottom: 5}}>{language === 'en' ? 'Title' : '房间名'}</div>
+				<div>
+					<input 
+						type='text' 
+						value={this.state.title} 
+						className={styles.text}
+						onChange={(e) => this.setState({title: e.target.value})}
+					/>
+				</div>
+			</div>
 		);
 	}
 
@@ -106,16 +146,38 @@ class GameInfo extends Component {
 	}
 
 	handleNewGame() {
-		const { user, game } = this.props;
+		const { user, users } = this.props;
 		if(!user) {
 			setLoginVisible(true);
 		} else {
-			socket.emit('client.table.new', { userId: user._id, gameId: game.id });
+			this.setState({
+				new: true,
+				title: `${users[user._id].name}'s game`
+			});
 		}
+	}
+
+	handleCreateGame() {
+		const { user, game, notify } = this.props;
+		if(this.state.title === '') {
+			notify({
+				message: {
+					en: 'title cannot be empty',
+					ch: '房间名不能为空'
+				}
+			});
+			return;
+		}
+		send('client.table.new', { 
+			userId: user._id, 
+			gameId: game.id,
+			title: this.state.title
+		});
+		this.setState({new: false});
 	}
 }
 
-function mapStateToProps({ client, tables }) {
+function mapStateToProps({ client, tables, users }) {
 	return {
 		clientWidth: client.clientWidth,
 		clientHeight: client.clientHeight,
@@ -123,8 +185,9 @@ function mapStateToProps({ client, tables }) {
 		game: client.gameInfo.game,
 		language: client.language,
 		user: client.user,
+		users,
 		tables
 	};
 }
 
-export default connect(mapStateToProps, { setGameInfoFolded, setLoginVisible })(GameInfo);
+export default connect(mapStateToProps, { setGameInfoFolded, setLoginVisible, notify })(GameInfo);

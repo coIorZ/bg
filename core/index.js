@@ -46,8 +46,8 @@ export const games = [{
     name : 'Champions of Midgard', 
     length : 75, 
     designer : 'Ole Steiness', 
-    img_url : './img/champions_of_the_midgard/champions_of_the_midgard.jpg', 
-    rule_url: 'files/champions_of_the_midgard.pdf',
+    img_url : './img/champions_of_midgard/champions_of_midgard.jpg', 
+    rule_url: 'files/champions_of_midgard.pdf',
     weight : 2.54, 
     min_players : 2,
     max_players : 4

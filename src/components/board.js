@@ -6,7 +6,6 @@ import LoveLetter from './love_letter/love_letter';
 import POTO from './phantom_of_the_opera/phantom_of_the_opera';
 import styles from './board.css';
 
-import socket from '../sockets';
 import { GAME_LOVE_LETTER, GAME_PHANTOM_OF_THE_OPERA } from '../../core';
 
 class Board extends Component {

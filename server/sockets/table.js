@@ -12,13 +12,14 @@ export const START_TABLE = 'START_TABLE';
 export const BOARD_TABLE = 'BOARD_TABLE';
 
 export default function(socket, io, store) {
-	socket.on('client.table.new', ({ userId, gameId }) => {
+	socket.on('client.table.new', ({ userId, gameId, title }) => {
 		const table = {
 			_id: mongoose.Types.ObjectId(),
 			host: userId,
 			players: [userId],
 			game: gameId,
-			status: 0
+			status: 0,
+			title
 		};
 		const action = {
 			type: NEW_TABLE,

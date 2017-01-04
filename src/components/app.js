@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { throttle } from 'lodash';
 import  { NotificationStack } from 'react-notification';
+import axios from 'axios';
 
 import Login from './login';
 import Header from './header';
@@ -44,7 +45,7 @@ class App extends Component {
 	}
 
 	handleUnload() {
-		this.props.logout(this.props.user._id);
+		axios.post('api/user/unload', {id: this.props.user._id});
 	}
 }
 

@@ -19,7 +19,7 @@ class Table extends Component {
 
 	render() {
 		const { table, users, user, games, game, language } = this.props;
-		const { host, players, status } = table;
+		const { host, players, status, title } = table;
 		const { min_players, max_players } = game;
 		const started = status === 1;
 		const onTable = _.includes(players, user._id);
@@ -46,7 +46,7 @@ class Table extends Component {
 						[styles.started]: started
 					})}
 				>
-					{`${users[host].name}'s game`}
+					{title || `${users[host].name}'s game`}
 				</div>
 				<div className={styles.body}>
 					{_.map(players, player => {

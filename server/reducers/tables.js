@@ -14,7 +14,7 @@ export default function(state = initialState, { type, payload }) {
 		return tables;
 
 	case NEW_TABLE:
-		return {...state, [payload._id]: payload};
+		return {[payload._id]: payload, ...state};
 
 	case JOIN_TABLE:
 		return {
