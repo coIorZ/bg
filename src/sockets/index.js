@@ -175,5 +175,5 @@ function remind(board) {
 	if(!mute && user._id === board.data.pp && user._id !== lastActivePlayer) {
 		sound.play();
 	}
-	lastActivePlayer = payload.data.pp;
+	lastActivePlayer = board.data.pp;
 }
