@@ -7,7 +7,7 @@ import GameInfo from './game_info';
 import Board from './board';
 import styles from './games_page.css';
 
-import { setGameInfoFolded, setHeaderPage, fetchGames, setGameInfoGame } from '../actions';
+import { setGameInfoFolded, setHeaderPage, setGameInfoGame } from '../actions';
 
 class GamesPage extends Component {
 	constructor(props) {
@@ -19,7 +19,6 @@ class GamesPage extends Component {
 	}
 
 	componentDidMount() {
-		this.props.fetchGames();
 		this.props.setHeaderPage('play');
 	}
 
@@ -89,4 +88,4 @@ function mapStateToProps({ client, games }) {
 	};
 }
 
-export default connect(mapStateToProps, { setGameInfoFolded, setHeaderPage, fetchGames, setGameInfoGame })(GamesPage);
+export default connect(mapStateToProps, { setGameInfoFolded, setHeaderPage, setGameInfoGame })(GamesPage);

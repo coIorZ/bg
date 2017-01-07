@@ -5,7 +5,7 @@ import cx from 'classnames';
 
 import styles from './header.css';
 
-import { setHeaderPage } from '../actions';
+import { setHeaderPage, setGameInfoGame } from '../actions';
 
 class Header extends Component {
 	constructor(props) {
@@ -54,7 +54,9 @@ class Header extends Component {
 	}
 
 	handlePlay() {
-		this.props.setHeaderPage('play');
+		const { games, setHeaderPage, setGameInfoGame } = this.props;
+		setHeaderPage('play');
+		setGameInfoGame(games[0]);
 	}
 
 	handleAbout() {
@@ -62,11 +64,12 @@ class Header extends Component {
 	}
 };
 
-function mapStateToProps({ client }) {
+function mapStateToProps({ client, games }) {
 	return {
 		page: client.page,
-		language: client.language
+		language: client.language,
+		games
 	};
 }
 
-export default connect(mapStateToProps, { setHeaderPage })(Header);
+export default connect(mapStateToProps, { setHeaderPage, setGameInfoGame })(Header);

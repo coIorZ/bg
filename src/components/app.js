@@ -8,7 +8,7 @@ import Login from './login';
 import Header from './header';
 import styles from './app.css';
 
-import { setClientHeight, setClientWidth, userAuth, dismissNotification, logout } from '../actions';
+import { setClientHeight, setClientWidth, userAuth, fetchGames, dismissNotification } from '../actions';
 
 class App extends Component {
 	constructor(props) {
@@ -21,6 +21,7 @@ class App extends Component {
 		window.addEventListener('resize', this.handleResize);
 		window.addEventListener('unload', this.handleUnload);
 		this.props.userAuth();
+		this.props.fetchGames();
 	}
 
 	render() {
@@ -60,4 +61,4 @@ function mapStateToProps({ client }) {
 	};
 }
 
-export default connect(mapStateToProps, { setClientHeight, setClientWidth, userAuth, dismissNotification, logout })(App);
+export default connect(mapStateToProps, { setClientHeight, setClientWidth, userAuth, fetchGames, dismissNotification })(App);
