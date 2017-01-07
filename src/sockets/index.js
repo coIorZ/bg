@@ -12,6 +12,7 @@ import {
 } from '../actions';
 
 const socket = io();
+let lastActivePlayer;
 
 // ---------- connection ----------
 socket.on('connect', () => {
@@ -126,6 +127,7 @@ socket.on('server.board.reconnect', payload => {
 		store.dispatch(updateBoard(payload));
 		store.dispatch(setTable(payload.table));
 		socket.emit('client.log', payload.table._id);
+		remind(payload);
 	}
 });
 
@@ -159,16 +161,19 @@ export function send(event, payload) {
 	}
 };
 
-let lastPP;
 function register(event) {
 	socket.on(event, payload => {
 		store.dispatch(setResponse(true));
 		store.dispatch(updateBoard(payload));
 		store.dispatch(updateLogs(payload.data.logs));
-		const { user, mute } = store.getState().client;
-		if(!mute && user._id === payload.data.pp && user._id !== lastPP) {
-			sound.play();
-		}
-		lastPP = payload.data.pp;
+		remind(payload);
 	});
 };
+
+function remind(board) {
+	const { user, mute } = store.getState().client;
+	if(!mute && user._id === board.data.pp && user._id !== lastActivePlayer) {
+		sound.play();
+	}
+	lastActivePlayer = payload.data.pp;
+}

@@ -10,7 +10,7 @@ import Log from './log';
 import CardViewer from '../card_viewer';
 import styles from './love_letter.css';
 
-import { send } from '../../sockets';
+import socket, { send } from '../../sockets';
 
 import { setBoardVisible, notify, setTable, setMute } from '../../actions';
 
@@ -208,7 +208,7 @@ class LoveLetter extends Component {
 				tableId: table._id
 			});
 		}
-		send('client.board.leave', table._id);
+		socket.emit('client.board.leave', table._id);
 	}
 
 	handleRule() {

@@ -7,7 +7,7 @@ import _ from 'lodash';
 import Table from './table';
 import styles from './game_info.css';
 
-import { send } from '../sockets';
+import socket from '../sockets';
 import { setGameInfoFolded, setLoginVisible, notify } from '../actions';
 
 class GameInfo extends Component {
@@ -168,7 +168,7 @@ class GameInfo extends Component {
 			});
 			return;
 		}
-		send('client.table.new', { 
+		socket.emit('client.table.new', { 
 			userId: user._id, 
 			gameId: game.id,
 			title: this.state.title

@@ -45,7 +45,10 @@ class App extends Component {
 	}
 
 	handleUnload() {
-		axios.post('api/user/unload', {id: this.props.user._id});
+		const { user } = this.props;
+		if(user) {
+			axios.post('api/user/unload', {id: user._id});
+		}
 	}
 }
 

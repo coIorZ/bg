@@ -4,7 +4,6 @@ import POTO from './phantom_of_the_opera';
 export const GAME_LOVE_LETTER = '1';
 export const GAME_PHANTOM_OF_THE_OPERA = '2';
 export const GAME_CHAMPIONS_OF_MIDGARD = '3';
-export const GAME_BLOODY_INN = '4';
 export const GAME_INNOVATION = '5';
 
 export function getCore(gameId) {
@@ -50,15 +49,5 @@ export const games = [{
     rule_url: 'files/champions_of_midgard.pdf',
     weight : 2.54, 
     min_players : 2,
-    max_players : 4
-}, {
-    id : GAME_BLOODY_INN, 
-    name : 'Bloody Inn', 
-    length : 45, 
-    designer : 'Nicolas Robert', 
-    img_url : './img/bloody_inn/bloody_inn.jpg', 
-    rule_url: 'files/bloody_inn.pdf',
-    weight : 2.36, 
-    min_players : 1,
     max_players : 4
 }];

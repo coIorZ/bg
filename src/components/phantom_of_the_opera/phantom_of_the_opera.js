@@ -12,7 +12,7 @@ import Log from './log';
 import CardViewer from '../card_viewer';
 import styles from './phantom_of_the_opera.css';
 
-import { send } from '../../sockets';
+import socket, { send } from '../../sockets';
 import poto, { CARDS, TOKENS } from '../../../core/phantom_of_the_opera';
 import { setTable, setMute } from '../../actions';
 
@@ -262,7 +262,7 @@ class POTO extends Component {
 				tableId: table._id
 			});
 		}
-		send('client.board.leave', table._id);
+		socket.emit('client.board.leave', table._id);
 	}
 
 	handleRule() {
