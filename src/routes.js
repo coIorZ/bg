@@ -10,7 +10,7 @@ export default (
 	<Route path='/' component={App}>
 		<IndexRoute component={IndexPage} />
 		<Route path='play' component={GamesPage} />
-		<Route path='index' component={IndexPage} />
+		<Route path='/' component={IndexPage} />
 		<Route path='about' component={AboutPage} />
 	</Route>
 );

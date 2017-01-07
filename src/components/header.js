@@ -26,7 +26,7 @@ class Header extends Component {
 							[styles.active]: page === 'cosmos'
 						})}
 					>
-						<Link to='index' onMouseDown={this.handleCosmos}> Cosmos </Link>
+						<Link to='/' onMouseDown={this.handleCosmos}> Cosmos </Link>
 					</li>
 					<li 
 						className={cx({
